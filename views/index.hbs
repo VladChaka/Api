@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="angular.min.js" ></script>
+</head>
+<body>
+<div id="popupsContainer">
+    <div class="user-form" id="AddForm">
+        <div class="close-addform" onclick="hide(this)">+</div>
+    <form class="user-add" method="POST" action="/">
+         <div><span>Username</span><input type="text" placeholder="Enter username" name="username" required> </div>
+         <div><span>E-mail</span><input type="text" placeholder="Enter email" name="email" required> </div>
+         <div><span>Post</span><ul class="user-add-post">
+             <li><label for="administrator">Administrator</label><input id="administrator" name="administrator123" type="checkbox"></li>
+             <li><label for="frontend">Frontend Developer</label><input id="frontend" name="frontend" type="checkbox"></li>
+             <li><label for="backend">Backend Developer</label><input id="backend" name="backend"  type="checkbox"></li>
+             <li><label for="moderator">Moderator</label><input id="moderator" name="moderator" type="checkbox"></li>
+             <li><label for="redactor">Redactor</label><input id="redactor" name="redactor" type="checkbox"></li>
+             <li><label for="visitor">Visitor</label><input id="visitor" name="visitor" type="checkbox"></li>
+         </ul> </div>
+         <div><span>Phone</span><input type="tel" placeholder="Enter phone number" name="phone" required> </div>
+         <div><span>Password</span><input type="password" placeholder="Enter password" name="password" required> </div>
+         <div><span>Full name</span><input type="text" placeholder="Full name of user" name="fullname" required> </div>
+         <div class="user-add-btn">
+             <button type="submit">Add user</button></div>
+     </form>
+    </div>
+
+    <div class="user-profile" id="EditForm">
+        <div class="close-editform" onclick="hide(this)">+</div>
+        <form class="user-edit">
+            <div><span>Username</span><input type="text" value="maksimy88" placeholder="Enter username" required> </div>
+            <div><span>E-mail</span><input type="text" value="maksimy88@gmail.com" placeholder="Enter email" required> </div>
+            <div><span>Post</span><ul class="user-edit-post">
+                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="edit_administrator" type="checkbox" checked></li>
+                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="edit_frontend" type="checkbox"></li>
+                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="edit_backend"  type="checkbox"></li>
+                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="edit_moderator" type="checkbox" checked></li>
+                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="edit_redactor" type="checkbox"></li>
+                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="edit_visitor" type="checkbox"></li>
+            </ul> </div>
+            <div><span>Phone</span><input type="tel" value="+375338073954" placeholder="Enter phone number" required> </div>
+            <div><span>Password</span><input type="password" value="omaewamoushinderu" placeholder="Enter password" required> </div>
+            <div><span>Full name</span><input type="text" value="Maksim Yakusik" placeholder="Full name of user" required> </div>
+            <div class="user-edit-btns">
+                <button type="button">Delete user <span>✖</span></button>
+                <button type="submit" class="edit-btn">Edit user <span>✓</span></button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+    <div class="users-container">
+    <div class="users-block">
+        <div class="users-title">
+            <h2>List of users</h2>
+            <button class="users-add-new" onclick="show('AddForm')">Add new +</button>
+        </div>
+        <div class="users-filters">
+            <div class="filters-search"><input placeholder="Search User"></div>
+            <div class="filters-post">
+                <div><input type="radio" value="administrator" name="radio" id="filterpost1"><label for="filterpost1"> Administrator</label></div><br>
+                <div><input type="radio" value="frontend" name="radio" id="filterpost2"><label for="filterpost2"> Frontend</label></div><br>
+                <div><input type="radio" value="backend" name="radio" id="filterpost3"><label for="filterpost3"> Backend</label></div><br>
+                <div><input type="radio" value="moderator" name="radio" id="filterpost4"><label for="filterpost4"> Moderator</label></div><br>
+                <div><input type="radio" value="redactor" name="radio" id="filterpost5"><label for="filterpost5"> Redactor</label></div><br>
+                <div><input type="radio" value="visitor" name="radio" id="filterpost6"><label for="filterpost6"> Visitor</label></div><br>
+            </div>
+            <div class="filters-order">
+                <div class="filters-order-active" onclick="showHideOrders()">Сначала новые</div>
+                <div class="filters-order-popup" id="orderPopup">
+                    <div>Сначала рейтинговые</div>
+                    <div>Сначала новые</div>
+                </div>
+            </div>
+            <div class="filters-refresh">
+                <button ng-click="">Refresh <span>⟲</span></button>
+            </div>
+        </div>
+        <div class="users-list">
+            <div class="list-user-names">
+                <div>Full Name</div>
+                <div>User Login</div>
+                <div>User Posts</div>
+                <div class="list-user-rating">Rating</div>
+                <div class="list-user-date">Register Date</div>
+                <div></div>
+            </div>
+            {{#each user}}
+            <div class="list-user-block">
+                <div>{{fullname}}</div>
+                <div>{{username}}</div>
+                <div class="list-user-post"><div>Administrator</div><div>Moderator</div></div>
+                <div class="list-user-rating">{{rating}}</div>
+                <div class="list-user-date">{{regDate}}</div>
+                <div><button onclick="show('EditForm')">Go to profile</button></div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    </div>
+
+    <!--
+    <div class="template-search" ng-app="templateApp" ng-controller="templateController">
+        <div ng-include="'templates/template-pack1.html'"></div>
+        <span>Enter template name:</span> <input placeholder="Template Name" type = "text" ng-model = "templateName">
+        <br>
+        <br>
+        <ul>
+            <li ng-repeat="element in template.elements | filter: templateName">
+                {{element.name}}
+                <button ng-click="addElement(element.id)" class="addBtn ">Add  </button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="template-display" id="addedTemplates">
+    </div>
+<button class="clear-btn" onclick="cleanTemplates()">C<br>L<br>E<br>A<br>N</button> !-->
+<script src="js/users.js"></script>
+</body>
+</html>

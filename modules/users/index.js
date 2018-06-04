@@ -1,16 +1,27 @@
 const express = require('express'),
-      User = require('../../models/user'),
+      User = require('../../models/user')
+      app = express(),
+      mongoose = require("mongoose"),
       router = express.Router();
+      let db = mongoose.connect;
 
-router.post('/register', (req, res) => {
 
-    console.log(req.body);
+      app.set("view engine", "hbs"); 
 
-    const username = req.body.username || "";
-    const email = req.body.email ||{ username: 'allankar2010@mail.ru' };
-    const phone = req.body.phone || "";
-    const pass = req.body.password || "";
-    const fullname = req.body.fullname || "";
+
+router.post('/', (req, res) => {
+
+    const username = req.body.username || "",
+          email = req.body.email || "",
+          phone = req.body.phone || "",
+          pass = req.body.password || "",
+          fullname = req.body.fullname || "",
+          admin = req.body.administrator123 || "",
+          frontend = req.body.frontend || "",
+          backend = req.body.backend || "",
+          moderator = req.body.moderator || "",
+          redactor = req.body.redactor || "",
+          visitor = req.body.visitor || "";
 
     if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
     if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
@@ -18,17 +29,26 @@ router.post('/register', (req, res) => {
     const user = new User({
           username: username,
           email: email,
+          post: {
+            administrator: admin,
+            frintenddeveloper: frontend,
+            backenddeveloper: backend,
+            moderator: moderator,
+            redactor: redactor,
+            visitor: visitor   
+          },
           phone: phone,
           password: pass,
           fullname: fullname,
+          rating: 0,
           regDate: Date.now()
     });
 
     user.save(function(err) {
         if (err) return res.json({ error: "Duplicate username or email" });
-
-        res.json({ success: "ok" });
     });
+
+    console.log(user); 
 });
 
 // CUSTOM FUNCTIONS

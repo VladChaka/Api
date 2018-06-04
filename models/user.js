@@ -7,16 +7,15 @@ const UserSchema = new Schema({
         required: true
     },
     email: {
-        type: String,
-        required: true
+        type: String
     },
     post: [{
-        admonistrator: Boolean,
-        frintenddeveloper: Boolean,
-        backenddeveloper: Boolean,
-        moderator: Boolean,
-        redactor: Boolean,
-        visitor: Boolean    
+        administrator: String,
+        frintenddeveloper: String,
+        backenddeveloper: String,
+        moderator: String,
+        redactor: String,
+        visitor: String    
     }],
     phone: {
         type: String,
@@ -30,6 +29,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    rating: Number,
     regDate: {
         type: Date,
         required: true
@@ -37,4 +37,5 @@ const UserSchema = new Schema({
 });
 
 let User = mongoose.model("User", UserSchema);
+
 module.exports = User;

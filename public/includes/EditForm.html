@@ -1,0 +1,23 @@
+<div class="user-profile" id="EditForm">
+    <div class="close-editform" onclick="hide(this)">+</div>
+    <form class="user-edit">
+        <input type="hidden" value="1" placeholder="id" required>
+        <div><span>Username</span><input type="text" value="maksimy88" placeholder="Enter username" required> </div>
+        <div><span>E-mail</span><input type="text" value="maksimy88@gmail.com" placeholder="Enter email" required> </div>
+        <div><span>Post</span><ul class="user-edit-post">
+            <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="edit_administrator" type="checkbox" checked></li>
+            <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="edit_frontend" type="checkbox"></li>
+            <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="edit_backend"  type="checkbox"></li>
+            <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="edit_moderator" type="checkbox" checked></li>
+            <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="edit_redactor" type="checkbox"></li>
+            <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="edit_visitor" type="checkbox"></li>
+        </ul> </div>
+        <div><span>Phone</span><input type="tel" value="+375338073954" placeholder="Enter phone number" required> </div>
+        <div><span>Password</span><input type="password" value="omaewamoushinderu" placeholder="Enter password" required> </div>
+        <div><span>Full name</span><input type="text" value="Maksim Yakusik" placeholder="Full name of user" required> </div>
+        <div class="user-edit-btns">
+            <button onclick="hideEdit()" type="button">Delete user <span>✖</span></button>
+            <button type="submit" class="edit-btn">Edit user <span>✓</span></button>
+        </div>
+    </form>
+</div>

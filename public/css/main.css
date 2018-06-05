@@ -186,6 +186,7 @@ div.user-add-btn{
     cursor: pointer;
 }
 .filters-order{
+    flex-basis: 10%;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

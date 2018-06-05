@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="angular.min.js" ></script>
+</head>
+<body>
+<div ng-app="usersApp" ng-controller="usersController">
+    <div id="popupsContainer">
+        <div ng-include="'includes/AddForm.html'"></div>
+        <div ng-include="'includes/EditForm.html'"></div>
+    </div>
+
+    <div class="users-container">
+        <div class="users-block">
+            <div class="users-title">
+                <h2>List of users</h2>
+                <button class="users-add-new" onclick="show('AddForm')">Add new +</button>
+            </div>
+            <div class="users-filters">
+                <div class="filters-search"><input placeholder="Search User" ng-model="search.fullname"></div>
+                <div class="filters-post">
+                    <div><input type="radio" value="administrator" name="radio" id="filterpost1" ng-model="search.posts"><label for="filterpost1"> Administrator</label></div><br>
+                    <div><input type="radio" value="frontend" name="radio" id="filterpost2" ng-model="search.posts"><label for="filterpost2"> Frontend</label></div><br>
+                    <div><input type="radio" value="backend" name="radio" id="filterpost3" ng-model="search.posts"><label for="filterpost3"> Backend</label></div><br>
+                    <div><input type="radio" value="moderator" name="radio" id="filterpost4" ng-model="search.posts"><label for="filterpost4"> Moderator</label></div><br>
+                    <div><input type="radio" value="redactor" name="radio" id="filterpost5" ng-model="search.posts"><label for="filterpost5"> Redactor</label></div><br>
+                    <div><input type="radio" value="visitor" name="radio" id="filterpost6" ng-model="search.posts"><label for="filterpost6"> Visitor</label></div><br>
+                </div>
+                <div class="filters-order">
+                    <div class="filters-order-active" onclick="showHideOrders()">By Date</div>
+                    <div class="filters-order-popup" id="orderPopup">
+                        <div onclick="filterByRating()">By Rating</div>
+                        <div onclick="filterByDate()">By Date</div>
+                    </div>
+                </div>
+                <div class="filters-refresh">
+                    <button ng-click="">Refresh <span>⟲</span></button>
+                </div>
+            </div>
+            <div class="users-list">
+                <div class="list-user-names">
+                    <div>Full Name</div>
+                    <div>User Login</div>
+                    <div>User Posts</div>
+                    <div ng-show="showDate" ng-hide="showRating" class="list-user-date">Register Date</div>
+                    <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">Rating</div>
+                    <div></div>
+                </div>
+                <div class="list-user-block" ng-repeat="user in users.info | filter: search">
+                    <div>{{user.fullname}}</div>
+                    <div>{{user.login}}</div>
+                    <div class="list-user-post">{{user.posts}}</div>
+                    <div ng-show="showDate" ng-hide="showRating" class="list-user-date">{{user.registerdate}}</div>
+                    <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">{{user.rating}}</div>
+                    <div><button onclick="show('EditForm')">Go to profile</button></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+<div class="template-search" ng-app="templateApp" ng-controller="templateController">
+    <div ng-include="'templates/template-pack1.html'"></div>
+    <span>Enter template name:</span> <input placeholder="Template Name" type = "text" ng-model = "templateName">
+    <br>
+    <br>
+    <ul>
+        <li ng-repeat="element in template.elements | filter: templateName">
+            {{element.name}}
+            <button ng-click="addElement(element.id)" class="addBtn ">Add  </button>
+        </li>
+    </ul>
+</div>
+
+<div class="template-display" id="addedTemplates">
+</div>
+<button class="clear-btn" onclick="cleanTemplates()">C<br>L<br>E<br>A<br>N</button> !-->
+<script src="js/users.js"></script>
+</body>
+</html>

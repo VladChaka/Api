@@ -2,7 +2,7 @@
     <div class="close-editform" onclick="hide(this)">+</div>
     <form class="user-edit" name="EditForm" method="POST" action="/update">
         <input type="hidden" value="1" placeholder="id" required>
-        <div><span>Username</span><input type="text" name="username" value="maksimy88" placeholder="Enter username" required> </div>
+        <div><span>Username</span><input type="text" name="username" value="{{user.username}}" placeholder="Enter username" required> </div>
         <div><span>E-mail</span><input type="text" name="email" value="maksimy88@gmail.com" placeholder="Enter email" required> </div>
         <div><span>Post</span><ul class="user-edit-post">
             <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="edit_administrator" type="checkbox" checked></li>

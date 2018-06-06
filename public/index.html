@@ -8,7 +8,6 @@
 <div ng-app="usersApp" ng-controller="usersController">
     <div id="popupsContainer">
         <div ng-include="'includes/AddForm.html'"></div>
-        <div ng-include="'includes/EditForm.html'"></div>
     </div>
 
     <div class="users-container">
@@ -34,8 +33,19 @@
                         <div onclick="filterByDate()">By Date</div>
                     </div>
                 </div>
-                <div class="filters-refresh">
-                    <button ng-click="">Refresh <span>⟲</span></button>
+
+                <div class="filters-pages">
+                    <a href="#">First</a>
+                    <a href="#" class="pages-active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">6</a>
+                    <a href="#">7</a>
+                    <a href="#">8</a>
+                    <a href="#">9</a>
+                    <a href="#">Last</a>
                 </div>
             </div>
             <div class="users-list">
@@ -50,10 +60,35 @@
                 <div class="list-user-block" ng-repeat="user in users.info | filter: search">
                     <div>{{user.fullname}}</div>
                     <div>{{user.username}}</div>
-                    <div class="list-user-post">{{user.posts}}</div>
+                    <div class="list-user-post">Administrator</div>
                     <div ng-show="showDate" ng-hide="showRating" class="list-user-date">{{user.regDate}}</div>
                     <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">{{user.rating}}</div>
-                    <div><button onclick="show('EditForm')">Go to profile</button></div>
+                    <div class="list-user-buttons"><button onclick="showEditForm(this)">Go to profile</button>
+                       <form action="/delete"> <button onclick="deleteUser(this)" type="button">Delete user <span>✖</span></button></form>
+                    </div>
+                    <div class="user-profile">
+                        <div class="close-editform" onclick="hide(this)">+</div>
+                        <form class="user-edit" name="EditForm" method="POST" action="/update">
+                            <input type="hidden" value="{{user._id}}" placeholder="id" required>
+                            <div><span>Username</span><input type="text" name="username" value="{{user.username}}" placeholder="Enter username" required> </div>
+                            <div><span>E-mail</span><input type="text" name="email" value="{{user.email}}" placeholder="Enter email" required> </div>
+                            <div><span>Post</span><ul class="user-edit-post">
+                                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="edit_administrator" type="checkbox" checked></li>
+                                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="edit_frontend" type="checkbox"></li>
+                                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="edit_backend"  type="checkbox"></li>
+                                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="edit_moderator" type="checkbox" checked></li>
+                                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="edit_redactor" type="checkbox"></li>
+                                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="edit_visitor" type="checkbox"></li>
+                            </ul> </div>
+                            <div><span>Phone</span><input name="phone" type="tel" value="{{user.phone}}" placeholder="Enter phone number" required> </div>
+                            <div><span>Password</span><input type="password" name="password" value="{{user.password}}" placeholder="Enter password" required> </div>
+                            <div><span>Full name</span><input type="text" name="fullname" value="{{user.fullname}}" placeholder="Full name of user" required> </div>
+                            <div class="user-edit-btns">
+                                <button type="submit" class="edit-btn" ng-disabled="EditForm.$dirty">Edit user <span>✓</span></button>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
 
             </div>

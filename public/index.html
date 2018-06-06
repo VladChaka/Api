@@ -76,6 +76,14 @@
                     <div class="list-user-date">5.5.2018</div>
                     <div><button onclick="show('EditForm')">Go to profile</button></div>
                 </div>
+                <div class="list-user-block" ng-repeat="user in getJSON.data | filter: search">
+                    <div>{{user.fullname}}</div>
+                    <div>{{user.email}}</div>
+                    <!-- <div class="list-user-post">{{user.posts}}</div>
+                    <div ng-show="showDate" ng-hide="showRating" class="list-user-date">{{user.registerdate}}</div>
+                    <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">{{user.rating}}</div>
+                    <div><button onclick="show('EditForm')">Go to profile</button></div> -->
+                </div>
 
             </div>
         </div>
@@ -98,6 +106,7 @@
 <div class="template-display" id="addedTemplates">
 </div>
 <button class="clear-btn" onclick="cleanTemplates()">C<br>L<br>E<br>A<br>N</button> !-->
+<script src="test.js"></script>
 <script src="js/users.js"></script>
 </body>
 </html>

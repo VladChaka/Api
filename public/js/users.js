@@ -1,20 +1,38 @@
 
 var usersApp = angular.module("usersApp", []);
+
+var getJSON = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status === 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status, xhr.response);
+      }
+    };
+    xhr.send();
+};
+
+var nani = getJSON('http://localhost:4001/view',
+function(err, data) {
+  if (err !== null) {
+    alert('Something went wrong: ' + err);
+  } else {
+    console.log(data);
+    return data;
+  }
+});
+console.log(nani);
+
+
 usersApp.controller('usersController', function($scope,$http) {
     $scope.addElement = function(element){
         var cell = document.getElementById(element).content.cloneNode(true);
         addedTemplates.appendChild(cell);
     };
-
-    const myInit = {
-        method: 'get'
-      };
-
-      fetch('http://localhost:4001/view', myInit)
-        .then(res => res.json())
-        .then(res => {
-          console.log("123",res)// {"ключ":"значение"}
-        });
 
     var url = "users.txt";
     $http.get(url).then( function(response) {

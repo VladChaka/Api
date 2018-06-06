@@ -1,32 +1,30 @@
 
 var usersApp = angular.module("usersApp", []);
 
-var getJSON = function(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = 'json';
-    xhr.onload = function() {
-      var status = xhr.status;
-      if (status === 200) {
-        callback(null, xhr.response);
-      } else {
-        callback(status, xhr.response);
-      }
-    };
-    xhr.send();
-};
+// var getJSON = function(url, callback) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('GET', url, true);
+//     xhr.responseType = 'json';
+//     xhr.onload = function() {
+//       var status = xhr.status;
+//       if (status === 200) {
+//         callback(null, xhr.response);
+//       } else {
+//         callback(status, xhr.response);
+//       }
+//     };
+//     xhr.send();
+// };
 
-var nani = getJSON('http://localhost:4001/view',
-function(err, data) {
-  if (err !== null) {
-    alert('Something went wrong: ' + err);
-  } else {
-    console.log(data);
-    return data;
-  }
-});
-console.log(nani);
-
+// getJSON('http://localhost:4001/view',
+// function(err, data) {
+//   if (err !== null) {
+//     alert('Something went wrong: ' + err);
+//   } else {
+//     console.log(data);
+//     nani = data;
+//   }
+// });
 
 usersApp.controller('usersController', function($scope,$http) {
     $scope.addElement = function(element){
@@ -34,8 +32,7 @@ usersApp.controller('usersController', function($scope,$http) {
         addedTemplates.appendChild(cell);
     };
 
-    var url = "users.txt";
-    $http.get(url).then( function(response) {
+    $http.get('database.json').then( function(response) {
         $scope.users = {
             info: response.data
         };

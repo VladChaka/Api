@@ -1,16 +1,20 @@
 require('../../models/user');
 const express = require('express')
       mongoose = require("mongoose"),
+      fs = require("fs"),
       User = mongoose.model('User'),
       app = express(),
       router = express.Router();
 
-router.get('/view', (req, res) => {        
-    User.find({}, function(err, user) {
+function writeInDb() {
+    User.find({}, function(err, users) {
         if (err) res.send(err);
-        res.json(user);
+        var file = JSON.parse(fs.readFileSync('./public/database.json', 'utf-8'))
+        file = users;
+        fs.writeFileSync('./public/database.json', JSON.stringify(file, null, 2));
+
     });
-});
+}            
 
 router.post('/add', (req, res) => {    
     let date = new Date;
@@ -47,12 +51,10 @@ router.post('/add', (req, res) => {
           regDate: regDate
     });
 
-    new_user.save(function(err) {
+    new_user.save(function(err, user) {
         if (err) return res.json({ error: "Duplicate username or email" });
-        res.json();
+        writeInDb();
     });
-
-    console.log(new_user); 
 });
 
 router.put('/update', (req, res) => {
@@ -72,7 +74,7 @@ router.put('/update', (req, res) => {
     if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
     if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
 
-    User.findOneAndUpdate({ _id: req.params.id }, {
+    User.findOneAndUpdate({ _id: id }, {
         username: username,
         email: email,
         administrator: admin,
@@ -88,14 +90,14 @@ router.put('/update', (req, res) => {
     { new: true },
     function(err, user) {
         if (err) res.send(err);
-        res.json(user);
+        writeInDb();
     });
 });
 
 router.delete('/delete', (req, res) => {
     User.remove({ _id: req.body._id }, function(err, user) {
         if (err) res.send(err);
-        res.json({ message: 'Task successfully deleted' });
+        writeInDb();
     }); 
 });
 

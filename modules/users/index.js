@@ -9,15 +9,21 @@ const express = require('express')
 function writeInDb() {
     User.find({}, function(err, users) {
         if (err) res.send(err);
-        var file = JSON.parse(fs.readFileSync('./public/database.json', 'utf-8'))
+        var file = JSON.parse(fs.readFileSync(__dirname + '/public/database.json', 'utf-8'))
         file = users;
-        fs.writeFileSync('./public/database.json', JSON.stringify(file, null, 2));
-
+        fs.writeFileSync(__dirname + '/public/database.json', JSON.stringify(file, null, 2));
     });
-}            
+}  
+
+// router.get('/', (req, res) => {  
+//     //res.sendFile(__dirname + '/index.html');  
+    
+// });
 
 router.post('/add', (req, res) => {    
     let date = new Date;
+
+    console.log(req.body);
 
     const username = req.body.username || "",
           email = req.body.email || "",
@@ -30,7 +36,7 @@ router.post('/add', (req, res) => {
           moderator = (req.body.moderator === "on") ? "Moderator" : "",
           redactor = (req.body.redactor === "on") ? "Redactor" : "",
           visitor = (req.body.visitor === "on") ? "Visitor" : "",
-          regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();        
+          regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();   
 
     if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
     if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
@@ -50,10 +56,13 @@ router.post('/add', (req, res) => {
           rating: 0,
           regDate: regDate
     });
-
+    
     new_user.save(function(err, user) {
         if (err) return res.json({ error: "Duplicate username or email" });
         writeInDb();
+        res.sendFile(__dirname + '/public/index.html');
+        //app.use(express.static(__dirname + '/public'));
+        res.sendFile(__dirname + '/index.html');  
     });
 });
 

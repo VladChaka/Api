@@ -13,7 +13,7 @@ mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", funct
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( { extended: false } ));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/modules/users/public'));
 
 //route
 app.use('/', require('./modules/users/index'));

@@ -1,26 +1,22 @@
-let getParam = require("./Util/common"),
-    mongoose = require("mongoose"),
-    bodyParser = require("body-parser"),
-    express = require("express"),
-    rout = require("./api/models/model"),
-    port = getParam("port", 4000),
+let express = require("express"),
     app = express(),
-    database;
+    getParam = require("./Util/common"),
+    port = getParam("port", 4001),
+    bodyParser = require("body-parser"),
+    mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function(err, db) {
-    if (err) console.log("Error");
-    database = db;
+mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function (err, db) {
+    if (err) console.log("Error");  
     console.log("Success db connection");
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(bodyParser.urlencoded( { extended: false } ));
 app.use(express.static(__dirname + '/public'));
 
-var routes = require('./api/routes/route'); //importing route
-routes(app); //register the route
+//route
+app.use('/', require('./modules/users/index'));
 
 app.listen(port, () => {
     console.log(`Start server on ${port} port`);

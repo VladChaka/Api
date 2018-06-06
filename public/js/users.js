@@ -6,6 +6,16 @@ usersApp.controller('usersController', function($scope,$http) {
         addedTemplates.appendChild(cell);
     };
 
+    const myInit = {
+        method: 'get'
+      };
+
+      fetch('http://localhost:4001/view', myInit)
+        .then(res => res.json())
+        .then(res => {
+          console.log("123",res)// {"ключ":"значение"}
+        });
+
     var url = "users.txt";
     $http.get(url).then( function(response) {
         $scope.users = {
@@ -38,7 +48,7 @@ usersApp.controller('usersController', function($scope,$http) {
 function cleanTemplates(){
     document.getElementById("addedTemplates").innerHTML = " ";
 }
-function show(element) {
+function show(element, id) {
     document.getElementById(element).style.display = "flex";
     document.getElementById("popupsContainer").style.display = "flex";
     if (document.body.offsetHeight > window.innerHeight) {

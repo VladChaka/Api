@@ -80,6 +80,14 @@ function filterByRating() {
     showHideOrders();
 }
 function deleteUser(user) {
+	var id = user.parentNode.name;	
+	id = "#"+id+"/";
+	console.log(id);
+	
+	
+	$.post('http://localhost:4001/user/delete', $(id).serialize(), function (response) {
+		console.log(response);
+	});
     var x = user.parentNode.parentNode.parentNode.style.display = "none";
 }
 function filterByDate() {
@@ -94,3 +102,21 @@ function filterByDate() {
     activeFiltler[0].innerHTML ="By Date";
     showHideOrders();
 }
+function addUser() {
+	$.post('http://localhost:4001/user/add', $('#add').serialize(), function (response) {
+		console.log(response);
+	});
+	// $(document).ready(function(){  
+	// 	setInterval(show,1000);  
+	// });
+}
+
+function updateUser(param) {
+	console.log(param);
+    var id = param.parentNode.parentNode.id.value;
+	$.post('http://localhost:4001/user/update', $('#'+id).serialize(), function (response) {
+		//console.log(response);
+	});
+}
+
+  

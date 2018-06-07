@@ -20,42 +20,43 @@ function writeInDb() {
     
 // });
 
-router.post('/user', (req, res) => {  
-    handlerMethod(req, res)
+router.post('/user/add', (req, res) => {  
+	handlerMethod(req, res);  
 });
 
-router.put('/user', (req, res) => {
+router.post('/user/update', (req, res) => {
 	handlerMethod(req, res)
 });
 
-router.delete('/user', (req, res) => {	
+router.post('/user/delete', (req, res) => {	
     handlerMethod(req, res)
 });
 
 function handlerMethod(req ,res) {
-	console.log(req.body._method);
-	if (req.body._method === "POST") {
-		let date = new Date;
+	console.log(req.body);
+	
+	let date = new Date;
+	const id = req.body.id,
+		  username = req.body.username || "",
+		  email = req.body.email || "",
+		  phone = req.body.phone || "",
+		  pass = req.body.password || "",
+		  fullname = req.body.fullname || "",
+		  admin = (req.body.administrator === "on") ? "Administrator" : "",
+		  frontend = (req.body.frontend === "on") ? "Frontend" : "",
+		  backend = (req.body.backend === "on") ? "Backend" : "",
+		  moderator = (req.body.moderator === "on") ? "Moderator" : "",
+		  redactor = (req.body.redactor === "on") ? "Redactor" : "",
+		  visitor = (req.body.visitor === "on") ? "Visitor" : "",
+		  regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(),
+		  post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
 
-		console.log(req.body);
+			console.log("username",email);
+	if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
+	if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
+	if (pass.length < 8) return res.json({ error: "Incorrect password. Min 8 simbols." });
 
-		const username = req.body.username || "",
-			email = req.body.email || "",
-			phone = req.body.phone || "",
-			pass = req.body.password || "",
-			fullname = req.body.fullname || "",
-			admin = (req.body.administrator === "on") ? "Administrator" : "",
-			frontend = (req.body.frontend === "on") ? "Frontend" : "",
-			backend = (req.body.backend === "on") ? "Backend" : "",
-			moderator = (req.body.moderator === "on") ? "Moderator" : "",
-			redactor = (req.body.redactor === "on") ? "Redactor" : "",
-			visitor = (req.body.visitor === "on") ? "Visitor" : "",
-			regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(),
-			post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
-
-		if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
-		if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
-
+	if (req.body._method === "POST") {	
 		const new_user = new User({
 			username: username,
 			email: email,
@@ -72,26 +73,22 @@ function handlerMethod(req ,res) {
 		  writeInDb();
 		  res.json({ success: "Success add user" });
 	  });
-	} else if (req.body._method === "PUT") {
-		const id = req.body.id,
-			  username = req.body.username || "",
-			  email = req.body.email || "",
-			  phone = req.body.phone || "",
-			  pass = req.body.password || "",
-			  fullname = req.body.fullname || "",
-			  admin = (req.body.administrator1 === "on") ? "Administrator" : "",
-			  frontend = (req.body.frontend === "on") ? "Frintend" : "",
-			  backend = (req.body.backend === "on") ? "Backend" : "",
-		      moderator = (req.body.moderator === "on") ? "Moderator" : "",
-		      redactor = (req.body.redactor === "on") ? "Redactor" : "",
-			  visitor = (req.body.visitor === "on") ? "Visitor" : "",
-			  post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
-
-			  console.log(email);
-			console.log(req.body);
-
-		if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
-		if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
+	} else if (req.body._method === "PUT" || req.body._method[0] === "PUT") {
+		console.log(req.body);
+		
+		// id = req.body.id;
+		// username = req.body.username || "";
+		// email = req.body.email || "";
+		// phone = req.body.phone || "";
+		// pass = req.body.password || "";
+		// fullname = req.body.fullname || "";
+		// admin = (req.body.administrator === "") ? "Administrator" : "";
+		// frontend = (req.body.frontend === "") ? "Frintend" : "";
+		// backend = (req.body.backend === "") ? "Backend" : "";
+		// moderator = (req.body.moderator === "") ? "Moderator" : "";
+		// redactor = (req.body.redactor === "") ? "Redactor" : "";
+		// visitor = (req.body.visitor === "") ? "Visitor" : "";
+		// post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;	
 
 		User.findOneAndUpdate({ _id: id }, {
 			username: username,
@@ -118,13 +115,12 @@ function handlerMethod(req ,res) {
 }
 
 // CUSTOM FUNCTIONS
-function checkRegExLogin(login)
-{
-    return /^[a-zA-Z1-9]+$/.test(login) && login.length > 3 && login.length < 15;
+function checkRegExLogin(login) {
+	return /^[a-zA-Z1-9]+$/.test(login) && login.length > 3 && login.length < 15;
 }
 function checkRegExEmail(email)
 {
-    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+	return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }
 //
 

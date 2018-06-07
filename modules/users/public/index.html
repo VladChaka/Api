@@ -19,12 +19,12 @@
             <div class="users-filters">
                 <div class="filters-search"><input placeholder="Search User" ng-model="search.fullname"></div>
                 <div class="filters-post">
-                    <div><input type="checkbox" value="administrator" name="radio" id="filterpost1" ng-model="search.administrator"><label for="filterpost1"> Administrator</label></div><br>
-                    <div><input type="checkbox" value="frontend" name="radio" id="filterpost2" ng-model="search.frontenddeveloper"><label for="filterpost2"> Frontend</label></div><br>
-                    <div><input type="checkbox" value="backend" name="radio" id="filterpost3" ng-model="search.backenddeveloper"><label for="filterpost3"> Backend</label></div><br>
-                    <div><input type="checkbox" value="moderator" name="radio" id="filterpost4" ng-model="search.pomoderatorsts"><label for="filterpost4"> Moderator</label></div><br>
-                    <div><input type="checkbox" value="redactor" name="radio" id="filterpost5" ng-model="search.redactor"><label for="filterpost5"> Redactor</label></div><br>
-                    <div><input type="checkbox" value="visitor" name="radio" id="filterpost6" ng-model="search.visitor"><label for="filterpost6"> Visitor</label></div><br>
+                    <div><input type="radio" value="administrator" name="radio" id="filterpost1" ng-model="search.post"><label for="filterpost1"> Administrator</label></div><br>
+                    <div><input type="radio" value="frontend" name="radio" id="filterpost2" ng-model="search.post"><label for="filterpost2"> Frontend</label></div><br>
+                    <div><input type="radio" value="backend" name="radio" id="filterpost3" ng-model="search.post"><label for="filterpost3"> Backend</label></div><br>
+                    <div><input type="radio" value="moderator" name="radio" id="filterpost4" ng-model="search.post"><label for="filterpost4"> Moderator</label></div><br>
+                    <div><input type="radio" value="redactor" name="radio" id="filterpost5" ng-model="search.post"><label for="filterpost5"> Redactor</label></div><br>
+                    <div><input type="radio" value="visitor" name="radio" id="filterpost6" ng-model="search.post"><label for="filterpost6"> Visitor</label></div><br>
                 </div>
                 <div class="filters-order">
                     <div class="filters-order-active" onclick="showHideOrders()">By Date</div>

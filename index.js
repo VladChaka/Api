@@ -5,7 +5,6 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose");
 
-mongoose.Promise = global.Promise;
 mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function (err, db) {
     if (err) console.log("Error");  
     console.log("Success db connection");

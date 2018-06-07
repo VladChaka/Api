@@ -13,24 +13,9 @@ const UserSchema = new Schema({
         type: String,
         required: true
 	},
-	administrator: {
+	post: {
 		type: String
 	},
-	frontenddeveloper: {
-		type: String
-	},
-	backenddeveloper: {
-		type: String
-	},
-	moderator: {
-		type: String
-	},
-	redactor: {
-		type: String
-	},
-	visitor: {
-		type: String
-	}, 
     phone: {
         type: String,
         required: true
@@ -51,3 +36,22 @@ const UserSchema = new Schema({
 {collection:"users"});
 
 module.exports = mongoose.model("User", UserSchema);
+
+// administrator: {
+// 	type: String
+// },
+// frontenddeveloper: {
+// 	type: String
+// },
+// backenddeveloper: {
+// 	type: String
+// },
+// moderator: {
+// 	type: String
+// },
+// redactor: {
+// 	type: String
+// },
+// visitor: {
+// 	type: String
+// }, 

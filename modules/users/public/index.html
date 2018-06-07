@@ -60,7 +60,7 @@
                 <div class="list-user-block" ng-repeat="user in users.info | filter: search">
                     <div>{{user.fullname}}</div>
                     <div>{{user.username}}</div>
-                    <div class="list-user-post">{{user.administrator + user.frontenddeveloper + user.backenddeveloper + user.moderator + user.redactor + user.visitor}}</div>
+                    <div class="list-user-post">{{user.post}}</div>
                     <div ng-show="showDate" ng-hide="showRating" class="list-user-date">{{user.regDate}}</div>
                     <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">{{user.rating}}</div>
                     <div class="list-user-buttons"><button onclick="showEditForm(this)">Go to profile</button>

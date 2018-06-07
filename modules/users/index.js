@@ -59,12 +59,7 @@ function handlerMethod(req ,res) {
 		const new_user = new User({
 			username: username,
 			email: email,
-			administrator: admin,
-			frontenddeveloper: frontend,
-			backenddeveloper: backend,
-			moderator: moderator,
-			redactor: redactor,
-			visitor: visitor,
+			post: post,
 			phone: phone,
 			password: pass,
 			fullname: fullname,
@@ -85,11 +80,12 @@ function handlerMethod(req ,res) {
 			  pass = req.body.password || "",
 			  fullname = req.body.fullname || "",
 			  admin = (req.body.administrator1 === "on") ? "Administrator" : "",
-			  frontend = (req.body.frontend === "on") ? "Frontend" : "",
+			  frontend = (req.body.frontend === "on") ? "Frintend" : "",
 			  backend = (req.body.backend === "on") ? "Backend" : "",
 		      moderator = (req.body.moderator === "on") ? "Moderator" : "",
 		      redactor = (req.body.redactor === "on") ? "Redactor" : "",
-			  visitor = (req.body.visitor === "on") ? "Visitor" : "";
+			  visitor = (req.body.visitor === "on") ? "Visitor" : "",
+			  post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
 
 			  console.log(email);
 			console.log(req.body);
@@ -100,12 +96,7 @@ function handlerMethod(req ,res) {
 		User.findOneAndUpdate({ _id: id }, {
 			username: username,
 			email: email,
-			administrator: admin,
-			frintenddeveloper: frontend,
-			backenddeveloper: backend,
-			moderator: moderator,
-			redactor: redactor,
-			visitor: visitor,
+			post: post,
 			phone: phone,
 			password: pass,
 			fullname: fullname

@@ -11,6 +11,7 @@ body{
 }
 
 a, a:visited {
+    text-decoration: none;
     outline:none;
     color:inherit;
 }
@@ -23,7 +24,7 @@ section, footer, header, aside, nav{
     display: block;
 }
 /* USER ADD FORM START */
-#AddForm,.popups-container,#EditForm,#orderPopup{
+#AddForm,.popups-container,#orderPopup{
     display: none;
 }
 #popupsContainer{
@@ -219,24 +220,8 @@ div.user-add-btn{
     color:#fff;
     background: crimson;
 }
-.filters-refresh button{
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color:#fff;
-    border: 2px solid #fff;
-    padding: 4px 5px 2px 5px;
-    background: crimson;
-    transition: 0.2s ease;
-    display: flex;
-    align-items: center;
-}
-.filters-refresh button:hover{
-    background: #fff;
-    color:crimson;
-}
-.filters-refresh button span{
-    padding-left: 5px;
+.filters-pages a:hover{
+    color:#000;
 }
 .users-list{
     color:crimson;
@@ -273,11 +258,9 @@ div.user-add-btn{
 .list-user-names>div,.list-user-block>div{
     flex-basis: 22%;
 }
-.list-user-names>div:last-child,.list-user-block>div:last-child{
-    flex-basis: 12%;
-}
-.list-user-block:last-child{
-    border-bottom: none;
+.list-user-buttons{
+    display: flex;
+    justify-content: space-around;
 }
 .list-user-block button{
     cursor: pointer;
@@ -300,8 +283,8 @@ div.user-add-btn{
 
 /* USER ADD FORM START */
 .user-profile{
+    display: none;
     position: relative;
-    display: flex;
     justify-content: center;
 }
 .close-editform,.close-addform{

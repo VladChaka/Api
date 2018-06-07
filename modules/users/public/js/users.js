@@ -64,15 +64,17 @@ function cleanTemplates(){
     document.getElementById("addedTemplates").innerHTML = " ";
 }
 function show(element, id) {
-    console.log(id);
-    
     document.getElementById(element).style.display = "flex";
     document.getElementById("popupsContainer").style.display = "flex";
     if (document.body.offsetHeight > window.innerHeight) {
         document.body.style.overflow = 'hidden';
         document.body.style.paddingRight = '15px';
-    }
-}
+    };
+};
+function showEditForm(ths) {
+    var y =ths.parentNode.parentNode;
+    y.getElementsByClassName('user-profile')[0].style.display = "flex";
+};
 function hide(element) {
     element.parentNode.style.display = "none";
     document.getElementById("popupsContainer").style.display = "none";
@@ -106,6 +108,9 @@ function filterByRating() {
    }
    activeFiltler[0].innerHTML ="By Rating";
     showHideOrders();
+}
+function deleteUser(user) {
+    var x = user.parentNode.parentNode.parentNode.style.display = "none";
 }
 function filterByDate() {
     var rating = document.getElementsByClassName('list-user-rating');

@@ -12,25 +12,25 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: true
-    },
-    administrator: {
-        type: String
-    },
-    frintenddeveloper: {
-        type: String
-    },
-    backenddeveloper: {
-        type: String
-    },
-    moderator: {
-        type: String
-    },
-    redactor: {
-        type: String
-    },
-    visitor: {
-        type: String
-    },   
+	},
+	administrator: {
+		type: String
+	},
+	frontenddeveloper: {
+		type: String
+	},
+	backenddeveloper: {
+		type: String
+	},
+	moderator: {
+		type: String
+	},
+	redactor: {
+		type: String
+	},
+	visitor: {
+		type: String
+	}, 
     phone: {
         type: String,
         required: true

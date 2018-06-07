@@ -20,95 +20,111 @@ function writeInDb() {
     
 // });
 
-router.post('/add', (req, res) => {    
-    let date = new Date;
-
-    console.log(req.body);
-
-    const username = req.body.username || "",
-          email = req.body.email || "",
-          phone = req.body.phone || "",
-          pass = req.body.password || "",
-          fullname = req.body.fullname || "",
-          admin = (req.body.administrator1 === "on") ? "Administrator" : "",
-          frontend = (req.body.frontend === "on") ? "Frintenddeveloper" : "",
-          backend = (req.body.backend === "on") ? "Backenddeveloper" : "",
-          moderator = (req.body.moderator === "on") ? "Moderator" : "",
-          redactor = (req.body.redactor === "on") ? "Redactor" : "",
-          visitor = (req.body.visitor === "on") ? "Visitor" : "",
-          regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();   
-
-    if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
-    if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
-
-    const new_user = new User({
-          username: username,
-          email: email,
-          administrator: admin,
-          frintenddeveloper: frontend,
-          backenddeveloper: backend,
-          moderator: moderator,
-          redactor: redactor,
-          visitor: visitor, 
-          phone: phone,
-          password: pass,
-          fullname: fullname,
-          rating: 0,
-          regDate: regDate
-    });
-    
-    new_user.save(function(err, user) {
-        if (err) return res.json({ error: "Duplicate username or email" });
-        writeInDb();
-        res.sendFile(__dirname + '/public/index.html');
-        //app.use(express.static(__dirname + '/public'));
-        res.sendFile(__dirname + '/index.html');  
-    });
+router.post('/user', (req, res) => {  
+    handlerMethod(req, res)
 });
 
-router.put('/update', (req, res) => {
-    const id = req.body.id,
-          username = req.body.editUsername || "",
-          email = req.body.editEmail || "",
-          phone = req.body.editPhone || "",
-          pass = req.body.editPassword || "",
-          fullname = req.body.editFullname || "",
-          admin = (req.body.editAdministrator1 === "on") ? "Administrator" : "",
-          frontend = (req.body.editFrontend === "on") ? "Frintenddeveloper" : "",
-          backend = (req.body.editBackend === "on") ? "Backenddeveloper" : "",
-          moderator = (req.body.editModerator === "on") ? "Moderator" : "",
-          redactor = (req.body.editRedactor === "on") ? "Redactor" : "",
-          visitor = (req.body.editVisitor === "on") ? "Visitor" : "";
-
-    if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
-    if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
-
-    User.findOneAndUpdate({ _id: id }, {
-        username: username,
-        email: email,
-        administrator: admin,
-        frintenddeveloper: frontend,
-        backenddeveloper: backend,
-        moderator: moderator,
-        redactor: redactor,
-        visitor: visitor,
-        phone: phone,
-        password: pass,
-        fullname: fullname
-    }, 
-    { new: true },
-    function(err, user) {
-        if (err) res.send(err);
-        writeInDb();
-    });
+router.put('/user', (req, res) => {
+	handlerMethod(req, res)
 });
 
-router.delete('/delete', (req, res) => {
-    User.remove({ _id: req.body._id }, function(err, user) {
-        if (err) res.send(err);
-        writeInDb();
-    }); 
+router.delete('/user', (req, res) => {	
+    handlerMethod(req, res)
 });
+
+function handlerMethod(req ,res) {
+	console.log(req.body._method);
+	if (req.body._method === "POST") {
+		let date = new Date;
+
+		console.log(req.body);
+
+		const username = req.body.username || "",
+			email = req.body.email || "",
+			phone = req.body.phone || "",
+			pass = req.body.password || "",
+			fullname = req.body.fullname || "",
+			admin = (req.body.administrator === "on") ? "Administrator" : "",
+			frontend = (req.body.frontend === "on") ? "Frontend" : "",
+			backend = (req.body.backend === "on") ? "Backend" : "",
+			moderator = (req.body.moderator === "on") ? "Moderator" : "",
+			redactor = (req.body.redactor === "on") ? "Redactor" : "",
+			visitor = (req.body.visitor === "on") ? "Visitor" : "",
+			regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(),
+			post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
+
+		if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
+		if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
+
+		const new_user = new User({
+			username: username,
+			email: email,
+			administrator: admin,
+			frontenddeveloper: frontend,
+			backenddeveloper: backend,
+			moderator: moderator,
+			redactor: redactor,
+			visitor: visitor,
+			phone: phone,
+			password: pass,
+			fullname: fullname,
+			rating: 0,
+			regDate: regDate
+	  });
+	  
+	  new_user.save(function(err, user) {
+		  if (err) return res.json({ error: "Duplicate username or email" });
+		  writeInDb();
+		  res.json({ success: "Success add user" });
+	  });
+	} else if (req.body._method === "PUT") {
+		const id = req.body.id,
+			  username = req.body.username || "",
+			  email = req.body.email || "",
+			  phone = req.body.phone || "",
+			  pass = req.body.password || "",
+			  fullname = req.body.fullname || "",
+			  admin = (req.body.administrator1 === "on") ? "Administrator" : "",
+			  frontend = (req.body.frontend === "on") ? "Frontend" : "",
+			  backend = (req.body.backend === "on") ? "Backend" : "",
+		      moderator = (req.body.moderator === "on") ? "Moderator" : "",
+		      redactor = (req.body.redactor === "on") ? "Redactor" : "",
+			  visitor = (req.body.visitor === "on") ? "Visitor" : "";
+
+			  console.log(email);
+			console.log(req.body);
+
+		if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
+		if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
+
+		User.findOneAndUpdate({ _id: id }, {
+			username: username,
+			email: email,
+			administrator: admin,
+			frintenddeveloper: frontend,
+			backenddeveloper: backend,
+			moderator: moderator,
+			redactor: redactor,
+			visitor: visitor,
+			phone: phone,
+			password: pass,
+			fullname: fullname
+		}, 
+		{ new: true },
+		function(err, user) {
+			if (err) res.send(err);
+			writeInDb();
+			res.json({ success: "Success update user" });
+		});
+	} else if (req.body._method === "DELETE") {
+		let id = req.body.id;
+		User.remove({ _id: id }, function(err, user) {
+			if (err) res.send(err);
+			writeInDb();
+			res.json({ success: "Success delete user" });
+		}); 
+	}
+}
 
 // CUSTOM FUNCTIONS
 function checkRegExLogin(login)

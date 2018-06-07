@@ -19,12 +19,12 @@
             <div class="users-filters">
                 <div class="filters-search"><input placeholder="Search User" ng-model="search.fullname"></div>
                 <div class="filters-post">
-                    <div><input type="checkbox" value="administrator" name="radio" id="filterpost1" ng-model="search.posts"><label for="filterpost1"> Administrator</label></div><br>
-                    <div><input type="checkbox" value="frontend" name="radio" id="filterpost2" ng-model="search.posts"><label for="filterpost2"> Frontend</label></div><br>
-                    <div><input type="checkbox" value="backend" name="radio" id="filterpost3" ng-model="search.posts"><label for="filterpost3"> Backend</label></div><br>
-                    <div><input type="checkbox" value="moderator" name="radio" id="filterpost4" ng-model="search.posts"><label for="filterpost4"> Moderator</label></div><br>
-                    <div><input type="checkbox" value="redactor" name="radio" id="filterpost5" ng-model="search.posts"><label for="filterpost5"> Redactor</label></div><br>
-                    <div><input type="checkbox" value="visitor" name="radio" id="filterpost6" ng-model="search.posts"><label for="filterpost6"> Visitor</label></div><br>
+                    <div><input type="checkbox" value="administrator" name="radio" id="filterpost1" ng-model="search.administrator"><label for="filterpost1"> Administrator</label></div><br>
+                    <div><input type="checkbox" value="frontend" name="radio" id="filterpost2" ng-model="search.frontenddeveloper"><label for="filterpost2"> Frontend</label></div><br>
+                    <div><input type="checkbox" value="backend" name="radio" id="filterpost3" ng-model="search.backenddeveloper"><label for="filterpost3"> Backend</label></div><br>
+                    <div><input type="checkbox" value="moderator" name="radio" id="filterpost4" ng-model="search.pomoderatorsts"><label for="filterpost4"> Moderator</label></div><br>
+                    <div><input type="checkbox" value="redactor" name="radio" id="filterpost5" ng-model="search.redactor"><label for="filterpost5"> Redactor</label></div><br>
+                    <div><input type="checkbox" value="visitor" name="radio" id="filterpost6" ng-model="search.visitor"><label for="filterpost6"> Visitor</label></div><br>
                 </div>
                 <div class="filters-order">
                     <div class="filters-order-active" onclick="showHideOrders()">By Date</div>
@@ -60,30 +60,31 @@
                 <div class="list-user-block" ng-repeat="user in users.info | filter: search">
                     <div>{{user.fullname}}</div>
                     <div>{{user.username}}</div>
-                    <div class="list-user-post">Administrator</div>
+                    <div class="list-user-post">{{user.administrator + user.frontenddeveloper + user.backenddeveloper + user.moderator + user.redactor + user.visitor}}</div>
                     <div ng-show="showDate" ng-hide="showRating" class="list-user-date">{{user.regDate}}</div>
                     <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">{{user.rating}}</div>
                     <div class="list-user-buttons"><button onclick="showEditForm(this)">Go to profile</button>
-                        <form method="POST" action="/delete"> 
-                            <input type="hidden" name="_method" value="delete" placeholder="id" required>
-                            <button onclick="deleteUser(this)" type="button">Delete user <span>✖</span></button>
+                        <form method="POST" action="/user"> 
+							<input type="hidden" name="_method" value="DELETE" placeholder="method" required>
+							<input type="hidden" name="id" value="{{user._id}}" placeholder="id" required>
+                            <button onclick="deleteUser(this)" type="submit">Delete user <span>✖</span></button>
                         </form>
                     </div>
                     <div class="user-profile-container">
                     <div class="user-profile">
                         <div class="close-editform" onclick="hideEditForm(this)">+</div>
-                        <form class="user-edit" name="EditForm" method="POST" action="/update">
+                        <form class="user-edit" name="EditForm" method="POST" action="/user">
                             <input type="hidden" name="_method" value="PUT" placeholder="id" required>
                             <input type="hidden" name="id" value="{{user._id}}" placeholder="id" required>
                             <div><span>Username</span><input type="text" name="username" value="{{user.username}}" placeholder="Enter username" required> </div>
                             <div><span>E-mail</span><input type="text" name="email" value="{{user.email}}" placeholder="Enter email" required> </div>
                             <div><span>Post</span><ul class="user-edit-post">
-                                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="edit_administrator" type="checkbox" checked></li>
-                                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="edit_frontend" type="checkbox"></li>
-                                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="edit_backend"  type="checkbox"></li>
-                                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="edit_moderator" type="checkbox" checked></li>
-                                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="edit_redactor" type="checkbox"></li>
-                                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="edit_visitor" type="checkbox"></li>
+                                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="administrator" type="checkbox" value="{{user.administrator}}"></li>
+                                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="efrontend" type="checkbox" value="{{user.frontenddeveloper}}"></li>
+                                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="backend"  type="checkbox" value="{{user.backenddeveloper}}"></li>
+                                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="moderator" type="checkbox" value="{{user.moderator}}"></li>
+                                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="redactor" type="checkbox" value="{{user.redactor}}"></li>
+                                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="visitor" type="checkbox" value="{{user.visitor}}"></li>
                             </ul> </div>
                             <div><span>Phone</span><input name="phone" type="tel" value="{{user.phone}}" placeholder="Enter phone number" required> </div>
                             <div><span>Password</span><input type="password" name="password" value="{{user.password}}" placeholder="Enter password" required> </div>

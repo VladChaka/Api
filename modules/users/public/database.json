@@ -1,19 +1,36 @@
 [
   {
-    "_id": "5b17f00ed1830f5b2785cca3",
-    "username": "VladChaka",
-    "email": "allankar2010@mail.ru",
+    "_id": "5b18eb7c426fa9288232f0f5",
+    "username": "Jenya",
+    "email": "DilfinOlga@mail.ru",
     "administrator": "",
-    "frintenddeveloper": "",
+    "frontenddeveloper": "Frontend",
     "backenddeveloper": "",
     "moderator": "",
     "redactor": "",
     "visitor": "",
     "phone": "+375(29)8885599",
-    "password": "dfgsdfg",
+    "password": "asdasdfas",
+    "fullname": "Jenya",
+    "rating": 0,
+    "regDate": "7.5.2018",
+    "__v": 0
+  },
+  {
+    "_id": "5b18edf7babed32a031af304",
+    "username": "VladChaka",
+    "email": "allankar2010@gmail.com",
+    "administrator": "Administrator",
+    "frontenddeveloper": "",
+    "backenddeveloper": "Backend",
+    "moderator": "",
+    "redactor": "",
+    "visitor": "",
+    "phone": "+375(29)8885599",
+    "password": "dsfsdf",
     "fullname": "Alalala alalal",
     "rating": 0,
-    "regDate": "6.5.2018",
+    "regDate": "7.5.2018",
     "__v": 0
   }
 ]

@@ -1,6 +1,7 @@
 <div class="user-form" id="AddForm">
     <div class="close-addform" onclick="hide(this)">+</div>
-    <form class="user-add" method="POST" action="/add">
+	<form class="user-add" method="POST" action="/user">
+		<input type="hidden" name="_method" value="POST" placeholder="id" required>
         <div><span>Username</span><input name="username" type="text" placeholder="Enter username" required> </div>
         <div><span>E-mail</span><input name="email" type="text" placeholder="Enter email" required> </div>
         <div><span>Post</span><ul class="user-add-post">

@@ -1,31 +1,6 @@
 
 var usersApp = angular.module("usersApp", []);
 
-// var getJSON = function(url, callback) {
-//     var xhr = new XMLHttpRequest();
-//     xhr.open('GET', url, true);
-//     xhr.responseType = 'json';
-//     xhr.onload = function() {
-//       var status = xhr.status;
-//       if (status === 200) {
-//         callback(null, xhr.response);
-//       } else {
-//         callback(status, xhr.response);
-//       }
-//     };
-//     xhr.send();
-// };
-
-// getJSON('http://localhost:4001/view',
-// function(err, data) {
-//   if (err !== null) {
-//     alert('Something went wrong: ' + err);
-//   } else {
-//     console.log(data);
-//     nani = data;
-//   }
-// });
-
 usersApp.controller('usersController', function($scope,$http) {
     $scope.addElement = function(element){
         var cell = document.getElementById(element).content.cloneNode(true);
@@ -37,29 +12,18 @@ usersApp.controller('usersController', function($scope,$http) {
             info: response.data
         };
     });
-
-    /*
-        $scope.template = {
-            templateId: "afaf ",
-            templateName: "aaff",
-            fullInfo: function() {
-                var templateObject;
-                templateObject = $scope.template;
-                return templateObject.templateId + " " + templateObject.templateName;
-            }
-        };
-        $scope.addBtn = function(){
-            var btns = document.getElementsByClassName("addBtn");
-            console.log(btns.length);
-            for (var i = 0; i < btns.length; i++) {
-                var nani = btns[i].name;
-                console.log(btns[i].innerHTML);
-                btns[i].innerHTML = 'omae';
-            };
-               el.setAttribute("ng-click", "NewClick()");
-             compile(el);
-        };*/
+    $scope.currentPage = 0;
+    $scope.pageSize=15;
+    $scope.numberOfPages=function () {
+        return Math.ceil($scope.users.info.length/$scope.pageSize);
+    }
 });
+usersApp.filter('startFrom', function () {
+    return function (input, start) {
+        start = +start;
+        return input.slice(start);
+    }
+})
 
 function show(element, id) {
     document.getElementById(element).style.display = "flex";

@@ -6,6 +6,7 @@
 </head>
 <body>
 <div ng-app="usersApp" ng-controller="usersController">
+
     <div id="popupsContainer">
         <div ng-include="'includes/AddForm.html'"></div>
     </div>
@@ -35,17 +36,15 @@
                 </div>
 
                 <div class="filters-pages">
-                    <a href="#">First</a>
-                    <a href="#" class="pages-active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <a href="#">6</a>
-                    <a href="#">7</a>
-                    <a href="#">8</a>
-                    <a href="#">9</a>
-                    <a href="#">Last</a>
+                    <div>
+                        <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                            Previous
+                        </button>
+                        {{currentPage+1}}/{{numberOfPages()}}
+                        <button ng-disabled="currentPage >= users.info.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="users-list">
@@ -57,7 +56,7 @@
                     <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">Rating</div>
                     <div></div>
                 </div>
-                <div class="list-user-block" ng-repeat="user in users.info | filter: search">
+                <div class="list-user-block" ng-repeat="user in users.info | filter: search | startFrom:currentPage*pageSize | limitTo:pageSize">
                     <div>{{user.fullname}}</div>
                     <div>{{user.username}}</div>
                     <div class="list-user-post">{{user.post}}</div>
@@ -79,12 +78,12 @@
                             <div><span>Username</span><input type="text" name="username" value="{{user.username}}" placeholder="Enter username" required> </div>
                             <div><span>E-mail</span><input type="text" name="email" value="{{user.email}}" placeholder="Enter email" required> </div>
                             <div><span>Post</span><ul class="user-edit-post">
-                                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="administrator" type="checkbox" value="{{user.administrator}}"></li>
-                                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="efrontend" type="checkbox" value="{{user.frontenddeveloper}}"></li>
-                                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="backend"  type="checkbox" value="{{user.backenddeveloper}}"></li>
-                                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="moderator" type="checkbox" value="{{user.moderator}}"></li>
-                                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="redactor" type="checkbox" value="{{user.redactor}}"></li>
-                                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="visitor" type="checkbox" value="{{user.visitor}}"></li>
+                                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="administrator" type="checkbox"></li>
+                                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="frontend" type="checkbox"></li>
+                                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="backend"  type="checkbox"></li>
+                                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="moderator" type="checkbox"></li>
+                                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="redactor" type="checkbox"></li>
+                                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="visitor" type="checkbox"></li>
                             </ul> </div>
                             <div><span>Phone</span><input name="phone" type="tel" value="{{user.phone}}" placeholder="Enter phone number" required> </div>
                             <div><span>Password</span><input type="password" name="password" value="{{user.password}}" placeholder="Enter password" required> </div>

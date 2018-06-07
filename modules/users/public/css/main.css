@@ -223,9 +223,7 @@ div.user-add-btn{
     color:#fff;
     background: crimson;
 }
-.filters-pages a:hover{
-    color:#000;
-}
+
 .users-list{
     color:crimson;
     border: 4px solid #000;
@@ -276,6 +274,24 @@ div.user-add-btn{
     transition: 0.2s ease;
 }
 .list-user-block button:hover{
+    background:crimson;
+    color:#fff;
+}
+.filters-pages{
+    display: flex;
+    justify-content: space-around;
+}
+.filters-pages button{
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:crimson;
+    border-radius: 5px;
+    padding: 4px 5px 2px 5px;
+    background: #fff;
+    transition: 0.2s ease;
+}
+.filters-pages button:not(:disabled):hover{
     background:crimson;
     color:#fff;
 }

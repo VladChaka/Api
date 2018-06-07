@@ -11,19 +11,16 @@ body{
     color: #5e5b64;
 }
 
-a, a:visited {
+/*a, a:visited {
     text-decoration: none;
     outline:none;
     color:inherit;
 }
-
+*/
 a:hover{
     text-decoration:none;
 }
 
-section, footer, header, aside, nav{
-    display: block;
-}
 /* USER ADD FORM START */
 #AddForm,#orderPopup{
     display: none;
@@ -166,29 +163,7 @@ div.user-add-btn{
     width: 100%;
     padding: 10px 40px;
 }
-.filters-search>input{
-    padding: 5px 10px;
-    font-size: 1rem;
-    border: 1px solid #000;
-    outline: 1px solid #fff;
-}
-.filters-post{
-    display: flex;
-    flex-wrap: wrap;
-}
-.filters-post>div{
-    display: flex;
-    align-items: center;
-    flex-basis: 50%;
-}
-.filters-post label{
-    padding-left: 7px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: pointer;
-}
+
 .filters-order{
     flex-basis: 10%;
     -webkit-user-select: none;
@@ -248,10 +223,6 @@ div.user-add-btn{
     align-items: center;
     border-bottom: 2px solid crimson;
     padding: 10px 40px;
-}
-.list-user-post>div{
-    padding: 2px 0;
-    text-decoration: underline;
 }
 .list-user-rating{
     display: none;

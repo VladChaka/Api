@@ -68,14 +68,7 @@
                             <input type="hidden" name="id" value="{{user._id}}" placeholder="id" required>
                             <div><span>Username</span><input type="text" name="username" value="{{user.username}}" placeholder="Enter username" required> </div>
                             <div><span>E-mail</span><input type="text" name="email" value="{{user.email}}" placeholder="Enter email" required> </div>
-                            <div><span>Post</span><ul class="user-edit-post">
-                                <li><label for="edit_administrator">Administrator</label><input id="edit_administrator" name="administrator" type="checkbox"></li>
-                                <li><label for="edit_frontend">Frontend Developer</label><input id="edit_frontend" name="frontend" type="checkbox"></li>
-                                <li><label for="edit_backend">Backend Developer</label><input id="edit_backend" name="backend"  type="checkbox"></li>
-                                <li><label for="edit_moderator">Moderator</label><input id="edit_moderator" name="moderator" type="checkbox"></li>
-                                <li><label for="edit_redactor">Redactor</label><input id="edit_redactor" name="redactor" type="checkbox"></li>
-                                <li><label for="edit_visitor">Visitor</label><input id="edit_visitor" name="visitor" type="checkbox"></li>
-                            </ul> </div>
+                            <div><span>Post</span><input type="text" name="post" value="{{user.post}}" placeholder="User post" required> </div>
                             <div><span>Phone</span><input name="phone" type="tel" value="{{user.phone}}" placeholder="Enter phone number" required> </div>
                             <div><span>Password</span><input type="password" name="password" value="{{user.password}}" placeholder="Enter password" required> </div>
                             <div><span>Full name</span><input type="text" name="fullname" value="{{user.fullname}}" placeholder="Full name of user" required> </div>

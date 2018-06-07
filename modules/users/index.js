@@ -38,12 +38,7 @@ function handlerMethod(req, res) {
         phone = req.body.phone || "",
         pass = req.body.password || "",
         fullname = req.body.fullname || "",
-        admin = (req.body.administrator === "on") ? "Administrator" : "",
-        frontend = (req.body.frontend === "on") ? "Frontend" : "",
-        backend = (req.body.backend === "on") ? "Backend" : "",
-        moderator = (req.body.moderator === "on") ? "Moderator" : "",
-        redactor = (req.body.redactor === "on") ? "Redactor" : "",
-        visitor = (req.body.visitor === "on") ? "Visitor" : "",
+        post = req.body.post || "",
         regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(),
         post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
 
@@ -73,20 +68,6 @@ function handlerMethod(req, res) {
         if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
         if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
         if (pass.length < 8) return res.json({ error: "Incorrect password. Min 8 simbols." });
-
-        // id = req.body.id;
-        // username = req.body.username || "";
-        // email = req.body.email || "";
-        // phone = req.body.phone || "";
-        // pass = req.body.password || "";
-        // fullname = req.body.fullname || "";
-        // admin = (req.body.administrator === "") ? "Administrator" : "";
-        // frontend = (req.body.frontend === "") ? "Frintend" : "";
-        // backend = (req.body.backend === "") ? "Backend" : "";
-        // moderator = (req.body.moderator === "") ? "Moderator" : "";
-        // redactor = (req.body.redactor === "") ? "Redactor" : "";
-        // visitor = (req.body.visitor === "") ? "Visitor" : "";
-        // post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;	
 
         User.findOneAndUpdate({ _id: id }, {
                 username: username,

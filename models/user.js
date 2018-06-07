@@ -12,10 +12,10 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: true
-	},
-	post: {
-		type: String
-	},
+    },
+    post: {
+        type: String
+    },
     phone: {
         type: String,
         required: true
@@ -32,26 +32,6 @@ const UserSchema = new Schema({
     regDate: {
         type: String
     }
-},
-{collection:"users"});
+}, { collection: "users" });
 
 module.exports = mongoose.model("User", UserSchema);
-
-// administrator: {
-// 	type: String
-// },
-// frontenddeveloper: {
-// 	type: String
-// },
-// backenddeveloper: {
-// 	type: String
-// },
-// moderator: {
-// 	type: String
-// },
-// redactor: {
-// 	type: String
-// },
-// visitor: {
-// 	type: String
-// }, 

@@ -17,13 +17,14 @@ usersApp.controller('usersController', function($scope,$http) {
     $scope.numberOfPages=function () {
         return Math.ceil($scope.users.info.length/$scope.pageSize);
     }
+
 });
 usersApp.filter('startFrom', function () {
     return function (input, start) {
         start = +start;
         return input.slice(start);
     }
-})
+});
 
 function show(element, id) {
     document.getElementById(element).style.display = "flex";

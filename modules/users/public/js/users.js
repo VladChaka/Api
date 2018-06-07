@@ -60,9 +60,7 @@ usersApp.controller('usersController', function($scope,$http) {
              compile(el);
         };*/
 });
-function cleanTemplates(){
-    document.getElementById("addedTemplates").innerHTML = " ";
-}
+
 function show(element, id) {
     document.getElementById(element).style.display = "flex";
     document.getElementById("popupsContainer").style.display = "flex";
@@ -72,8 +70,20 @@ function show(element, id) {
     };
 };
 function showEditForm(ths) {
-    var y =ths.parentNode.parentNode;
-    y.getElementsByClassName('user-profile')[0].style.display = "flex";
+    var y = ths.parentNode.parentNode;
+    y.getElementsByClassName('user-profile-container')[0].style.display = "flex";
+    if (document.body.offsetHeight > window.innerHeight) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.paddingRight = '15px';
+    };
+};
+function hideEditForm(ths) {
+    var y = ths.parentNode.parentNode.parentNode;
+    y.getElementsByClassName('user-profile-container')[0].style.display = "none";
+    if (document.body.offsetHeight > window.innerHeight) {
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0';
+    };
 };
 function hide(element) {
     element.parentNode.style.display = "none";
@@ -81,12 +91,7 @@ function hide(element) {
     document.body.style.overflow = 'auto';
     document.body.style.paddingRight = '0';
 }
-function hideEdit(){
-    document.getElementById("EditForm").style.display = "none";
-    document.getElementById("popupsContainer").style.display = "none";
-    document.body.style.overflow = 'auto';
-    document.body.style.paddingRight = '0';
-}
+
 document.getElementById("orderPopup").style.display = "none";
 function showHideOrders() {
     var toggle = document.getElementById("orderPopup").style.display;

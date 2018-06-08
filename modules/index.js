@@ -1,14 +1,13 @@
-require('../../models/user');
+require('../models/user');
 const express = require('express')
-mongoose = require("mongoose"),
-    fs = require("fs"),
-    User = mongoose.model('User'),
-    app = express(),
-	router = express.Router();
+	  mongoose = require("mongoose"),
+      fs = require("fs"),
+      User = mongoose.model('User'),
+      app = express(),
+	  router = express.Router();
 	
 router.post('/user/add', (req, res) => {
-	//checkDuplicate(req, res);
-	handlerMethod(req, res);
+	checkDuplicate(req, res);
 });
 
 router.post('/user/update', (req, res) => {
@@ -16,12 +15,10 @@ router.post('/user/update', (req, res) => {
 });
 
 router.post('/user/delete', (req, res) => {
-	console.log(req.body);
     handlerMethod(req, res)
 });
 
 function handlerMethod(req, res) {
-	console.log(req.body);
 	const date = new Date,
 		  method = req.body._method[0],
           id = req.body.id,
@@ -36,9 +33,8 @@ function handlerMethod(req, res) {
     if (method === "POST" || method === "P") {		
 		if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
 		if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
-		//for (let i = 0; i < 100; i++) {
 			const new_user = new User({
-				username: username+i,
+				username: username,
 				email: email,
 				post: post,
 				phone: phone,
@@ -51,13 +47,13 @@ function handlerMethod(req, res) {
 		  new_user.save(function(err, user) {
 			  if (err) return res.json({ error: "Error" });
 			  writeInDb();
-			  //res.json({ success: "Success add user" });
+			  res.json({ success: "Success add user" });
 		  });
-		//}
         
-    } else if (method === "PUT") {		
+    } else if (method === "PUT") {	
+		console.log(req.body);
+			
 		const id = req.body.id[1],
-			  username = req.body.username[1] || "",
 			  email = req.body.email[1] || "",
 			  phone = req.body.phone[1] || "",
 			  pass = req.body.password[1] || "",
@@ -65,7 +61,6 @@ function handlerMethod(req, res) {
 			  post = req.body.post[1] || "";
 		
         User.findOneAndUpdate({ _id: id }, {
-                username: username,
                 email: email,
                 post: post,
                 phone: phone,
@@ -108,9 +103,9 @@ function checkDuplicate(req, res) {
 function writeInDb() {
     User.find({}, function(err, users) {
         if (err) res.send(err);
-        var file = JSON.parse(fs.readFileSync(__dirname + '/public/database.json', 'utf-8'))
+        var file = JSON.parse(fs.readFileSync('./public/database.json', 'utf-8'))
         file = users;
-        fs.writeFileSync(__dirname + '/public/database.json', JSON.stringify(file, null, 2));
+        fs.writeFileSync('./public/database.json', JSON.stringify(file, null, 2));
     });
 }
 function checkRegExLogin(login) {

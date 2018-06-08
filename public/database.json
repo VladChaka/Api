@@ -1,84 +1,12 @@
 [
   {
-    "_id": "5b1a4ff447b450358ab56b58",
-    "username": "Jenya972",
-    "email": "DilfinOlga@mail.ru",
-    "post": "Administrator Frontend",
-    "phone": "+375298745879",
-    "password": "dsljsljehfls",
-    "fullname": "Jenya",
-    "rating": 0,
-    "regDate": "8.5.2018",
-    "__v": 0
-  },
-  {
-    "_id": "5b1a4ff447b450358ab56af7",
-    "username": "Jenya0",
-    "email": "DilfinOlga@mail.ru",
-    "post": "Administrator Frontend",
-    "phone": "+375298745879",
-    "password": "dsljsljehfls",
-    "fullname": "Jenya",
-    "rating": 0,
-    "regDate": "8.5.2018",
-    "__v": 0
-  },
-  {
-    "_id": "5b1a4ff447b450358ab56af8",
-    "username": "Jenya1",
-    "email": "DilfinOlga@mail.ru",
-    "post": "Administrator Frontend",
-    "phone": "+375298745879",
-    "password": "dsljsljehfls",
-    "fullname": "Jenya",
-    "rating": 0,
-    "regDate": "8.5.2018",
-    "__v": 0
-  },
-  {
-    "_id": "5b1a4ff447b450358ab56af9",
-    "username": "Jenya2",
-    "email": "DilfinOlga@mail.ru",
-    "post": "Administrator Frontend",
-    "phone": "+375298745879",
-    "password": "dsljsljehfls",
-    "fullname": "Jenya",
-    "rating": 0,
-    "regDate": "8.5.2018",
-    "__v": 0
-  },
-  {
-    "_id": "5b1a4ff447b450358ab56afc",
-    "username": "Jenya5",
-    "email": "DilfinOlga@mail.ru",
-    "post": "Administrator Frontend",
-    "phone": "+375298745879",
-    "password": "dsljsljehfls",
-    "fullname": "Jenya",
-    "rating": 0,
-    "regDate": "8.5.2018",
-    "__v": 0
-  },
-  {
-    "_id": "5b1a4ff447b450358ab56afa",
-    "username": "Jenya3",
-    "email": "DilfinOlga@mail.ru",
-    "post": "Administrator Frontend",
-    "phone": "+375298745879",
-    "password": "dsljsljehfls",
-    "fullname": "Jenya",
-    "rating": 0,
-    "regDate": "8.5.2018",
-    "__v": 0
-  },
-  {
     "_id": "5b1a4ff447b450358ab56afb",
     "username": "Jenya4",
     "email": "DilfinOlga@mail.ru",
     "post": "Administrator Frontend",
     "phone": "+375298745879",
     "password": "dsljsljehfls",
-    "fullname": "Jenya",
+    "fullname": "asdfasd",
     "rating": 0,
     "regDate": "8.5.2018",
     "__v": 0
@@ -169,7 +97,7 @@
   },
   {
     "_id": "5b1a4ff447b450358ab56b03",
-    "username": "Jenya12",
+    "username": "Jenya121",
     "email": "DilfinOlga@mail.ru",
     "post": "Administrator Frontend",
     "phone": "+375298745879",
@@ -1135,6 +1063,18 @@
     "phone": "+375298745879",
     "password": "dsljsljehfls",
     "fullname": "Jenya",
+    "rating": 0,
+    "regDate": "8.5.2018",
+    "__v": 0
+  },
+  {
+    "_id": "5b1aa0e5e6b7116b0438c194",
+    "username": "VladChaka",
+    "email": "Radomorg@mail.ru",
+    "post": "Administrator Backend",
+    "phone": "+375(29)87458",
+    "password": "sfgsdfgsdfg",
+    "fullname": "cbxcbxdcfbxc",
     "rating": 0,
     "regDate": "8.5.2018",
     "__v": 0

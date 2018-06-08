@@ -1,12 +1,11 @@
 <div class="user-profile-container">
 	<div class="user-profile">
 		<div class="close-editform" onclick="hideEditForm(this)">+</div>
-		<form class="user-edit" name="EditForm" id="userEditForm" novalidate>
+		<form class="user-edit" name="EditForm" id="userEditForm">
 			<input type="hidden" name="_method" value="PUT" placeholder="id" required>
 			<input type="hidden" name="id" value="{{user._id}}" placeholder="id" required>
-			<div><span>Username</span><input value="{{user.username}}" name="username" ng-minlength="4" ng-maxlength="16" type="text" placeholder="Enter username" ng-model="object.propety">
+			<div><span>Username</span><input value="{{user.username}}" disabled ng-minlength="4" ng-maxlength="16" type="text" placeholder="Enter username" ng-model="object.propety">
 			</div>
-
 			<div><span>E-mail</span><input value="{{user.email}}" name="email" ng-model="user.email" type="email" placeholder="Enter email"> </div>
 			<div><span>Post</span><input value="{{user.post}}" ng-required="true" type="text" name="post" ng-model="user.post" placeholder="User post"> </div>
 			<div><span>Phone</span><input value="{{user.phone}}"  ng-minlength="7" ng-maxlength="13" name="phone" type="tel" ng-required="true" ng-model="user.phone" placeholder="Enter phone number"> </div>

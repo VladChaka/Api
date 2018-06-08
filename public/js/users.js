@@ -42,29 +42,23 @@ usersApp.controller('usersController', function($scope, $http) {
 			document.body.style.paddingRight = '15px';
 		};
 	};
-    // $scope.submitEditForm = function(isValid){
-    //     if(isValid){
-
-    //     }
-    // }
     $scope.submitAddForm = function(isValid){
 
         if (isValid){
             $.post('http://localhost:4000/user/add', $('#add').serialize(), function(response) {
-				console.log(response);
 				if (response.error !== undefined) {
-					console.log(response.error);
+					if (response.error === "This login duplicate") {
+						document.getElementsByClassName('login-used')[0].style.display = "block";
+					} else if (response.error === "This email duplicate") {
+						document.getElementsByClassName('email-used')[0].style.display = "block";
+					}
 				} else {
-					console.log(response.success);
+					document.getElementsByClassName('login-used')[0].style.display = "none";
+					document.getElementsByClassName('email-used')[0].style.display = "none";
+
+					location.reload(true)
 				}
-            });
-            var x = document.getElementById('AddForm');
-            document.getElementById("popupsContainer").style.display = "none";
-            document.body.style.overflow = 'auto';
-			document.body.style.paddingRight = '0';
-			var y = document.getElementById('test');
-			console.log(y);
-			location.reload(true)
+            });	
         };
     };
 });
@@ -82,9 +76,7 @@ function updateUser(clickedbtn) {
         document.body.style.overflow = 'auto';
         document.body.style.paddingRight = '0';
 	};
-    $.post('http://localhost:4000/user/update', $('#userEditForm').serialize(), function(response) {
-        console.log(response);
-	});
+    $.post('http://localhost:4000/user/update', $('#userEditForm').serialize());
 	location.reload(true);
 }
 function show(element, id) {
@@ -140,10 +132,8 @@ function filterByRating() {
 
 function deleteUser(element) {
 	var id = "." + element.parentNode.id.value;
-    $.post('http://localhost:4000/user/delete', $(id).serialize(), function(response) {
-        console.log(response);
-    });
-    var x = user.parentNode.parentNode.parentNode.style.display = "none";
+    $.post('http://localhost:4000/user/delete', $(id).serialize());
+    var x = element.parentNode.parentNode.parentNode.style.display = "none";
 }
 
 function filterByDate() {

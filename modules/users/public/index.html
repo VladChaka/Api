@@ -12,6 +12,7 @@
 
         <div id="popupsContainer">
             <div ng-include="'includes/AddForm.html'"></div>
+            <div id="includeEditForm" ng-include="'includes/EditForm.html'"></div>
         </div>
 
         <div class="users-container">
@@ -50,7 +51,9 @@
                         <div></div>
                     </div>
                     <div class="list-user-block" ng-repeat="user in users.info | startFrom:currentPage*pageSize | limitTo: pageSize">
-                        <div class="no-display">{{counter=counter+1}}</div>
+                        <div class="user-counter" value="
+                            {{currentPage*15 + $index}}">
+                        </div>
                         <div>{{user.fullname}}</div>
                         <div>{{user.username}}</div>
                         <div>{{user.post}}</div>

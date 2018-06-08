@@ -18,44 +18,29 @@ usersApp.controller('usersController', function($scope, $http) {
         return Math.ceil($scope.users.info.length / $scope.pageSize);
 	}
 	$scope.openProfile = function(event, place, id){
-		console.log(event.currentTarget);
 		var parent = event.currentTarget.parentNode.parentNode;
 		var popup = parent.getElementsByClassName('user-profile-container')[0];
+        var counter = parent.getElementsByClassName('user-counter')[0].getAttribute('value');
 		popup.style.display = "flex";
-		console.log($scope.users.info[0].username);
-/*		popup.innerHTML = '<div class="user-profile">\n' +
-            '\t<div class="close-editform" onclick="hideEditForm(this)">+</div>\n' +
-            '\t<form class="user-edit" name="EditForm" id="{{user._id}}" ng-submit="submitEditForm(EditForm.$valid)"  novalidate>\n' +
-            '\t\t<input type="hidden" name="_method" value="PUT" placeholder="id" required>\n' +
-            '\t\t<input type="hidden" name="id" value="{{user._id}}" placeholder="id" required>\n' +
-            '\t\t<div><span>Username</span><input ng-class="{ \'invalid\' : EditForm.username.$invalid && !EditForm.username.$pristine }" value="" name="username" ng-minlength="4" ng-maxlength="16" type="text" placeholder="Enter username" ng-model="object.propety">\n' +
-            '\t\t</div>\n' +
-            '\t\t<p ng-show="EditForm.username.$invalid && !EditForm.username.$pristine">You name is required.</p>\n' +
-            '\t\t<p ng-show="EditForm.username.$error.minlength">Username is too short.</p>\n' +
-            '\t\t<p ng-show="EditForm.username.$error.maxlength">Username is too long.</p>\n' +
-            '\t\t<div><span>E-mail</span><input ng-class="{ \'invalid\' : EditForm.email.$invalid && !EditForm.email.$pristine }" value="{{user.email}}" name="email" ng-model="user.email" type="email" placeholder="Enter email"> </div>\n' +
-            '\t\t<p ng-show="EditForm.email.$invalid && !EditForm.email.$pristine">Enter a valid email.</p>\n' +
-            '\t\t<div><span>Post</span><input ng-class="{ \'invalid\' : EditForm.post.$error.required && EditForm.post.$dirty }" value="{{user.post}}" ng-required="true" type="text" name="post" ng-model="user.post" placeholder="User post"> </div>\n' +
-            '\t\t<p ng-show="EditForm.post.$error.required && EditForm.post.$dirty">Enter a user post.</p>\n' +
-            '\t\t<div><span>Phone</span><input ng-class="{ \'invalid\' : EditForm.phone.$error.required && !EditForm.phone.$error.tel && EditForm.phone.$dirty }" value="{{user.phone}}"  ng-minlength="7" ng-maxlength="13" name="phone" type="tel" ng-required="true" ng-model="user.phone" placeholder="Enter phone number"> </div>\n' +
-            '\t\t<p ng-show="EditForm.phone.$error.required && !EditForm.phone.$error.tel && EditForm.phone.$dirty">Enter valid phone number.</p>\n' +
-            '\t\t<p ng-show="EditForm.phone.$error.minlength || EditForm.phone.$error.maxlength">Enter a correct length phone.</p>\n' +
-            '\n' +
-            '\t\t<div><span>Password</span><input ng-class="{ \'invalid\' : EditForm.password.$invalid && !EditForm.password.$pristine }" value="{{user.password}}"  name="password" ng-model="user.password" ng-minlength="8" type="password" placeholder="Enter password"> </div>\n' +
-            '\t\t<p ng-show="EditForm.password.$invalid && !EditForm.password.$pristine ">Password is required.</p>\n' +
-            '\t\t<p ng-show="EditForm.password.$error.minlength">Password is too short.</p>\n' +
-            '\t\t<div><span>Full name</span><input ng-class="{ \'invalid\' : EditForm.fullname.$invalid && !EditForm.fullname.$pristine}" value="{{user.fullname}}" ng-required="true" name="fullname" ng-model="user.fullname" type="text" placeholder="Full name of user"> </div>\n' +
-            '\t\t<p ng-show="EditForm.fullname.$error.required && !EditForm.fullname.$error.text && EditForm.fullname.$dirty">Enter full name.</p>\n' +
-            '\t\t<div class="user-edit-btn">\n' +
-            '\t\t\t<button type="submit" ng-disabled="EditForm.$invalid" onclick="updateUser(this)">Edit user <span>✓</span></button>\n' +
-            '\t\t</div>\n' +
-            '\t</form>\n' +
-            '</div>' */
+		var username = $scope.users.info[+counter].username,
+            email = $scope.users.info[+counter].email,
+            post = $scope.users.info[+counter].post;
+		    phone = $scope.users.info[+counter].phone,
+            password = $scope.users.info[+counter].password,
+            fullname = $scope.users.info[+counter].fullname,
+		    editForm = document.getElementById('includeEditForm').firstChild.cloneNode(true);
+		    editForm.getElementsByTagName("input")[2].value = username;
+        editForm.getElementsByTagName("input")[3].value = email;
+        editForm.getElementsByTagName("input")[4].value = post;
+        editForm.getElementsByTagName("input")[5].value = phone;
+        editForm.getElementsByTagName("input")[6].value = password;
+        editForm.getElementsByTagName("input")[7].value = fullname;
+		    popup.appendChild(editForm);
 		if (document.body.offsetHeight > window.innerHeight) {
 			document.body.style.overflow = 'hidden';
 			document.body.style.paddingRight = '15px';
 		};
-	}
+	};
     $scope.submitEditForm = function(isValid){
         if(isValid){
 
@@ -73,7 +58,6 @@ usersApp.controller('usersController', function($scope, $http) {
 				}
             });
             var x = document.getElementById('AddForm');
-            console.log(x);
             document.getElementById("popupsContainer").style.display = "none";
             document.body.style.overflow = 'auto';
             document.body.style.paddingRight = '0';

@@ -50,6 +50,7 @@
                         <div></div>
                     </div>
                     <div class="list-user-block" ng-repeat="user in users.info | startFrom:currentPage*pageSize | limitTo: pageSize">
+                        <div class="no-display">{{counter=counter+1}}</div>
                         <div>{{user.fullname}}</div>
                         <div>{{user.username}}</div>
                         <div>{{user.post}}</div>

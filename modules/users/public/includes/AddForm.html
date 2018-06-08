@@ -19,7 +19,8 @@
         <div><span>Password</span><input ng-class="{ 'invalid' : userAdd.password.$invalid && !userAdd.password.$pristine }"  name="password" ng-model="addPass" ng-minlength="8" type="password" placeholder="Enter password"> </div>
         <p ng-show="userAdd.password.$invalid && !userAdd.password.$pristine ">Password is required.</p>
         <p ng-show="userAdd.password.$error.minlength">Password is too short.</p>
-        <div><span>Full name</span><input ng-class="{ 'invalid' : userAdd.fullname.$invalid && !userAdd.fullname.$pristine}" ng-required="true" name="fullname" ng-model="addFullname" type="text" placeholder="Full name of user"> </div>
+        <div><span>Full name</span><input ng-class="{ 'invalid' : userAdd.fullname.$invalid && !userAdd.fullname.$pristine}" ng-required="true" name="fullname" ng-model="
+        addFullname" type="text" placeholder="Full name of user"> </div>
         <p ng-show="userAdd.fullname.$error.required && !userAdd.fullname.$error.text && userAdd.fullname.$dirty">Enter full name.</p>
         <div class="user-add-btn">
             <button type="submit" ng-disabled="userAdd.$invalid">Add user</button></div>

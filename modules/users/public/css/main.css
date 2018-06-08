@@ -22,7 +22,7 @@ a:hover{
 }
 
 /* USER ADD FORM START */
-#AddForm,#orderPopup{
+#AddForm,#orderPopup,.no-display{
     display: none;
 }
 #popupsContainer,.user-profile-container{

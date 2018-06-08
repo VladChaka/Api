@@ -16,15 +16,45 @@ usersApp.controller('usersController', function($scope, $http) {
     $scope.numberOfPages = function() {
         return Math.ceil($scope.users.info.length / $scope.pageSize);
     }
+    $scope.submitEditForm = function(isValid){
+        if(isValid){
 
+        }
+    }
+    $scope.submitAddForm = function(isValid){
+
+        if (isValid){
+            $.post('http://localhost:4001/user/add', $('#add').serialize(), function(response) {
+                console.log(response);
+            });
+            var x = document.getElementById('AddForm');
+            console.log(x);
+            document.getElementById("popupsContainer").style.display = "none";
+            document.body.style.overflow = 'auto';
+            document.body.style.paddingRight = '0';
+        };
+    };
 });
+
 usersApp.filter('startFrom', function() {
     return function(input, start) {
         start = +start;
         return input.slice(start);
     }
 });
-
+function updateUser(param) {
+    console.log(param);
+    var id = "#" + param.parentNode.parentNode.id.value;
+    $.post('http://localhost:4001/user/update', $(id).serialize(), function(response) {
+        console.log(response);
+    });
+    var y = param.parentNode.parentNode.parentNode.parentNode.parentNode;
+    y.getElementsByClassName('user-profile-container')[0].style.display = "none";
+    if (document.body.offsetHeight > window.innerHeight) {
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0';
+    };
+}
 function show(element, id) {
     document.getElementById(element).style.display = "flex";
     document.getElementById("popupsContainer").style.display = "flex";
@@ -85,7 +115,7 @@ function filterByRating() {
 }
 
 function deleteUser(user) {
-    var id = "." + user.parentNode.name;
+    var id = "." + user.parentNode.id.value;
     $.post('http://localhost:4001/user/delete', $(id).serialize(), function(response) {
         console.log(response);
     });
@@ -103,32 +133,4 @@ function filterByDate() {
     }
     activeFiltler[0].innerHTML = "By Date";
     showHideOrders();
-}
-
-function addUser() {
-    $.post('http://localhost:4001/user/add', $('#add').serialize(), function(response) {
-        console.log(response);
-    });
-    var x = document.getElementById('AddForm');
-    console.log(x);
-    document.getElementById("popupsContainer").style.display = "none";
-    document.body.style.overflow = 'auto';
-    document.body.style.paddingRight = '0';
-    // $(document).ready(function(){  
-    // 	setInterval(show,1000);  
-    // });
-}
-
-function updateUser(param) {
-    console.log(param);
-    var id = "#" + param.parentNode.parentNode.id.value;
-    $.post('http://localhost:4001/user/update', $(id).serialize(), function(response) {
-        console.log(response);
-    });
-    var y = param.parentNode.parentNode.parentNode.parentNode.parentNode;
-    y.getElementsByClassName('user-profile-container')[0].style.display = "none";
-    if (document.body.offsetHeight > window.innerHeight) {
-        document.body.style.overflow = 'auto';
-        document.body.style.paddingRight = '0';
-    };
 }

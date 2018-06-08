@@ -1,15 +1,27 @@
 
-<div class="user-form" id="AddForm" ng-submit="submitAddForm(AddForm.$valid)" novalidate>
+<div class="user-form" id="AddForm">
     <div class="close-addform" onclick="hide(this)">+</div>
-	<form class="user-add" name="user-add" id="add" >
-		<input type="hidden" name="_method" value="POST" placeholder="id" required>
-        <div><span>Username</span><input name="username" type="text" placeholder="Enter username" ng-model="addName" required> </div>
-        <div><span>E-mail</span><input name="email" ng-model="addEmail" type="text" placeholder="Enter email" required> </div>
-        <div><span>Post</span><input type="text" name="post" ng-model="addPost" placeholder="User post" required> </div>
-        <div><span>Phone</span><input name="phone" type="tel"  placeholder="Enter phone number" required> </div>
-        <div><span>Password</span><input name="password" type="password" placeholder="Enter password" required> </div>
-        <div><span>Full name</span><input name="fullname" type="text" placeholder="Full name of user" required> </div>
+	<form class="user-add" name="userAdd" id="add" ng-submit="submitAddForm(userAdd.$valid)" novalidate>
+		<input type="hidden" name="_method" value="POST" placeholder="id">
+        <div><span>Username</span><input ng-class="{ 'invalid' : userAdd.username.$invalid && !userAdd.username.$pristine }" name="username" ng-minlength="4" ng-maxlength="16" type="text" placeholder="Enter username" ng-model="addName">
+        </div>
+        <p ng-show="userAdd.username.$invalid && !userAdd.username.$pristine">You name is required.</p>
+        <p ng-show="userAdd.username.$error.minlength">Username is too short.</p>
+        <p ng-show="userAdd.username.$error.maxlength">Username is too long.</p>
+        <div><span>E-mail</span><input ng-class="{ 'invalid' : userAdd.email.$invalid && !userAdd.email.$pristine }" name="email" ng-model="addEmail" type="email" placeholder="Enter email"> </div>
+        <p ng-show="userAdd.email.$invalid && !userAdd.email.$pristine">Enter a valid email.</p>
+        <div><span>Post</span><input ng-class="{ 'invalid' : userAdd.post.$error.required && userAdd.post.$dirty }" ng-required="true" type="text" name="post" ng-model="addPost" placeholder="User post"> </div>
+        <p ng-show="userAdd.post.$error.required && userAdd.post.$dirty">Enter a user post.</p>
+        <div><span>Phone</span><input ng-class="{ 'invalid' : userAdd.phone.$error.required && !userAdd.phone.$error.number && userAdd.phone.$dirty }"  ng-minlength="7" ng-maxlength="13" name="phone" type="number" ng-required="true" ng-model="addPhone" placeholder="Enter phone number"> </div>
+        <p ng-show="userAdd.phone.$error.required && !userAdd.phone.$error.number && userAdd.phone.$dirty">Enter valid phone number.</p>
+        <p ng-show="userAdd.phone.$error.minlength || userAdd.phone.$error.maxlength">Enter a correct length phone.</p>
+
+        <div><span>Password</span><input ng-class="{ 'invalid' : userAdd.password.$invalid && !userAdd.password.$pristine }"  name="password" ng-model="addPass" ng-minlength="8" type="password" placeholder="Enter password"> </div>
+        <p ng-show="userAdd.password.$invalid && !userAdd.password.$pristine ">Password is required.</p>
+        <p ng-show="userAdd.password.$error.minlength">Password is too short.</p>
+        <div><span>Full name</span><input ng-class="{ 'invalid' : userAdd.fullname.$invalid && !userAdd.fullname.$pristine}" ng-required="true" name="fullname" ng-model="addFullname" type="text" placeholder="Full name of user"> </div>
+        <p ng-show="userAdd.fullname.$error.required && !userAdd.fullname.$error.number && userAdd.fullname.$dirty">Enter full name.</p>
         <div class="user-add-btn">
-            <button type="submit" ng-disabled="user-add.addEmail.$invalid" onclick="addUser()">Add user</button></div>
+            <button type="submit" ng-disabled="userAdd.$invalid">Add user</button></div>
     </form>
 </div>

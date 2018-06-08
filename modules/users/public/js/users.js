@@ -17,39 +17,40 @@ usersApp.controller('usersController', function($scope, $http) {
     $scope.numberOfPages = function() {
         return Math.ceil($scope.users.info.length / $scope.pageSize);
 	}
-	$scope.openProfile = function(event, place, id){
+	$scope.openProfile = function(event){
 		var parent = event.currentTarget.parentNode.parentNode;
-		var popup = parent.getElementsByClassName('user-profile-container')[0];
         var counter = parent.getElementsByClassName('user-counter')[0].getAttribute('value');
-		popup.style.display = "flex";
-		var username = $scope.users.info[+counter].username,
+		var id = $scope.users.info[+counter]._id,
+			username = $scope.users.info[+counter].username,
             email = $scope.users.info[+counter].email,
             post = $scope.users.info[+counter].post;
 		    phone = $scope.users.info[+counter].phone,
             password = $scope.users.info[+counter].password,
             fullname = $scope.users.info[+counter].fullname,
-		    editForm = document.getElementById('includeEditForm').firstChild.cloneNode(true);
+			editForm = document.getElementById('includeEditForm').firstChild.cloneNode(true);
+			editForm.style.display = "flex";
+			editForm.getElementsByTagName("input")[1].value = id;
 		    editForm.getElementsByTagName("input")[2].value = username;
-        editForm.getElementsByTagName("input")[3].value = email;
-        editForm.getElementsByTagName("input")[4].value = post;
-        editForm.getElementsByTagName("input")[5].value = phone;
-        editForm.getElementsByTagName("input")[6].value = password;
-        editForm.getElementsByTagName("input")[7].value = fullname;
-		    popup.appendChild(editForm);
+			editForm.getElementsByTagName("input")[3].value = email;
+			editForm.getElementsByTagName("input")[4].value = post;
+			editForm.getElementsByTagName("input")[5].value = phone;
+			editForm.getElementsByTagName("input")[6].value = password;
+			editForm.getElementsByTagName("input")[7].value = fullname;
+		    parent.appendChild(editForm);
 		if (document.body.offsetHeight > window.innerHeight) {
 			document.body.style.overflow = 'hidden';
 			document.body.style.paddingRight = '15px';
 		};
 	};
-    $scope.submitEditForm = function(isValid){
-        if(isValid){
+    // $scope.submitEditForm = function(isValid){
+    //     if(isValid){
 
-        }
-    }
+    //     }
+    // }
     $scope.submitAddForm = function(isValid){
 
         if (isValid){
-            $.post('http://localhost:4001/user/add', $('#add').serialize(), function(response) {
+            $.post('http://localhost:4000/user/add', $('#add').serialize(), function(response) {
 				console.log(response);
 				if (response.error !== undefined) {
 					console.log(response.error);
@@ -60,7 +61,10 @@ usersApp.controller('usersController', function($scope, $http) {
             var x = document.getElementById('AddForm');
             document.getElementById("popupsContainer").style.display = "none";
             document.body.style.overflow = 'auto';
-            document.body.style.paddingRight = '0';
+			document.body.style.paddingRight = '0';
+			var y = document.getElementById('test');
+			console.log(y);
+			location.reload(true)
         };
     };
 });
@@ -71,18 +75,17 @@ usersApp.filter('startFrom', function() {
         return input.slice(start);
     }
 });
-function updateUser(param) {
-    console.log(param);
-    var id = "#" + param.parentNode.parentNode.id.value;
-    $.post('http://localhost:4001/user/update', $(id).serialize(), function(response) {
-        console.log(response);
-    });
-    var y = param.parentNode.parentNode.parentNode.parentNode.parentNode;
-    y.getElementsByClassName('user-profile-container')[0].style.display = "none";
+
+function updateUser(clickedbtn) {
+	 var x = clickedbtn.parentNode.parentNode.parentNode.parentNode.style.display = "none";
     if (document.body.offsetHeight > window.innerHeight) {
         document.body.style.overflow = 'auto';
         document.body.style.paddingRight = '0';
-    };
+	};
+    $.post('http://localhost:4000/user/update', $('#userEditForm').serialize(), function(response) {
+        console.log(response);
+	});
+	location.reload(true);
 }
 function show(element, id) {
     document.getElementById(element).style.display = "flex";
@@ -135,9 +138,9 @@ function filterByRating() {
     showHideOrders();
 }
 
-function deleteUser(user) {
-    var id = "." + user.parentNode.id.value;
-    $.post('http://localhost:4001/user/delete', $(id).serialize(), function(response) {
+function deleteUser(element) {
+	var id = "." + element.parentNode.id.value;
+    $.post('http://localhost:4000/user/delete', $(id).serialize(), function(response) {
         console.log(response);
     });
     var x = user.parentNode.parentNode.parentNode.style.display = "none";

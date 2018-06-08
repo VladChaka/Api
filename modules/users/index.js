@@ -16,12 +16,14 @@ router.post('/user/update', (req, res) => {
 });
 
 router.post('/user/delete', (req, res) => {
+	console.log(req.body);
     handlerMethod(req, res)
 });
 
 function handlerMethod(req, res) {
+	console.log(req.body);
 	const date = new Date,
-		  method = req.body._method,
+		  method = req.body._method[0],
           id = req.body.id,
           username = req.body.username || "",
           email = req.body.email || "",
@@ -31,7 +33,7 @@ function handlerMethod(req, res) {
           post = req.body.post || "",
 		  regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
 
-    if (method === "POST") {
+    if (method === "POST" || method === "P") {		
 		if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
 		if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
 		//for (let i = 0; i < 100; i++) {
@@ -53,7 +55,15 @@ function handlerMethod(req, res) {
 		  });
 		//}
         
-    } else if (method === "PUT") {
+    } else if (method === "PUT") {		
+		const id = req.body.id[1],
+			  username = req.body.username[1] || "",
+			  email = req.body.email[1] || "",
+			  phone = req.body.phone[1] || "",
+			  pass = req.body.password[1] || "",
+			  fullname = req.body.fullname[1] || "",
+			  post = req.body.post[1] || "";
+		
         User.findOneAndUpdate({ _id: id }, {
                 username: username,
                 email: email,
@@ -67,7 +77,7 @@ function handlerMethod(req, res) {
                 writeInDb();
                 res.json({ success: "Success update user" });
             });
-    } else if (method === "DELETE") {
+    } else if (method === "DELETE" || method === "D") {
         let id = req.body.id;
         User.remove({ _id: id }, function(err, user) {
             if (err) res.send(err);

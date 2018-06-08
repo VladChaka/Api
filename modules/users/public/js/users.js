@@ -15,7 +15,18 @@ usersApp.controller('usersController', function($scope, $http) {
     $scope.pageSize = 15;
     $scope.numberOfPages = function() {
         return Math.ceil($scope.users.info.length / $scope.pageSize);
-    }
+	}
+	$scope.openProfile = function(event, place, id){
+		console.log(event.currentTarget);
+		var y = place.parentNode.parentNode;
+		var popup = y.getElementsByClassName('user-profile-container')[0];
+		popup.style.display = "flex";
+		popup.innerHTML = '<div class="close-editform" onclick="hideEditForm(this)">+</div>'
+		if (document.body.offsetHeight > window.innerHeight) {
+			document.body.style.overflow = 'hidden';
+			document.body.style.paddingRight = '15px';
+		};
+	}
     $scope.submitEditForm = function(isValid){
         if(isValid){
 
@@ -25,7 +36,12 @@ usersApp.controller('usersController', function($scope, $http) {
 
         if (isValid){
             $.post('http://localhost:4001/user/add', $('#add').serialize(), function(response) {
-                console.log(response);
+				console.log(response);
+				if (response.error !== undefined) {
+					console.log(response.error);
+				} else {
+					console.log(response.success);
+				}
             });
             var x = document.getElementById('AddForm');
             console.log(x);
@@ -64,14 +80,6 @@ function show(element, id) {
     };
 };
 
-function showEditForm(ths) {
-    var y = ths.parentNode.parentNode;
-    y.getElementsByClassName('user-profile-container')[0].style.display = "flex";
-    if (document.body.offsetHeight > window.innerHeight) {
-        document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = '15px';
-    };
-};
 
 function hideEditForm(ths) {
     var y = ths.parentNode.parentNode.parentNode;

@@ -1,13 +1,16 @@
 let express = require("express"),
     app = express(),
     getParam = require("./Util/common"),
-    port = getParam("port", 4001),
+    port = getParam("port", 4000),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose");
 
-mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function (err, db) {
-    if (err) console.log("Error");  
-    console.log("Success db connection");
+mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function (err) {
+    if (err) {
+		console.log("Error");
+	} else {
+		console.log("Success db connection");
+	}  
 });
 
 app.use(function(req, res, next) {

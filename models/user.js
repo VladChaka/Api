@@ -2,9 +2,6 @@ let mongoose = require("mongoose"),
     Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    counter: {
-        type: Number
-    },
     username: {
         type: String,
         required: true

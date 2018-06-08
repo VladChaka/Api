@@ -109,6 +109,11 @@ function addUser() {
     $.post('http://localhost:4001/user/add', $('#add').serialize(), function(response) {
         console.log(response);
     });
+    var x = document.getElementById('AddForm');
+    console.log(x);
+    document.getElementById("popupsContainer").style.display = "none";
+    document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = '0';
     // $(document).ready(function(){  
     // 	setInterval(show,1000);  
     // });
@@ -120,4 +125,10 @@ function updateUser(param) {
     $.post('http://localhost:4001/user/update', $(id).serialize(), function(response) {
         console.log(response);
     });
+    var y = param.parentNode.parentNode.parentNode.parentNode.parentNode;
+    y.getElementsByClassName('user-profile-container')[0].style.display = "none";
+    if (document.body.offsetHeight > window.innerHeight) {
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0';
+    };
 }

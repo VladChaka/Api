@@ -39,8 +39,7 @@ function handlerMethod(req, res) {
         pass = req.body.password || "",
         fullname = req.body.fullname || "",
         post = req.body.post || "",
-        regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear(),
-        post = admin + " " + frontend + " " + backend + " " + moderator + " " + redactor + " " + visitor;
+        regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
 
     if (method === "POST") {
         if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });

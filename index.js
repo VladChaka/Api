@@ -1,7 +1,7 @@
 let express = require("express"),
     app = express(),
     getParam = require("./Util/common"),
-    port = getParam("port", 4001),
+    port = getParam("port", 4000),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose");
 
@@ -22,7 +22,7 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( { extended: false } ));
-app.use(express.static(__dirname + '/node_modules/public_chameleon47'));
+app.use(express.static(__dirname + '/public'));
 
 //route
 app.use('/', require(__dirname + '/modules/index'));

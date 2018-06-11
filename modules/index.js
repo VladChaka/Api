@@ -5,11 +5,11 @@ const express = require('express')
       User = mongoose.model('User'),
       app = express(),
 	  router = express.Router();
-
-router.get('/favicon.ico', (req, res) => {
-	res.json("404. Page not found.");
-});
 	
+router.get('/favico.io', (req, res) => {
+	res.json({ 404: "Not Found"});
+});
+
 router.post('/user/add', (req, res) => {
 	checkDuplicate(req, res);
 });
@@ -23,6 +23,9 @@ router.post('/user/delete', (req, res) => {
 });
 
 function handlerMethod(req, res) {
+
+	console.log(req.body);
+	
 	const date = new Date,
 		  method = req.body._method[0],
           id = req.body.id,
@@ -107,7 +110,9 @@ function checkDuplicate(req, res) {
 function writeInDb() {
     User.find({}, function(err, users) {
         if (err) res.send(err);
-        fs.writeFileSync('./node_modules/public/database.json', JSON.stringify(users, null, 2));
+        var file = JSON.parse(fs.readFileSync('./public/database.json', 'utf-8'))
+        file = users;
+        fs.writeFileSync('./public/database.json', JSON.stringify(file, null, 2));
     });
 }
 function checkRegExLogin(login) {

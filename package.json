@@ -1,22 +1,30 @@
 {
-  "name": "intexsoft",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "mongodb": "^3.0.10",
-    "mongoose": "^5.1.4"
-  },
-  "devDependencies": {
-    "nodemon": "^1.17.5"
-  }
+    "name": "api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VladChaka/Api.git"
+    },
+    "keywords": [],
+    "author": "VladChaka",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/VladChaka/Api/issues"
+    },
+    "homepage": "https://github.com/VladChaka/Api#readme",
+    "description": "",
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "express": "^4.16.3",
+        "method-override": "^2.3.10",
+        "mongoose": "^5.1.4",
+        "public_chameleon47": "^1.8.1"
+    },
+    "devDependencies": {
+        "nodemon": "^1.17.5"
+    }
 }

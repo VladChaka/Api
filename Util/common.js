@@ -1,5 +1,5 @@
-function getParam(key, value) {
-	let result = value;
+module.exports = function getParam(key, value) {
+    let result = value;
 
     for (let index in process.argv) {
         let keyValue = process.argv[index].split("=", 2);
@@ -10,7 +10,5 @@ function getParam(key, value) {
             break;
         }
     }
-	return result;
+    return result;
 }
-
-module.exports = getParam;

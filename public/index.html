@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="angular.min.js"></script>
+</head>
+
+<body>
+    <div ng-app="usersApp" ng-controller="usersController">
+
+        <div id="popupsContainer">
+            <div ng-include="'includes/AddForm.html'"></div>
+            <div id="includeEditForm" ng-include="'includes/EditForm.html'"></div>
+        </div>
+
+        <div class="users-container">
+            <div id="test" class="users-block">
+                <div class="users-title">
+                    <h2>List of users</h2>
+                </div>
+                <div class="users-filters">
+                    <div class="filters-pages">
+                        <div>
+                            <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+                            Previous
+                        </button> {{currentPage+1}}/{{numberOfPages()}}
+                            <button ng-disabled="currentPage >= users.info.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+                            Next
+                        </button>
+                        </div>
+                    </div>
+                    <div>
+
+                        <button class="users-add-new" onclick="show('AddForm')">Add new +</button>
+                    </div>
+                </div>
+                <div class="users-list">
+                    <div class="list-user-names">
+                        <div>Full Name</div>
+                        <div>User Login</div>
+                        <div>User Posts</div>
+                        <div class="filters-order">
+                            <div class="filters-order-active" onclick="showHideOrders()">By Date</div>
+                            <div class="filters-order-popup" id="orderPopup">
+                                <div onclick="filterByRating()">By Rating</div>
+                                <div onclick="filterByDate()">By Date</div>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="list-user-block" ng-repeat="user in users.info | startFrom:currentPage*pageSize | limitTo: pageSize">
+                        <div class="user-counter" value="
+                            {{currentPage*15 + $index}}">
+                        </div>
+                        <div>{{user.fullname}}</div>
+                        <div>{{user.username}}</div>
+                        <div>{{user.post}}</div>
+                        <div ng-show="showDate" ng-hide="showRating" class="list-user-date">{{user.regDate}}</div>
+                        <div ng-show="showRating" ng-hide="showDate" class="list-user-rating">{{user.rating}}</div>
+                        <div class="list-user-buttons"><button ng-click="openProfile($event)">Go to profile</button>
+                            <form class="{{user._id}}">
+                                <input type="hidden" name="_method" value="DELETE" placeholder="method" required>
+                                <input type="hidden" name="id" value="{{user._id}}" placeholder="id" required>
+                                <button onclick="deleteUser(this)" type="submit">Delete user <span>✖</span></button>
+                            </form>
+                        </div>
+                       
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/users.js"></script>
+</body>
+
+</html>

@@ -1,12 +1,20 @@
 let express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
-    methodOverride = require('method-override'),
     mongoose = require("mongoose"),
     getParam = require("./Util/common"),
     port = getParam("port", 4001);
 
-// mongoose.connect("mongodb://localhost:4000/test1", function(err) {
+mongoose.connect("mongodb://127.0.0.1:27017/test", function(err, db) {
+    if (err) {
+        return console.log("Connection error: ", err.message);
+	}
+    app.listen(port, () => {
+        console.log(`Start server on ${port} port`);
+    })
+});
+
+// mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function(err) {
 //     if (err) {
 //         return console.log("Connection error: ", err.message);
 //     }
@@ -14,23 +22,6 @@ let express = require("express"),
 //         console.log(`Start server on ${port} port`);
 //     })
 // });
-
-mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function(err) {
-    if (err) {
-        return console.log("Connection error: ", err.message);
-    }
-    app.listen(port, () => {
-        console.log(`Start server on ${port} port`);
-    })
-});
-
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-});
-app.use(methodOverride());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

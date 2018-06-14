@@ -26,10 +26,10 @@ module.exports.add = function (req, res){
           regDate: regDate
     });
 
-    new_user.save(function(err, user) {
+    new_user.save(function(err) {
         if (err) {
-            res.status(500);
-            return console.log("Error: ", err);
+			let duplicate = checkDublicat(err.message);
+            return res.json(duplicate);
         }
         res.json({ success: "User success added!" });
 	});		
@@ -51,10 +51,10 @@ module.exports.update = function (req, res){
 		fullname: fullname
 	}, 
 	{ new: true },
-	function(err, user) {
+	function(err) {
 		if (err) {
-			res.status(500);
-			return console.log("Error: ", err);
+			let duplicate = checkDublicat(err.message);
+            return res.json(duplicate);
 		}
 		res.json({ success: "User success update!" });
 	});	
@@ -155,6 +155,18 @@ module.exports.findAll = function (req, res){
 //         });
 //     }
 // }
+
+function checkDublicat(err) {
+	let emailOrUsername = err.split("index:")[1].split("1")[0].split(" ")[1].split("_")[0];
+
+	if (emailOrUsername === "username") {
+		emailOrUsername = { error: "This login duplicate" };
+	} else if (emailOrUsername === "email") {
+		emailOrUsername = { error: "This email duplicate" };	
+	}
+
+	return emailOrUsername;
+}
 
 function checkRegExLogin(login) {
     return /^[a-zA-Z1-9]+$/.test(login) && login.length > 3 && login.length < 17;

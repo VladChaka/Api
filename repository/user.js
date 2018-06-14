@@ -33,7 +33,8 @@ let mongoose = require("mongoose"),
             type: String
         }
 	},
-	{ collection: "users" }),
+	// { collection: "users" }
+	),
     User = mongoose.model("User", UserSchema);
 
 module.exports = User;

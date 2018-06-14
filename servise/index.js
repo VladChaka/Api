@@ -5,8 +5,6 @@ let mongoose = require("mongoose"),
 module.exports.add = function (req, res){
 	console.log(req.body);
 	const date = new Date,
-          method = req.body._method,
-          id = req.body.id,
           username = req.body.username || "",
           email = req.body.email || "",
           phone = req.body.phone || "",
@@ -38,7 +36,13 @@ module.exports.add = function (req, res){
 }
 
 module.exports.update = function (req, res){
-	console.log(req.body);
+	const id = req.params.id,
+		  email = req.body.email || "",
+          phone = req.body.phone || "",
+          pass = req.body.password || "",
+          fullname = req.body.fullname || "",
+          post = req.body.post || "";
+	
 	User.findOneAndUpdate({ _id: id }, {
 		email: email,
 		post: post,
@@ -46,7 +50,7 @@ module.exports.update = function (req, res){
 		password: pass,
 		fullname: fullname
 	}, 
-	/*{ new: true },*/
+	{ new: true },
 	function(err, user) {
 		if (err) {
 			res.status(500);
@@ -57,8 +61,7 @@ module.exports.update = function (req, res){
 }
 
 module.exports.delete = function (req, res){
-	console.log(req.body);
-	let id = req.body.id;
+	let id = req.params.id;
     User.remove({ _id: id }, function(err, user) {
         if (err) {
             res.status(500);
@@ -68,22 +71,12 @@ module.exports.delete = function (req, res){
     });	
 }
 
-module.exports.findOne = function (req, res){
-    User.findOne({ _id: req.params.id }, function(err, user) {
-        if (err) {
-            res.status(500);
-            return console.log("Error: ", err);
-        }
-        res.json(user);
-    });	
-}
-
 module.exports.findAll = function (req, res){
 	User.find({ }, function(err, user) {
         if (err) {
             res.status(500);
             return console.log("Error: ", err);
-        }
+		}
         res.json(user);
     });	
 }

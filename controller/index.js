@@ -7,16 +7,8 @@ router.get('/favico.io', (req, res) => {
     res.json({ error: "Not found" });
 });
 
-// router.get('/users', (req, res) => {
-//     service(req, res);
-// });
-
 router.get('/users', (req, res) => {
     service.findAll(req, res);
-});
-
-router.get('/user/:id', (req, res) => {
-    service.findOne(req, res);
 });
 
 router.post('/add', (req, res) => {

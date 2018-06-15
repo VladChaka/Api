@@ -1,9 +1,9 @@
 let express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
-	mongoose = require("mongoose"),
-	path = require("path"),
-	favicon = require("serve-favicon"),
+    mongoose = require("mongoose"),
+    path = require("path"),
+    favicon = require("serve-favicon"),
     getParam = require("./Util/common"),
     port = getParam("port", 4000);
 

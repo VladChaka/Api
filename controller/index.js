@@ -11,19 +11,19 @@ router.get('/users', (req, res) => {
     service.findAll(req, res);
 });
 
+router.post('/user/add', (req, res) => {
+    service.add(req, res);
+});
+
 router.post('/user/:id', (req, res) => {
     service.findOne(req, res);
 });
 
-router.post('/add', (req, res) => {
-    service.add(req, res);
-});
-
-router.post('/update/:id', (req, res) => {
+router.post('/user/update/:id', (req, res) => {
     service.update(req, res);
 });
 
-router.post('/delete/:id', (req, res) => {
+router.post('/user/delete/:id', (req, res) => {
     service.delete(req, res);
 });
 

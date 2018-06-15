@@ -1,29 +1,31 @@
 {
-    "name": "api",
-    "version": "1.0.0",
-    "main": "index.js",
-    "scripts": {
-        "dev": "nodemon index.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/VladChaka/Api.git"
-    },
-    "keywords": [],
-    "author": "VladChaka",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/VladChaka/Api/issues"
-    },
-    "homepage": "https://github.com/VladChaka/Api#readme",
-    "description": "",
-    "dependencies": {
-        "body-parser": "^1.18.3",
-        "express": "^4.16.3",
-        "mongoose": "^5.1.4",
-        "public_chameleon47": "^1.8.1"
-    },
-    "devDependencies": {
-        "nodemon": "^1.17.5"
-    }
+  "name": "Api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladChaka/Api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladChaka/Api/issues"
+  },
+  "homepage": "https://github.com/VladChaka/Api#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.1.5",
+    "path": "^0.12.7",
+    "public_chameleon47": "^1.8.1",
+    "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
 }

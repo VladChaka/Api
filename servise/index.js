@@ -62,7 +62,7 @@ module.exports.update = function (req, res){
 
 module.exports.delete = function (req, res){
 	let id = req.params.id;
-    User.remove({ _id: id }, function(err, user) {
+    User.remove({ _id: id }, function(err) {
         if (err) {
             res.status(500);
             return console.log("Error: ", err);
@@ -71,13 +71,24 @@ module.exports.delete = function (req, res){
     });	
 }
 
+module.exports.findOne = function (req, res){
+	let id = req.params.id;
+    User.findOne({ _id: id }, function(err, user) {
+        if (err) {
+            res.status(500);
+            return console.log("Error: ", err);
+        }
+        res.json(user);
+    });	
+}
+
 module.exports.findAll = function (req, res){
-	User.find({ }, function(err, user) {
+	User.find({ }, function(err, users) {
         if (err) {
             res.status(500);
             return console.log("Error: ", err);
 		}
-        res.json(user);
+        res.json(users);
     });	
 }
 

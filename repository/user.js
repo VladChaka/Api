@@ -32,9 +32,7 @@ let mongoose = require("mongoose"),
         regDate: {
             type: String
         }
-	},
-	// { collection: "users" }
-	),
+	}),
     User = mongoose.model("User", UserSchema);
 
 module.exports = User;

@@ -11,6 +11,10 @@ router.get('/users', (req, res) => {
     service.findAll(req, res);
 });
 
+router.post('/user/:id', (req, res) => {
+    service.findOne(req, res);
+});
+
 router.post('/add', (req, res) => {
     service.add(req, res);
 });

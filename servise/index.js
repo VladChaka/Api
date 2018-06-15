@@ -12,8 +12,6 @@ module.exports.add = function (req, res){
           post = req.body.post || "",
 		  regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
 		  
-	if (!checkRegExEmail(email)) return res.json({ error: "Incorrect email" });
-    if (!checkRegExLogin(username)) return res.json({ error: "Incorrect login" });
     const new_user = new User({
           username: username,
           email: email,
@@ -101,12 +99,4 @@ function checkDublicat(err) {
 	}
 
 	return emailOrUsername;
-}
-
-function checkRegExLogin(login) {
-    return /^[a-zA-Z1-9]+$/.test(login) && login.length > 3 && login.length < 17;
-}
-
-function checkRegExEmail(email) {
-    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }

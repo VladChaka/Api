@@ -8,12 +8,21 @@ let express = require("express"),
 
 mongoose.connect("mongodb://myadmin:mysecret@127.0.0.1:27017/admin", function(err) {
     if (err) {
-        return console.log("Connection error: ", err.message);
+        return console.log("Connection error: %s", err.message);
 	}
     app.listen(port, () => {
         console.log(`Start server on ${port} port`);
     })
 });
+
+// mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", function(err) {
+//     if (err) {
+//         return console.log("Connection error: ", err.message);
+//     }
+//     app.listen(port, () => {
+//         console.log(`Start server on ${port} port`);
+//     })
+// });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

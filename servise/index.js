@@ -33,7 +33,7 @@ module.exports.add = function (req, res){
 }
 
 module.exports.update = function (req, res){
-	const id = req.params.id,
+	const id = req.params.userId,
 		  email = req.body.email || "",
           phone = req.body.phone || "",
           pass = req.body.password || "",
@@ -58,7 +58,7 @@ module.exports.update = function (req, res){
 }
 
 module.exports.delete = function (req, res){
-	let id = req.params.id;
+	let id = req.params.userId;
     User.remove({ _id: id }, function(err) {
         if (err) {
             res.status(500);
@@ -69,7 +69,7 @@ module.exports.delete = function (req, res){
 }
 
 module.exports.findOne = function (req, res){
-	let id = req.params.id;
+	let id = req.params.userId;
     User.findOne({ _id: id }, function(err, user) {
         if (err) {
             res.status(500);

@@ -2,28 +2,23 @@ let express = require('express'),
 	router = express.Router(),
 	service = require("../servise/index");
 
-router.get('/favico.io', (req, res) => {
-    res.status(404);
-    res.json({ error: "Not found" });
-});
-
 router.get('/users', (req, res) => {
     service.findAll(req, res);
 });
 
-router.post('/user/add', (req, res) => {
+router.post('/users/add', (req, res) => {
     service.add(req, res);
 });
 
-router.post('/user/:id', (req, res) => {
+router.get('/users/:userId', (req, res) => {
     service.findOne(req, res);
 });
 
-router.post('/user/update/:id', (req, res) => {
+router.post('/users/update/:userId', (req, res) => {
     service.update(req, res);
 });
 
-router.post('/user/delete/:id', (req, res) => {
+router.delete('/users/delete/:userId', (req, res) => {
     service.delete(req, res);
 });
 

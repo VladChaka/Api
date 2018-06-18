@@ -24,6 +24,7 @@ mongoose.connect("mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", funct
         console.log(`Start server on ${port} port`);
     })
 });
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

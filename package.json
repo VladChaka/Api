@@ -21,7 +21,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.1.5",
-    "public_chameleon47": "^1.8.1",
+    "public_chameleon47": "^1.9.1",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {

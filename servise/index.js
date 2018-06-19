@@ -2,25 +2,31 @@ require('../repository/user');
 let mongoose = require("mongoose"),
     User = mongoose.model('User');
 
-module.exports.add = function(req, res) {
-    const date = new Date,
-          username = req.body.username || "",
-          email = req.body.email || "",
-          phone = req.body.phone || "",
-          pass = req.body.password || "",
-          fullname = req.body.fullname || "",
-          post = req.body.post || "",
-          regDate = date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
+module.exports.login = function(res, data) {
+    User.findOne({ username: data.username }, function(err, user) {
+        if (err) return res.json({ Error: err.message });
+        if (!user) {
+            res.json({ Error: 'Authentication failed. User not found.' });
+        } else if (user) {
+            if (user.password !== data.pass) {
+                res.json({ Error: 'Authentication failed. Wrong password.' });
+            } else {
+                res.json({ success: 'Successful Authentication!' });
+            }
+        }
+    });
+}
 
+module.exports.add = function(res, data) {
     const new_user = new User({
-          username: username,
-          email: email,
-          post: post,
-          phone: phone,
-          password: pass,
-          fullname: fullname,
-          rating: 0,
-          regDate: regDate
+        username: data.username,
+        email: data.email,
+        post: data.post,
+        phone: data.phone,
+        password: data.pass,
+        fullname: data.fullname,
+        rating: 0,
+        regDate: data.regDate
     });
 
     new_user.save(function(err) {
@@ -32,20 +38,13 @@ module.exports.add = function(req, res) {
     });
 }
 
-module.exports.update = function(req, res) {
-    const id = req.params.userId,
-          email = req.body.email || "",
-          phone = req.body.phone || "",
-          pass = req.body.password || "",
-          fullname = req.body.fullname || "",
-          post = req.body.post || "";
-
+module.exports.update = function(res, id, data) {
     User.findOneAndUpdate({ _id: id }, {
-            email: email,
-            post: post,
-            phone: phone,
-            password: pass,
-            fullname: fullname
+            email: data.email,
+            post: data.post,
+            phone: data.phone,
+            password: data.pass,
+            fullname: data.fullname,
         },
         function(err) {
             if (err) {
@@ -56,31 +55,29 @@ module.exports.update = function(req, res) {
         });
 }
 
-module.exports.delete = function(req, res) {
-    let id = req.params.userId;
+module.exports.delete = function(res, id) {
     User.remove({ _id: id }, function(err) {
-		if (err) return console.log("Delete error: ", err.message);
+        if (err) return res.json({ Delete_error: err.message });
         res.json({ success: "User deleted successfully!" });
     });
 }
 
-module.exports.findOne = function(req, res) {
-    let id = req.params.userId;
+module.exports.findOne = function(res, id) {
     User.findOne({ _id: id }, function(err, user) {
-		if (err) return console.log("Search error: ", err.message);
+        if (err) return res.json({ Search_error: err.message });
         res.json(user);
     });
 }
 
-module.exports.findAll = function(req, res) {
+module.exports.findAll = function(res) {
     User.find({}, function(err, users) {
-        if (err) return console.log("Search error: ", err.message);
+        if (err) return res.json({ Search_error: err.message });
         res.json(users);
     });
 }
 
 function checkDublicat(err) {
-	let emailOrUsername = err.split("$")[1].split("_")[0];
+    let emailOrUsername = err.split("$")[1].split("_")[0];
 
     if (emailOrUsername === "username") {
         emailOrUsername = { error: "This login duplicate" };

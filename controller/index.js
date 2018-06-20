@@ -6,12 +6,17 @@ router.post('/login', (req, res) => {
     const jsonData = {
         username: req.body.username,
         pass: req.body.password
-    };
-    service.login(res, jsonData);
+	};
+	
+    service.login(jsonData, function(result){ 
+		res.json(result); 
+	});
 });
 
 router.get('/users', (req, res) => {
-    service.findAll(res);
+    service.findAll(function(result){ 
+		res.json(result); 
+	});
 });
 
 router.post('/users/add', (req, res) => {
@@ -25,29 +30,37 @@ router.post('/users/add', (req, res) => {
             post: req.body.post,
             regDate: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
         };
-    service.add(res, jsonData);
+    service.add(jsonData, function(result){ 
+		res.json(result); 
+	});
 });
 
 router.get('/users/:userId', (req, res) => {
     const id = req.params.userId;
-    service.findOne(res, id);
+    service.findOne(id, function(result){ 
+		res.json(result); 
+	});
 });
 
 router.post('/users/update/:userId', (req, res) => {
     const id = req.params.userId,
-        jsonData = {
-            email: req.body.email,
-            phone: req.body.phone,
-            pass: req.body.password,
-            fullname: req.body.fullname,
-            post: req.body.post
-        };
-    service.update(res, id, jsonData);
+          jsonData = {
+        	  email: req.body.email,
+              phone: req.body.phone,
+              pass: req.body.password,
+              fullname: req.body.fullname,
+              post: req.body.post
+          };
+    service.update(id, jsonData, function(result){ 
+		res.json(result); 
+	});
 });
 
 router.delete('/users/delete/:userId', (req, res) => {
-    const id = req.params.userId;
-    service.delete(res, id);
+	const id = req.params.userId;
+	service.delete(id, function(result){ 
+		res.json(result); 
+	});
 });
 
 module.exports = router;

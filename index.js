@@ -3,7 +3,7 @@ let express = require("express"),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
     favicon = require("serve-favicon"),
-    getParam = require("./Util/common"),
+    getParam = require("./util/common"),
     port = getParam("port", 4000);
 
 // LOCAL DATABASE

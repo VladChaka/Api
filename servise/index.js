@@ -2,22 +2,15 @@ require('../repository/user');
 let mongoose = require("mongoose"),
     User = mongoose.model('User');
 
-module.exports.login = function(res, data) {
+module.exports.login = function(data, collback) {
     User.findOne({ username: data.username }, function(err, user) {
-        if (err) return res.json({ Error: err.message });
-        if (!user) {
-            res.json({ Error: 'Authentication failed. User not found.' });
-        } else if (user) {
-            if (user.password !== data.pass) {
-                res.json({ Error: 'Authentication failed. Wrong password.' });
-            } else {
-                res.json({ success: 'Successful Authentication!' });
-            }
-        }
+		if (err) return collback({ Error: err.message });
+        if (!user || user.password !== data.pass) return collback({ Error: 'Authentication failed. Login or password wrong.' });
+		collback({ success: 'Successful Authentication!' });
     });
 }
 
-module.exports.add = function(res, data) {
+module.exports.add = function(data, collback) {
     const new_user = new User({
         username: data.username,
         email: data.email,
@@ -32,13 +25,13 @@ module.exports.add = function(res, data) {
     new_user.save(function(err) {
         if (err) {
             let duplicate = checkDublicat(err.message);
-            return res.json(duplicate);
+            return collback(duplicate);
         }
-        res.json({ success: "User successfully added!" });
+        collback({ success: "User successfully added!" });
     });
 }
 
-module.exports.update = function(res, id, data) {
+module.exports.update = function(id, data, collback) {
     User.findOneAndUpdate({ _id: id }, {
             email: data.email,
             post: data.post,
@@ -49,30 +42,30 @@ module.exports.update = function(res, id, data) {
         function(err) {
             if (err) {
                 let duplicate = checkDublicat(err.message);
-                return res.json(duplicate);
+                return collback(duplicate);
             }
-            res.json({ success: "User successfully updated!" });
+            collback({ success: "User successfully updated!" });
         });
 }
 
-module.exports.delete = function(res, id) {
-    User.remove({ _id: id }, function(err) {
-        if (err) return res.json({ Delete_error: err.message });
-        res.json({ success: "User deleted successfully!" });
-    });
+module.exports.delete = function(id, collback) {
+    User.findOneAndRemove({ _id: id }, function(err) {
+		if (err) return collback({ Delete_error: err.message });
+		collback({ success: "User deleted successfully!" });
+	});
 }
 
-module.exports.findOne = function(res, id) {
+module.exports.findOne = function(id, collback) {
     User.findOne({ _id: id }, function(err, user) {
-        if (err) return res.json({ Search_error: err.message });
-        res.json(user);
+        if (err) return collback({ Search_error: err.message });
+        collback(user);
     });
 }
 
-module.exports.findAll = function(res) {
+module.exports.findAll = function(collback) {
     User.find({}, function(err, users) {
-        if (err) return res.json({ Search_error: err.message });
-        res.json(users);
+        if (err) return collback({ Search_error: err.message });
+        collback(users);
     });
 }
 

@@ -1,15 +1,14 @@
 let mongoose = require("mongoose"),
+	bcrypt = require('bcrypt-nodejs'),
     Schema = mongoose.Schema,
     UserSchema = new Schema({
         username: {
             type: String,
-            unique: true,
-            required: true
+            unique: true
         },
         email: {
             type: String,
-            unique: true,
-            required: true
+            unique: true
         },
         post: {
             type: String
@@ -19,8 +18,7 @@ let mongoose = require("mongoose"),
             required: true
         },
         password: {
-            type: String,
-            required: true
+            type: String
         },
         fullname: {
             type: String,
@@ -32,7 +30,40 @@ let mongoose = require("mongoose"),
         regDate: {
             type: String
         }
-	}),
-    User = mongoose.model("User", UserSchema);
+	});
 
-module.exports = User;
+UserSchema.pre('save', function(callback) {
+	const user = this;
+	
+	if (!user.isModified('password')) {
+		callback();
+		return;
+	}
+	bcrypt.genSalt(5, function(err, salt) {
+		if (err) {
+			callback(err);
+			return;
+		}
+	
+		bcrypt.hash(user.password, salt, null, function(err, hash) {
+			if (err) {
+				callback(err);
+				return;
+			}
+			user.password = hash;
+			callback();
+		});
+	});
+});
+
+UserSchema.methods.verifyPassword = function(password, cb, _thisPassword) {
+	bcrypt.compare(password, this.password || _thisPassword, function(err, isMatch) {
+		if (err) {
+			cb(err);
+			return;
+		}
+		cb(null, isMatch);
+	});
+};
+
+module.exports = { Schema: mongoose.model("User", UserSchema), verifyPassword: UserSchema.methods.verifyPassword };

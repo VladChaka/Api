@@ -9,25 +9,22 @@ let User = require("../repository/user"),
 chai.use(chaiHttp);
 
 describe('Users', () => {
-    beforeEach((done) => {
-        User.Schema.remove({}, (err) => { 
-           done();         
-        });     
+    beforeEach(() => {
+        User.Schema.remove({});     
 	});
 
 	describe('/GET users', () => {
-		it('it should GET all users', (done) => {
+		it('it should GET all users', () => {
 			chai.request(server)
 				.get('/users')
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.should.be.a('array');
 					res.body.length.should.be.eql(0);
-					done();
 				});
 		});
 
-		it('it should GET user by the given id', (done) => {
+		it('it should GET user by the given id', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -50,12 +47,11 @@ describe('Users', () => {
 						res.body.should.have.property("password");
 						res.body.should.have.property("phone");
 						res.body.should.have.property("fullname");
-						done();
 					});
 			});
 		});
 
-		it('it should not GET user by the given invalid id', (done) => {
+		it('it should not GET user by the given invalid id', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -76,14 +72,13 @@ describe('Users', () => {
 						res.body.should.have.property("error");
 						res.body.status.should.have.eql(500);
 						res.body.error.should.have.eql("Invalid id.");
-						done();
 					});
 			});
 		});
 	});
 
 	describe('/POST users', () => {
-		it('it should POST auth user', (done) => {
+		it('it should POST auth user', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -108,12 +103,11 @@ describe('Users', () => {
 						res.body.should.have.property("id");
 						res.body.should.have.property("token");
 						res.body.status.should.have.eql(200);
-						done();
 					});
 			});
 		});
 
-		it('it should not POST auth user without password field', (done) => {
+		it('it should not POST auth user without password field', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -137,12 +131,11 @@ describe('Users', () => {
 						res.body.should.have.property("error");
 						res.body.status.should.have.eql(400);
 						res.body.error.should.have.eql("Authentication failed. Login or password wrong.");
-						done();
 					});
 			});
 		});
 
-		it('it should POST user', (done) => {
+		it('it should POST user', () => {
 			let user = {
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -170,11 +163,10 @@ describe('Users', () => {
 					res.body.user.should.have.property("phone");
 					res.body.user.should.have.property("fullname");
 					res.body.message.should.have.eql("User successfully added!");
-					done();
 				});
 		});
 
-		it('it should not POST user without password field', (done) => {
+		it('it should not POST user without password field', () => {
 			let user = {
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -194,13 +186,12 @@ describe('Users', () => {
 					res.body.error.should.have.property('password');
 					res.body.status.should.have.eql(500);
 					res.body.error.password.should.have.eql('empty');
-					done();
 				});
 		});
 	});
 
 	describe('/PUT users', () => {
-		it('it should PUT user by the given id', (done) => {
+		it('it should PUT user by the given id', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -235,12 +226,11 @@ describe('Users', () => {
 						res.body.user.should.have.property("phone");
 						res.body.user.should.have.property("fullname");
 						res.body.message.should.have.eql("User successfully updated!");
-						done();
 					});
 			});
 		});
 
-		it('it should not PUT user by the given invalid id', (done) => {
+		it('it should not PUT user by the given invalid id', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -269,14 +259,13 @@ describe('Users', () => {
 						res.body.should.have.property("error");
 						res.body.status.should.have.eql(500);
 						res.body.error.should.have.eql("Invalid id.");
-						done();
 					});
 			});
 		});
 	});
 
 	describe('/DELETE users', () => {
-		it('it should DELETE user by the given id', (done) => {
+		it('it should DELETE user by the given id', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -299,12 +288,11 @@ describe('Users', () => {
 						res.body.status.should.have.eql(200);
 						res.body.success.should.have.eql(true);
 						res.body.message.should.have.eql("User successfully deleted!");
-						done();
 					});
 			});
 		});
 
-		it('it should not DELETE user by the given invalid id', (done) => {
+		it('it should not DELETE user by the given invalid id', () => {
 			let user = new User.Schema({
 				username: "Vasya",
 				email: "allankar2010@mail.ru",
@@ -325,7 +313,6 @@ describe('Users', () => {
 						res.body.should.have.property("error");
 						res.body.status.should.have.eql(500);
 						res.body.error.should.have.eql("Invalid id.");
-						done();
 					});
 			});
 		});

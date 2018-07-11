@@ -8,17 +8,12 @@ let express = require("express"),
 	dbMlabTest = "mongodb://admin:vlad12345@ds163610.mlab.com:63610/unittets",
 	db = getParam("local", dbMlab);
 	
-	
-setTimeout(function() {
-	mongoose.connect(dbMlabTest, function(err) {
-		if (err) return console.log("Connection error: ", err.message);
-		app.listen(port, () => {
-			console.log(`Data Base connection on ${dbMlabTest}`);
-			console.log(`Start server on ${port} port`);
-		})
-	});
-}, 10000);	
+mongoose.connect(dbMlabTest, function(err) {
+	if (err) return console.log("Connection error: ", err.message);
+	// console.log(`Data Base connection on ${dbMlabTest}`);
+});
 
+// require("./carir");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,5 +27,9 @@ app.use(function(req, res) {
     res.send({ error: 'Not found' });
     return;
 });
+
+app.listen(port, () => {
+	console.log(`Start server on ${port} port`);
+})
 
 module.exports = app;

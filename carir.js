@@ -30,6 +30,10 @@
 // let a = func(print, "Привет", "меня", "зовут", "Влад", "и", "мне", 21 + ".")();
 
 let re = /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/,
-	email = "allankar2010@mail.ru";
-
-console.log(re.exec(email));
+	// re1 = /^(?=.*[\d])(?=.*[a-z]).{4,16}$/,
+	re2 = /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/,
+	email = "allankar2010@mail.ru",
+	pass = "vlad12345";
+	
+// console.log(re.exec(email));
+console.log(re2.exec(pass));

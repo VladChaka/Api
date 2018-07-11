@@ -4,21 +4,25 @@ let mongoose = require("mongoose"),
     UserSchema = new Schema({
         username: {
             type: String,
-            unique: true
+            unique: true,
+            required: true
         },
         email: {
             type: String,
-            unique: true
+            unique: true,
+            required: true
         },
         post: {
-            type: String
+            type: String,
+            required: true
         },
         phone: {
             type: String,
             required: true
         },
         password: {
-            type: String
+            type: String,
+            required: true
         },
         fullname: {
             type: String,

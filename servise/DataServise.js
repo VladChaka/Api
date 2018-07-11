@@ -5,10 +5,9 @@ module.exports = function DataServise () {
 
 	self.login = function(data, cbSuccess, cbError) {
 		User.Schema.findOne({ username: data.username }, function(err, user) {
-			if (err) cbError({ error: err.message })
-			if (!user) {
+			if (err || !user) {
 				cbError({ error: 'Authentication failed. Login or password wrong.' });
-			} else if (user){
+			} else {
 				User.verifyPassword(data.pass, (err, success) => {
 					if (err || !success) {
 						cbError({ error: 'Authentication failed. Login or password wrong.' });
@@ -40,13 +39,14 @@ module.exports = function DataServise () {
 				cbError(error);
 				return;
 			}
-			
-			cbSuccess({ success: user });
+
+			cbSuccess({ user: user });
 		});
 	}
 
 	self.update = function(id, data, cbSuccess, cbError) {
 		User.Schema.findOneAndUpdate({ _id: id }, {
+			username: data.username,
 			email: data.email,
 			post: data.post,
 			phone: data.phone,
@@ -59,14 +59,16 @@ module.exports = function DataServise () {
 				cbError(error);
 				return;
 			}
-			cbSuccess({ success: user });
+			data.id = id;
+			delete data.pass;			
+			cbSuccess({ user: data });
 		});
 	}
 
 	self.delete = function(id, cbSuccess, cbError) {
 		User.Schema.findOneAndRemove({ _id: id }, function(err, user) {
 			if (err || !user) {
-				cbError({ error: err.message });
+				cbError({ error: "Invalid id." });
 				return;
 			}
 			cbSuccess({ success: true });
@@ -76,7 +78,7 @@ module.exports = function DataServise () {
 	self.findOne = function(id, cbSuccess, cbError) {
 		User.Schema.findOne({ _id: id }, function(err, user) {
 			if (err || !user) {
-				cbError({ error: err.message });
+				cbError({ error: "Invalid id." });
 				return;
 			}
 			cbSuccess(user);
@@ -97,20 +99,62 @@ module.exports = function DataServise () {
 		let error = err.split(" ")[1];
 
 		if (error === "duplicate") {
-			error = self.checkDublicat(err);
+			error = self.checkEmptyFieldOrDublicate(err, "duplicate");
+		} else if (error === "validation") {
+			error = self.checkEmptyFieldOrDublicate(err, "validation");
 		} else {
-			error = { error: err }
+			error = self.checkEmptyFieldOrDublicate(err, "id");
 		}
 		return error;
 	}
-	self.checkDublicat = function (err) {
-		let emailOrUsername = err.split("$")[1].split("_")[0];
+	self.checkEmptyFieldOrDublicate = function (err, validationOrDublicate) {
+		let result = {},
+			error;
+			
+		if (validationOrDublicate === "validation") {
+			error = err.split("`")[1];
 
-		if (emailOrUsername === "username") {
-			emailOrUsername = { error: "This login duplicate" };
-		} else if (emailOrUsername === "email") {
-			emailOrUsername = { error: "This email duplicate" };
+			if (error === "username") {
+				result.error = {
+					username: "empty"
+				};
+			} else if (error === "email") {
+				result.error = {
+					email: "empty"
+				};
+			} else if (error === "post") {
+				result.error = {
+					post: "empty"
+				};
+			} else if (error === "phone") {
+				result.error = {
+					phone: "empty"
+				};
+			} else if (error === "password") {
+				result.error = {
+					password: "empty"
+				};
+			} else if (error === "fullname") {
+				result.error = {
+					fullname: "empty"
+				};
+			}
+		} else if (validationOrDublicate === "duplicate") {
+			error = err.split("$")[1].split("_")[0];
+			
+			if (error === "username") {
+				result.error = {
+					username: "dublicate"
+				};
+			} else if (error === "email") {
+				result.error = {
+					email: "dublicate"
+				};
+			}
+		} else {
+			result.error = "Invalid id."
 		}
-		return emailOrUsername;
+		
+		return result;
 	}
 }

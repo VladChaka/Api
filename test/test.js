@@ -10,7 +10,9 @@ chai.use(chaiHttp);
 
 describe('Users', () => {
     beforeEach(() => {
-        User.Schema.remove({});     
+        User.Schema.remove({}, function (err) {
+			if (err) console.log(err.message);
+		});     
 	});
 
 	describe('/GET users', () => {
@@ -33,8 +35,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.get('/users/' + user.id)
@@ -60,8 +64,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.get('/users/4glglkj656344532dfasd')
@@ -87,8 +93,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+			
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.post('/login')
@@ -116,8 +124,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.post('/login')
@@ -144,8 +154,10 @@ describe('Users', () => {
 				phone: 4623452343,
 				fullname: "Vasya Pupkin"
 			};
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			chai.request(server)
 				.post('/users')
 				.send(user)
@@ -174,7 +186,9 @@ describe('Users', () => {
 				phone: 4623452343,
 				fullname: "Vasya Pupkin"
 			};
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
+
 			chai.request(server)
 				.post('/users')
 				.send(user)
@@ -200,8 +214,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.put('/users/' + user.id)
@@ -239,8 +255,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.put('/users/b3456jh3lj54g6345jl34')
@@ -274,8 +292,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.delete('/users/' + user.id)
@@ -301,8 +321,10 @@ describe('Users', () => {
 				password: "vlad12345",
 				fullname: "Vasya Pupkin"
 			});
+
 			expect(user.email).to.match(/(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/);
-			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{4,16}$/);
+			expect(user.password).to.match(/^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/);
+
 			user.save(function(err, user) {
 				chai.request(server)
 					.delete('/users/4jglkj3454hg4hjgfhjg')

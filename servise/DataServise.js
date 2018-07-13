@@ -99,19 +99,19 @@ module.exports = function DataServise () {
 		let error = err.split(" ")[1];
 
 		if (error === "duplicate") {
-			error = self.checkEmptyFieldOrDublicate(err, "duplicate");
+			error = self.checkError(err, "duplicate");
 		} else if (error === "validation") {
-			error = self.checkEmptyFieldOrDublicate(err, "validation");
+			error = self.checkError(err, "validation");
 		} else {
-			error = self.checkEmptyFieldOrDublicate(err, "id");
+			error = self.checkError(err, "id");
 		}
 		return error;
 	}
-	self.checkEmptyFieldOrDublicate = function (err, validationOrDublicate) {
+	self.checkError = function (err, errorType) {
 		let result = {},
 			error;
 			
-		if (validationOrDublicate === "validation") {
+		if (errorType === "validation") {
 			error = err.split("`")[1];
 
 			if (error === "username") {
@@ -139,7 +139,7 @@ module.exports = function DataServise () {
 					fullname: "empty"
 				};
 			}
-		} else if (validationOrDublicate === "duplicate") {
+		} else if (errorType === "duplicate") {
 			error = err.split("$")[1].split("_")[0];
 			
 			if (error === "username") {

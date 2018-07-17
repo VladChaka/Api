@@ -21,7 +21,7 @@ router.post('/login', (req, res) => {
 		});
 	},
 	function(err){
-		err.status = 400;
+		err.status = 400;		
 		res.status(400).json(err);
 	});
 });
@@ -88,7 +88,7 @@ router.put('/users/:id', (req, res) => {
 	},
 	function (err, status) {
 		err.status = status;
-		res.status(500).json(err);
+		res.status(status).json(err);
 	});
 });
 
@@ -100,9 +100,9 @@ router.delete('/users/:id', (req, res) => {
 		result.message = "User successfully deleted!";		
 		res.status(200).json(result); 
 	},
-	function (err) {
-		err.status = 500;
-		res.status(500).json(err);
+	function (err, status) {
+		err.status = status;
+		res.status(status).json(err);
 	});
 });
 

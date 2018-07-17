@@ -1,8 +1,13 @@
+
 define(function () {
-    angular.module('usersApp').directive('mainPage', function () {
+    function mainPage() {
         return {
             templateUrl: 'includes/mainPage.html',
             restrict: 'E'
         }
-    });
+    }
+
+    return function (module) {
+        module.directive('mainPage', mainPage)
+    }
 });

@@ -1,9 +1,7 @@
 define(function () {
-    var validateModule = angular.module('validate', []);
-
-    validateModule.directive('telValidation', function () {
+    function telValidation() {
         var isValid = function (s) {
-            return s && /^[ 0-9]+$/.test(s);
+            return s && /^[0-9]+$/.test(s);
         };
         return {
             require: 'ngModel',
@@ -18,5 +16,9 @@ define(function () {
                 });
             }
         };
-    });
+    }
+
+    return function (module) {
+        module.directive('telValidation', telValidation)
+    }
 });

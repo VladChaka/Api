@@ -1,10 +1,10 @@
-define(function () {
-    var validateModule = angular.module('validate', []);
 
-    validateModule.directive('loginValidation', function () {
+define(function () {
+    function loginValidation() {
         var isValid = function (s) {
             return s && /^[a-zA-Z0-9]*$/.test(s);
         };
+
         return {
             require: 'ngModel',
             link: function (scope, elm, attrs, ngModelCtrl) {
@@ -17,6 +17,10 @@ define(function () {
                     return modelValue;
                 });
             }
-        };
-    });
+        }
+    }
+
+    return function (module) {
+        module.directive('loginValidation', loginValidation)
+    }
 });

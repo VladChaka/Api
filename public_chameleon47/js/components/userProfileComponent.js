@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('usersApp').component('userProfile', {
+    let userProfile = {
         templateUrl: 'includes/UserProfile.html',
         controllerAs: 'uc',
         bindings: {
@@ -8,5 +8,9 @@ define(function () {
             userProfile: '=',
             editUser: '<',
         }
-    });
+    };
+
+    return function (module) {
+        module.component('userProfile', userProfile)
+    }
 });

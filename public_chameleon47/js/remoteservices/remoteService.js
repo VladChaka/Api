@@ -1,11 +1,11 @@
-define(function() {
-        var moduleRemoteService = angular.module("moduleRemoteService", ['ngResource']);
+define(['common'], function() {
+        var mainRemoteService = angular.module("usersApp.commonModule");
 
-        moduleRemoteService.service('userRemoteService', UserRemoteService);
+        mainRemoteService.service('usersApp.service.remote', RemoteService);
 
-        UserRemoteService.$inject = ['$resource'];
+        RemoteService.$inject = ['$resource'];
 
-        function UserRemoteService($resource) {
+        function RemoteService($resource) {
             var self = this;
 
             self.auth = $resource('/login');

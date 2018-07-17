@@ -60,18 +60,19 @@
                 Enter valid phone number.
             </p>
             <p ng-show="userEdit.phone.$error.minlength || userEdit.phone.$error.maxlength || userEdit.phone.$error.correctNumber">
-                Enter a correct length phone.
+                Enter a correct phone.
             </p>
             <div>
                 <span>Password</span>
                 <input ng-class="{ 'invalid' : userEdit.password.$invalid && userEdit.password.$dirty }"
                        name="password"
                        ng-model="uc.userProfile.password"
-                       ng-minlength="8" type="password"
+                       ng-minlength="8"
+                       type="password"
                        placeholder="Enter password"
-                       strong-pass-required></div>
+                       pass-validation></div>
             <p class="text-error"
-               ng-show="userAdd.password.$error.strongPass">
+               ng-show="userEdit.password.$error.strongPass">
                 Your password should contain digit and non-digit symbol
             </p>
             <p ng-show="userEdit.password.$error.required && userEdit.password.$dirty">
@@ -97,8 +98,8 @@
             </p>
             <div class="user-edit-btn">
                 <p>All fields are required</p>
-                <button type="batton"
-                        ng-disabled="!userEdit.$valid">
+                <button type="submit"
+						><!-- ng-disabled="!userEdit.$valid" -->
                     Edit user
                     <span>✓</span>
                 </button>

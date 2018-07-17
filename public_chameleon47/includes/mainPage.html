@@ -1,5 +1,5 @@
 <div id="popupsContainer"
-     ng-if="uc.showUserProfile || uc.showFormAddUser">
+     ng-if="uc.showUserProfile || uc.showFormAddUser || !uc.userAuthorized">
     <form-add-user ng-if="uc.showFormAddUser"
                    email-conflict="uc.emailConflict"
                    login-conflict="uc.loginConflict"
@@ -11,17 +11,22 @@
                   close-user-profile="uc.closeUserProfile"
                   ng-if="uc.showUserProfile"
                   edit-user="uc.editUser"></user-profile>
+    <authorization-form btn-text="Enter"
+                        authentication-login="uc.authenticationLogin"
+                        authentication-pass="uc.authenticationPass"
+                        login="uc.login()"
+                        user-authorized="uc.userAuthorized">
+    </authorization-form>
+
 </div>
 <div class="users-container">
     <div id="test"
          class="users-block">
         <div class="users-title">
             <h2>List of users</h2>
-            <authorization-form btn-text="Enter"
-                                authentication-login="uc.authenticationLogin"
-                                authentication-pass="uc.authenticationPass"
-                                authentication-submit="uc.authorization()">
-            </authorization-form>
+            <form>
+                <button class="logout" ng-show="uc.userAuthorized" ng-click="uc.logout()">Logout</button>
+            </form>
         </div>
         <div class="users-filters">
             <div class="filters-pages">
@@ -73,7 +78,7 @@
                 <div></div>
             </div>
             <div class="list-user-block"
-                 ng-repeat="user in uc.users | reverse | startFrom:(uc.currentPage-1)*uc.pageSize | limitTo: uc.pageSize">
+                 ng-repeat="user in uc.users | reverseFilter | startFromFilter:(uc.currentPage-1)*uc.pageSize | limitTo: uc.pageSize">
                 <div>{{user.fullname}}</div>
                 <div>{{user.username}}</div>
                 <div>{{user.post}}</div>

@@ -1,10 +1,6 @@
 define(function () {
-    var moduleTokenService = angular.module("moduleTokenService", []);
-
-    moduleTokenService.service('tokenService', TokenService);
-
     function TokenService() {
-        var token = null,
+        let token = null,
             self = this;
 
         self.setToken = function (newToken) {
@@ -13,5 +9,9 @@ define(function () {
         self.getToken = function () {
             return token;
         }
+    }
+
+    return function (module) {
+        module.service('usersApp.service.token', TokenService)
     }
 });

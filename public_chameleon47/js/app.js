@@ -1,3 +1,3 @@
-define(function(){
-    angular.module('app',['usersApp']);
+define(['usersController'], function(){
+    angular.module('app', ['usersApp']);
 });

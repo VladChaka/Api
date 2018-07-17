@@ -1,10 +1,10 @@
 define(function () {
-    angular.module('usersApp').component('profileControlPanel', {
+    let profileControlPanel = {
         template: '<button ng-click="uc.openUserProfile()">\n' +
         '    Go to profile\n' +
         '</button>\n' +
         '<button ng-click="uc.deleteUser()" \n' +
-        '        type="batton">\n' +
+        '        type="submit">\n' +
         '    Delete user\n' +
         '    <span>✖</span>\n' +
         '</button>',
@@ -13,5 +13,9 @@ define(function () {
             openUserProfile: '&',
             deleteUser: '&'
         }
-    });
+    };
+
+    return function (module) {
+        module.component('profileControlPanel', profileControlPanel)
+    }
 });

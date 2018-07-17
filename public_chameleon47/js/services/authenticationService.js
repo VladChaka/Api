@@ -1,23 +1,23 @@
-define(function () {
-    var moduleAuthenticationService = angular.module("moduleAuthenticationService", ['moduleRemoteService']);
+define(['remoteService'], function () {
+    Authentication.$inject = ['usersApp.service.remote'];
 
-    moduleAuthenticationService.service('authentication', Authentication);
-
-    Authentication.$inject = ['userRemoteService'];
-
-    function Authentication(userRemoteService) {
+    function Authentication(remoteService) {
         this.authentication = function(login, pass, callback) {
             var authenticationInfo = {
                 username: login,
                 password: pass
             };
 
-            userRemoteService.auth.save(authenticationInfo, function(response) {
+            remoteService.auth.save(authenticationInfo, function(response) {
                     callback(response);
                 },
                 function(err) {
                     callback(err.data);
                 });
         }
+    }
+
+    return function (module) {
+        module.service('usersApp.service.authentication', Authentication)
     }
 });

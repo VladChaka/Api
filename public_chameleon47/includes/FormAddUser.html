@@ -97,7 +97,7 @@
                    type="password"
                    placeholder="Enter password"
                    ng-required="true"
-                   strong-pass-required> </div>
+                   pass-validation> </div>
         <p class="text-error"
            ng-show="userAdd.password.$error.strongPass">
             Your password should contain digit and non-digit symbol
@@ -125,7 +125,7 @@
         </p>
         <div class="user-add-btn">
             <p>All fields are required</p>
-            <button type="batton"
+            <button type="submit"
                     ng-disabled="!userAdd.$valid">
                 Add user
             </button>

@@ -1,8 +1,6 @@
 define(function () {
-    var validateModule = angular.module('validate', []);
-
-    validateModule.directive('nameValidation', function () {
-        var isValid = function (s) {
+    function nameValidation() {
+        let isValid = function (s) {
             return s && /^[a-zA-Z\s]+$/.test(s) || /^[А-Яа-яЁё\s]+$/.test(s);
         };
         return {
@@ -17,6 +15,10 @@ define(function () {
                     return modelValue;
                 });
             }
-        };
-    });
-})
+        }
+    }
+
+    return function (module) {
+        module.directive('nameValidation', nameValidation)
+    }
+});

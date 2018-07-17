@@ -1,83 +1,28 @@
 {
-  "_args": [
-    [
-      "public_chameleon47",
-      "/var/www/test"
-    ]
-  ],
-  "_from": "public_chameleon47@latest",
-  "_id": "public_chameleon47@3.9.1",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/public_chameleon47",
-  "_nodeVersion": "8.10.0",
-  "_npmOperationalInternal": {
-    "host": "s3://npm-registry-packages",
-    "tmp": "tmp/public_chameleon47_3.9.1_1531397719303_0.4344021019537334"
-  },
-  "_npmUser": {
-    "email": "eugene.abduloff@outlook.com",
-    "name": "chameleon47"
-  },
-  "_npmVersion": "3.5.2",
-  "_phantomChildren": {},
-  "_requested": {
-    "name": "public_chameleon47",
-    "raw": "public_chameleon47",
-    "rawSpec": "",
-    "scope": null,
-    "spec": "latest",
-    "type": "tag"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_resolved": "https://registry.npmjs.org/public_chameleon47/-/public_chameleon47-3.9.1.tgz",
-  "_shasum": "782a777032f93f1b1cb52fed5ad56560710a1c93",
-  "_shrinkwrap": null,
-  "_spec": "public_chameleon47",
-  "_where": "/var/www/test",
-  "author": {
-    "name": "Eugene Abduloff"
-  },
-  "bugs": {
-    "url": "https://github.com/chameleon47/users-frontend/issues"
-  },
-  "dependencies": {
-    "angular": "^1.7.2",
-    "angular-resource": "^1.7.2",
-    "requirejs": "^2.3.5",
-    "requirejs-domready": "^2.0.3"
-  },
-  "description": "Users app",
-  "devDependencies": {},
-  "directories": {},
-  "dist": {
-    "fileCount": 34,
-    "shasum": "782a777032f93f1b1cb52fed5ad56560710a1c93",
-    "tarball": "https://registry.npmjs.org/public_chameleon47/-/public_chameleon47-3.9.1.tgz",
-    "unpackedSize": 1260305
-  },
-  "homepage": "https://github.com/chameleon47/users-frontend#readme",
-  "keywords": [],
-  "license": "ISC",
-  "main": "angular.min.js",
-  "maintainers": [
-    {
-      "name": "chameleon47",
-      "email": "eugene.abduloff@outlook.com"
-    }
-  ],
   "name": "public_chameleon47",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chameleon47/users-frontend.git"
-  },
+  "version": "3.9.2",
+  "description": "Users app",
+  "main": "angular.min.js",
   "scripts": {
     "start": "http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "3.9.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chameleon47/users-frontend.git"
+  },
+  "keywords": [],
+  "author": "Eugene Abduloff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chameleon47/users-frontend/issues"
+  },
+  "homepage": "https://github.com/chameleon47/users-frontend#readme",
+  "dependencies": {
+    "angular": "^1.7.2",
+    "angular-loading-bar": "^0.9.0",
+    "angular-resource": "^1.7.2",
+    "requirejs": "^2.3.5",
+    "requirejs-domready": "^2.0.3"
+  }
 }

@@ -1,5 +1,5 @@
 define(function () {
-    angular.module('usersApp').component('formAddUser', {
+    var formAddUser = {
         templateUrl: 'includes/FormAddUser.html',
         controllerAs: 'uc',
         bindings: {
@@ -9,5 +9,9 @@ define(function () {
             addUser: '<',
             formAddUser: '='
         }
-    });
+    };
+
+    return function (module) {
+        module.component('formAddUser', formAddUser)
+    }
 });

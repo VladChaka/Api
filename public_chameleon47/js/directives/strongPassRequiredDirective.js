@@ -1,7 +1,5 @@
 define(function () {
-    var validateModule = angular.module('validate', []);
-
-    validateModule.directive('strongPassRequired', function () {
+    function passValidation() {
         var isValid = function (s) {
             return s && /\D/.test(s) && /\d/.test(s);
         };
@@ -17,6 +15,10 @@ define(function () {
                     return modelValue;
                 });
             }
-        };
-    });
-})
+        }
+    }
+
+    return function (module) {
+        module.directive('passValidation', passValidation)
+    }
+});

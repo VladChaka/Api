@@ -52,7 +52,7 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
         }
 
         uc.login = function() {
-            authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {
+            authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {				
                 if (response.error !== 'Authentication failed. Login or password wrong.') {
                         refreshUsers();
                         uc.token = response.token;

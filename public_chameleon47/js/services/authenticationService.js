@@ -7,7 +7,7 @@ define(['remoteService'], function () {
                 username: login,
                 password: pass
             };
-
+			
             remoteService.auth.save(authenticationInfo, function(response) {
                     callback(response);
                 },

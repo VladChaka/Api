@@ -5,7 +5,7 @@ let express = require('express'),
 	DataServise = require("../servise/DataServise"),
 	dataServise = new DataServise();
 
-router.post('/login', (req, res) => {
+router.post('/login', (req, res) => {	
     const jsonData = {
         username: req.body.username || req.query.username,
         password: req.body.password || req.query.password
@@ -88,6 +88,8 @@ router.put('/users/:id', (req, res) => {
 	},
 	function (err, status) {
 		err.status = status;
+		console.log(err);
+		
 		res.status(status).json(err);
 	});
 });

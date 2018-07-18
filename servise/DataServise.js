@@ -5,7 +5,7 @@ module.exports = function DataServise () {
 	let self = this;
 	User.apply(self);
 
-	self.login = function(data, cbSuccess, cbError) {		
+	self.login = function(data, cbSuccess, cbError) {			
 		self.Schema.findOne({ username: data.username }, function(err, user) {
 			if (err || !user) {
 				cbError({ error: 'Authentication failed. Login or password wrong.' });
@@ -27,7 +27,7 @@ module.exports = function DataServise () {
 				cbError({ error: err.message });
 				return;
 			}
-			let data = rebuildUser(users, false);			
+			let data = rebuildUserData(users, false);
 			cbSuccess(data);
 		});
 	}
@@ -38,8 +38,8 @@ module.exports = function DataServise () {
 				cbError({ error: "Invalid id." }, 400);
 				return;
 			}
-			data = rebuildUser(user, true);
-			cbSuccess(data);
+			data = rebuildUserData(user, true);			
+			cbSuccess({ user: data });
 		});
 	}
 
@@ -69,7 +69,7 @@ module.exports = function DataServise () {
 						cbError({ error: err.message }, 500);
 						return;
 					}
-					data = rebuildUser(user, true);					
+					data = rebuildUserData(user, true);					
 					cbSuccess({ user: data });
 				});
 			}, function (err) {
@@ -102,7 +102,7 @@ module.exports = function DataServise () {
 						cbError(error, 500);
 						return;
 					}
-					data = rebuildUser(user, true);			
+					data = rebuildUserData(user, true);			
 					cbSuccess({ user: data });
 				});
 			}, function (err) {
@@ -120,8 +120,18 @@ module.exports = function DataServise () {
 			cbSuccess({ success: true });
 		});
 	}
+
+	self.UserSchema.methods.verifyPassword = function(password, cb, _thisPassword) {
+		bcrypt.compare(password, _thisPassword, function(err, isMatch) {			
+			if (err) {
+				cb(err);
+				return;
+			}
+			cb(null, isMatch);
+		});
+	};
 	
-	function rebuildUser(userData, oneUser) {
+	function rebuildUserData(userData, oneUser) {
 		let user;
 		if (oneUser === true) {
 			user = {
@@ -150,10 +160,9 @@ module.exports = function DataServise () {
 
 	function checkEmptyField(userData) {
 		let result = [];
-		
 		for (let index in userData) {
-			let field = userData[index];
-			// field = field.replace(/\s*/g, '');
+			let field = userData[index];			
+			field = field.replace(/\s*/g, '');
 			if (field === "") {
 				result.push(index);
 			}
@@ -167,13 +176,11 @@ module.exports = function DataServise () {
 			if (!checkRegExPassword(data.password)) return cbError({ error: "Incorrect password" }, 400);
 			bcrypt.genSalt(5, function(err, salt) {
 				if (err) {
-					console.log(err);
 					return;
 				}
 			
 				bcrypt.hash(user.password, salt, null, function(err, hash) {
 					if (err) {
-						console.log(err);
 						return;
 					}
 					user.password = hash;
@@ -193,16 +200,5 @@ module.exports = function DataServise () {
 	}
 	function checkRegExEmail(email) {
 		return /(^[^\W\s_]+((?:\.|_|-)[^\W\s_]+)*)@(([a-zA-Z\d]+)\.([^\W\s\d_]{2,}))$/.test(email);
-	}
-
-	self.UserSchema.methods.verifyPassword = function(password, cb, _thisPassword) {
-		bcrypt.compare(password, _thisPassword, function(err, isMatch) {			
-			if (err) {
-				cb(err);
-				return;
-			}
-			cb(null, isMatch);
-		});
-	};
-	
+	}	
 }

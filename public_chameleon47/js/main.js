@@ -12,6 +12,11 @@ require.config({
         'mainFilter': 'filters/define',
         'mainComponent': 'components/define',
         'mainDirective': 'directives/define'
+    },
+    shim: {
+        angularResource:{
+            deps: ['angular']
+        }
     }
 });
 

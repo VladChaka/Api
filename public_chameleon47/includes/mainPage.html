@@ -15,11 +15,12 @@
                         authentication-login="uc.authenticationLogin"
                         authentication-pass="uc.authenticationPass"
                         login="uc.login()"
+                        login-error="uc.loginError"
                         user-authorized="uc.userAuthorized">
     </authorization-form>
 
 </div>
-<div class="users-container">
+<div class="users-container" ng-if="uc.userAuthorized == true">
     <div id="test"
          class="users-block">
         <div class="users-title">

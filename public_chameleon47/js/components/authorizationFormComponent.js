@@ -11,10 +11,9 @@ define(function () {
         '        <input type="password"\n' +
         '               ng-model="uc.authenticationPass"\n' +
         '               placeholder="Enter your pass">\n' +
-        '        <br><button ng-click="uc.login()">\n' +
+        '        <span ng-if="uc.loginError">Incorrect login or password</span>\n' +
+        '        <br><br><button ng-click="uc.login()">\n' +
         '            {{uc.btnText}}\n' +
-
-
         '        </button>' +
         '    </form>',
         controllerAs: 'uc',
@@ -23,7 +22,7 @@ define(function () {
             authenticationLogin: '=',
             authenticationPass: '=',
             login: '&',
-            logout: '&',
+            loginError: '=',
             userAuthorized: '='
         }
     };

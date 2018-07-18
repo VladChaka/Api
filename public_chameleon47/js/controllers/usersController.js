@@ -1,17 +1,16 @@
 define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'], function(){
-    var usersApp = angular.module("usersApp", [
-        'usersApp.commonModule'
-    ]);
+    var usersApp = angular.module("usersApp", ['usersApp.commonModule']);
 
     usersApp.controller('usersController', usersController);
 
     usersController.$inject = [
         'usersApp.service.token',
         'usersApp.service.users',
-        'usersApp.service.authentication'
+        'usersApp.service.authentication',
+        '$timeout'
     ];
 
-    function usersController(tokenService, usersService, authentication) {
+    function usersController(tokenService, usersService, authentication, $timeout) {
         var uc = this;
         uc.btnText = 'Enter';
         uc.title = 'hi';
@@ -30,10 +29,10 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
 
         uc.addUser = function() {
             usersService.addUser(uc.formAddUser, function(response) {
-                if (response.error === "This login duplicate") {
+                if (response.status === 500) {
                     uc.emailConflict = false;
                     uc.loginConflict = true;
-                } else if (response.error === "This email duplicate") {
+                } else if (response.status === 500) {
                     uc.emailConflict = true;
                     uc.loginConflict = false;
                 } else {
@@ -52,12 +51,14 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
         }
 
         uc.login = function() {
-            authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {				
-                if (response.error !== 'Authentication failed. Login or password wrong.') {
-                        refreshUsers();
-                        uc.token = response.token;
-                        tokenService.setToken(uc.token);
-                        uc.userAuthorized = true;
+            authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {
+                if (response.status === 400) {
+                    uc.loginError = true;
+                    $timeout(function(){uc.loginError = false}, 4000)
+                } else{
+                    refreshUsers();
+                    tokenService.setToken(response.token);
+                    uc.userAuthorized = true;
                 }
             });
         };
@@ -101,14 +102,14 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
 
             usersService.editUser(user, function(response) {
                 if (response.data !== undefined) {
-                    if (response.data.error === "This email duplicate") {
+                    if (response.status === 500) {
                         uc.emailConflict = true;
+                    } else {
+                        refreshUsers();
+                        uc.closeUserProfile();
                     }
                 }
-                else {
-                    refreshUsers();
-                    uc.closeUserProfile();
-                }
+
             });
         };
     }

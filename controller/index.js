@@ -38,8 +38,8 @@ router.get('/users', token__module.isValid, (req, res) => {
 });
 
 router.get('/users/:id', token__module.isValid, (req, res) => {
-    const id = req.params.id;
-    dataServise.findOne(id, function(result){
+	const id = req.params.id;	
+    dataServise.findOne(id, function(result){		
 		res.status(200).json(result);
 	},
 	function (err, status) {
@@ -60,8 +60,7 @@ router.post('/users', token__module.isValid, (req, res) => {
             regDate: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
 		  };
 
-	dataServise.add(jsonData, function(result){
-		result.status = 200;		
+	dataServise.add(jsonData, function(result){	
 		res.status(200).json(result); 
 	},
 	function (err, status) {
@@ -84,7 +83,6 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
 	}	
 
 	dataServise.update(req.params.id, jsonData, function(result){
-		result.status = 200;
 		res.status(200).json(result); 
 	},
 	function (err, status) {

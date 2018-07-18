@@ -11,7 +11,8 @@ require.config({
         'remoteService': 'remoteservices/remoteService',
         'mainFilter': 'filters/define',
         'mainComponent': 'components/define',
-        'mainDirective': 'directives/define'
+        'mainDirective': 'directives/define',
+        'tokenInterceptor': 'interceptors/tokenInterceptor'
     },
     shim: {
         angularResource:{

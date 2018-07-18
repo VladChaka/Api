@@ -5,12 +5,10 @@ define(['remoteService'], function(){
        var self = this;
 
        self.deleteUser = function(id) {
-           return remoteService.delete.delete({userId: id}).$promise;
+           return remoteService.delete.delete({ userId: id }).$promise;
        };
 
        self.addUser = function(user, callback) {
-           user.token = tokenService.getToken();
-
            remoteService.create.save(user,
                function(response) {
                    callback(response);
@@ -29,12 +27,8 @@ define(['remoteService'], function(){
        };
 
        self.getOneUser = function(id, callback) {
-           var user = {
-			   userId: id
-           };
-
-           remoteService.getById.get(user, function(user) {
-               callback(user.data.user);
+           remoteService.getById.get({ userId: id }, function(user) {
+               callback(user);
            });
        };
 

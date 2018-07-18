@@ -38,8 +38,8 @@ module.exports = function DataServise () {
 				cbError({ error: "Invalid id." }, 400);
 				return;
 			}
-			data = rebuildUserData(user, true);			
-			cbSuccess({ user: data });
+			data = rebuildUserData(user, true);
+			cbSuccess(data);
 		});
 	}
 
@@ -70,7 +70,7 @@ module.exports = function DataServise () {
 						return;
 					}
 					data = rebuildUserData(user, true);					
-					cbSuccess({ user: data });
+					cbSuccess(data);
 				});
 			}, function (err) {
 				cbError({ error: err.message }, 500);
@@ -103,7 +103,7 @@ module.exports = function DataServise () {
 						return;
 					}
 					data = rebuildUserData(user, true);			
-					cbSuccess({ user: data });
+					cbSuccess(data);
 				});
 			}, function (err) {
 				cbError({ error: err.message }, 500);
@@ -130,18 +130,43 @@ module.exports = function DataServise () {
 			cb(null, isMatch);
 		});
 	};
+
+	function find(arr, value) {
+		let result = -1;
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i] === value) {
+				result = 1;
+				break;
+			}
+		}
+		return result;
+	}
 	
-	function rebuildUserData(userData, oneUser) {
+	function rebuildUserData(userData, delField, oneUser) {
 		let user;
 		if (oneUser === true) {
-			user = {
-				id: userData._id,
-				username: userData.username,
-				email: userData.email,
-				phone: userData.phone,
-				fullname: userData.fullname,
-				post: userData.post
-			};
+			let standartUserFields = [
+				'id',
+				'username',
+				'email',
+				'phone',
+				'fullname',
+				'post'
+			];
+			user = {};
+			for (const index in userData) {
+				for (let i = 0; i < standartFields.length; i++) {
+					if (userData[index] === -1) {
+						// user[index]	= userData[index];
+						user[i]	= userData[index];
+						i++;
+					}	
+				}			
+			}
+
+			for (let i = 0; i < delField.length; i++) {
+				delete user[delField[i]];
+			}
 		} else {
 			user = [];
 			for (let i = 0; i < userData.length; i++) {

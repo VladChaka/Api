@@ -6,7 +6,7 @@ let express = require("express"),
 	port = getParam("port", 4000),
 	dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", 
 	dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
-	db = getParam("local", dbMlabTest);
+	db = getParam("local", dbMlab);
 	
 mongoose.connect(db, function(err) {
 	if (err) return console.log("Connection error: ", err.message);

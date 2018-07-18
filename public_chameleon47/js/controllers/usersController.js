@@ -1,4 +1,4 @@
-define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'], function(){
+define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective', 'domReady!'], function(){
     var usersApp = angular.module("usersApp", ['usersApp.commonModule']);
 
     usersApp.controller('usersController', usersController);
@@ -14,7 +14,7 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
         var uc = this;
         uc.btnText = 'Enter';
         uc.title = 'hi';
-        uc.userAuthorized = false;
+        uc.userAuthorized = null;
         uc.showUserProfile = false;
         uc.showFormAddUser = false;
         uc.currentPage = 1;
@@ -30,11 +30,14 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
         uc.addUser = function() {
             usersService.addUser(uc.formAddUser, function(response) {
                 if (response.status === 500) {
-                    uc.emailConflict = false;
-                    uc.loginConflict = true;
-                } else if (response.status === 500) {
-                    uc.emailConflict = true;
-                    uc.loginConflict = false;
+                    let errorType = response.data.error.split("$")[1].split('_')[0];
+                    if (errorType === "username") {
+                        uc.emailConflict = false;
+                        uc.loginConflict = true;
+                    } else if (errorType === "email") {
+                        uc.emailConflict = true;
+                        uc.loginConflict = false;
+                    }
                 } else {
                     refreshUsers();
                     uc.closeFormAddUser();
@@ -51,19 +54,39 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
         }
 
         uc.login = function() {
-            authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {
-                if (response.status === 400) {
-                    uc.loginError = true;
-                    $timeout(function(){uc.loginError = false}, 4000)
-                } else{
-                    refreshUsers();
-                    tokenService.setToken(response.token);
-                    uc.userAuthorized = true;
-                }
-            });
+                authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {
+                    if (response.status === 400) {
+                        uc.loginError = true;
+                        $timeout(function () {
+                            uc.loginError = false
+                        }, 4000)
+                    } else {
+                        localStorage['login'] = uc.authenticationLogin;
+                        localStorage['pass'] = uc.authenticationPass;
+                        refreshUsers();
+                        tokenService.setToken(response.token);
+                        uc.userAuthorized = true;
+                    }
+                });
         };
 
+        (function autoLogin() {
+            if (localStorage['login'] !== undefined && localStorage['pass']!== undefined) {
+                authentication.authentication(localStorage['login'], localStorage['pass'], function (response) {
+                    if (response.status !== 400) {
+                        refreshUsers();
+                        tokenService.setToken(response.token);
+                        uc.userAuthorized = true;
+                    } else {
+                        uc.userAuthorized = false
+                    }
+                });
+            } else {uc.userAuthorized = false}
+        })();
+
         uc.logout = function() {
+            delete localStorage['login'];
+            delete localStorage['pass'];
             uc.users = undefined;
             tokenService.setToken(null);
             uc.userAuthorized = false;
@@ -101,15 +124,12 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
 			}
 
             usersService.editUser(user, function(response) {
-                if (response.data !== undefined) {
                     if (response.status === 500) {
                         uc.emailConflict = true;
                     } else {
                         refreshUsers();
                         uc.closeUserProfile();
                     }
-                }
-
             });
         };
     }

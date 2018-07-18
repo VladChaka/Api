@@ -1,5 +1,5 @@
 <div id="popupsContainer"
-     ng-if="uc.showUserProfile || uc.showFormAddUser || !uc.userAuthorized">
+     ng-if="uc.showUserProfile || uc.showFormAddUser || uc.userAuthorized == false">
     <form-add-user ng-if="uc.showFormAddUser"
                    email-conflict="uc.emailConflict"
                    login-conflict="uc.loginConflict"
@@ -11,7 +11,8 @@
                   close-user-profile="uc.closeUserProfile"
                   ng-if="uc.showUserProfile"
                   edit-user="uc.editUser"></user-profile>
-    <authorization-form btn-text="Enter"
+    <authorization-form ng-if="uc.userAuthorized == false"
+                        btn-text="Enter"
                         authentication-login="uc.authenticationLogin"
                         authentication-pass="uc.authenticationPass"
                         login="uc.login()"

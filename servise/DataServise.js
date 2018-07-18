@@ -155,13 +155,11 @@ module.exports = function DataServise () {
 			];
 			user = {};
 			for (const index in userData) {
-				for (let i = 0; i < standartFields.length; i++) {
-					if (userData[index] === -1) {
-						// user[index]	= userData[index];
-						user[i]	= userData[index];
-						i++;
-					}	
-				}			
+				for (let i = 0; i < standartUserFields.length; i++) {
+					if (index !== standartUserFields[i]) {
+						user[index]	= userData[index];
+					}
+				}
 			}
 
 			for (let i = 0; i < delField.length; i++) {

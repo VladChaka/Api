@@ -27,7 +27,6 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/users', token__module.isValid, (req, res) => {
-	
     dataServise.findAll(function(result){
 		res.status(200).json(result); 
 	},

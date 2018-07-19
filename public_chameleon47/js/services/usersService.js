@@ -5,7 +5,7 @@ define(['remoteService'], function(){
        var self = this;
 
        self.deleteUser = function(id) {
-           return remoteService.delete.delete({ userId: id }).$promise;
+           return remoteService.delete.delete({userId: id}).$promise;
        };
 
        self.addUser = function(user, callback) {

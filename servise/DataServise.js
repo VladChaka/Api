@@ -27,18 +27,26 @@ module.exports = function DataServise () {
 				cbError({ error: err.message });
 				return;
 			}
-			let data = rebuildUserData(users, false);
+			let data = rebuildUserData(users, null, [
+				'password',
+				'phone',
+				'email'
+			], false);			
 			cbSuccess(data);
 		});
 	}
 
-	self.findOne = function(id, cbSuccess, cbError) {
+	self.findOne = function(id, cbSuccess, cbError) {		
 		self.Schema.findOne({ _id: id }, function(err, user) {
 			if (err || !user) {
 				cbError({ error: "Invalid id." }, 400);
 				return;
-			}
-			data = rebuildUserData(user, true);
+			}			
+			data = rebuildUserData(user, null, [
+				'password',
+				'rating',
+				'regDate'
+			], true);
 			cbSuccess(data);
 		});
 	}
@@ -130,55 +138,49 @@ module.exports = function DataServise () {
 			cb(null, isMatch);
 		});
 	};
-
-	function find(arr, value) {
-		let result = -1;
-		for (let i = 0; i < arr.length; i++) {
-			if (arr[i] === value) {
-				result = 1;
-				break;
-			}
-		}
-		return result;
-	}
 	
-	function rebuildUserData(userData, delField, oneUser) {
-		let user;
-		if (oneUser === true) {
-			let standartUserFields = [
-				'id',
+	function rebuildUserData(userData, addField, delField, oneUser) {
+		let user,
+			standartUserFields = [
+				'_id',
 				'username',
 				'email',
-				'phone',
 				'fullname',
-				'post'
+				'phone',
+				'post',
+				'rating',
+				'regDate'
 			];
-			user = {};
-			for (const index in userData) {
-				for (let i = 0; i < standartUserFields.length; i++) {
-					if (index !== standartUserFields[i]) {
-						user[index]	= userData[index];
-					}
-				}
+		if (oneUser === true) {
+			for (const key in userData) {
+				console.log(key);
 			}
-
-			for (let i = 0; i < delField.length; i++) {
-				delete user[delField[i]];
-			}
+			user = buildUserData(userData, standartUserFields, addField, delField);
 		} else {
 			user = [];
 			for (let i = 0; i < userData.length; i++) {
-				user.push({
-					_id: userData[i]._id,
-					username: userData[i].username,
-					fullname: userData[i].fullname,
-					post: userData[i].post,
-					regDate: userData[i].regDate,
-					rating: userData[i].rating
-				});				
+				user.push(buildUserData(userData[i], standartUserFields, addField, delField));
 			}
-		}		
+		}
 		return user;
+	}
+
+	function buildUserData(userData, standartUserFields, addField, delField) {
+		let user = {};
+		for (const index in userData) {
+			for (let i = 0; i < standartUserFields.length; i++) {
+				if (standartUserFields[i] === index) {
+					user[index]	= userData[index];
+				}
+				if (addField !== null && addField[i] === index) {
+					user[index] = userData[index];
+				}
+			}
+		}
+		for (let i = 0; i < delField.length; i++) {
+			delete user[delField[i]];
+		}		
+		return user
 	}
 
 	function checkEmptyField(userData) {

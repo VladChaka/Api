@@ -163,26 +163,22 @@ let user = {
 	regDate: "30.10.2018"
 };
 
-let delFideld = [
+let delField = [
 	'password',
 	'fullname',
 	'rating'
 ];
 
-function rebuildUserData(userData, delField, oneUser) {
-	let user;
-	// if (oneUser === true) {
-		user = {};
-		for (const index in userData) {
-			user[index]	= userData[index];
-		}
+function rebuildUserData(userData, delField) {
+	let user = {};
+	for (const index in userData) {
+		user[index]	= userData[index];
+	}
 		
-		for (let i = 0; i < delField.length; i++) {
-			console.log("delFields" + i + " : " + delFideld[i]);
-			delete user[delField[i]];
-		}
-	// }	
+	for (let i = 0; i < delField.length; i++) {
+		delete user[delField[i]];
+	}
 	return user;
 }
 
-console.log(rebuildUserData(user, delFideld));
+console.log(rebuildUserData(user, delField));

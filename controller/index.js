@@ -26,7 +26,7 @@ router.post('/login', (req, res) => {
 	});
 });
 
-router.get('/users', token__module.isValid, (req, res) => {
+router.get('/users', (req, res) => { //token__module.isValid, 
     dataServise.findAll(function(result){
 		res.status(200).json(result); 
 	},
@@ -36,7 +36,7 @@ router.get('/users', token__module.isValid, (req, res) => {
 	});
 });
 
-router.get('/users/:id', token__module.isValid, (req, res) => {
+router.get('/users/:id', (req, res) => {
 	const id = req.params.id;	
     dataServise.findOne(id, function(result){		
 		res.status(200).json(result);
@@ -47,7 +47,7 @@ router.get('/users/:id', token__module.isValid, (req, res) => {
 	});
 });
 
-router.post('/users', token__module.isValid, (req, res) => {
+router.post('/users', (req, res) => {
     const date = new Date,
           jsonData = {
             username: req.body.username || "",
@@ -68,7 +68,7 @@ router.post('/users', token__module.isValid, (req, res) => {
 	});
 });
 
-router.put('/users/:id', token__module.isValid, (req, res) => {
+router.put('/users/:id', (req, res) => {
     const jsonData = {
         	  email: req.body.email || "",
               phone: req.body.phone || "",
@@ -90,7 +90,7 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
 	});
 });
 
-router.delete('/users/:id', token__module.isValid, (req, res) => {
+router.delete('/users/:id', (req, res) => {
 	const id = req.params.id;		
 
 	dataServise.delete(id, function(result){

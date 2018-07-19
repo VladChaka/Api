@@ -5,8 +5,7 @@ let User = require("../repository/user"),
 	mongoose = require("mongoose"),
 	bcrypt = require('bcrypt-nodejs'),
 	jwt = require('jsonwebtoken'),
-	should = chai.should(),
-	expect = chai.expect;
+	should = chai.should();
 
 chai.use(chaiHttp);
 

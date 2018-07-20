@@ -196,32 +196,60 @@
  *	One more some function
  *	
  */
-function parsePath(objectPath) {
-	return objectPath.split('.');
-}
+
+// function compileData(object, template, data) {
+// 	let result = data || {},
+// 		path;
+
+// 	for (const key in template) {
+// 		path = parsePath(template[key]);
+// 		result = getData(object, result, path , 0, key);
+// 	}
+
+//     return result;
+// }
+
+// function parsePath(objectPath) {
+// 	return objectPath.split('.');
+// }
+
+// function getData(object, data, path, index, key) {
+// 	index = index || 0;
+	
+// 	data[key] = object[path[index]];
+	
+// 	if (typeof data[key] === 'object') {		
+// 		data = getData(data[key], data, path, ++index, key);
+// 	}
+		
+// 	return data;
+// }
 
 function compileData(object, template, data) {
-	let result = data || {},
-		path;
+    let result = data || {},
+        path;
 
-	for (const key in template) {
-		path = parsePath(template[key]);
-		result = getData(object, result, path , 0, key);
-	}
+    for (const key in template) {
+        path = parsePath(template[key]);
+        result[key] = getData(object, result, path , 0);
+    }
 
     return result;
 }
 
-function getData(object, data, path, index, key) {
-	index = index || 0;
+function parsePath(objectPath) {
+    return objectPath.split('.');
+}
+
+function getData(object, data, path, index) {
+    index = index || 0;
+    let result = object[path[index]];
 	
-	data[key] = object[path[index]];
-	
-	if (typeof data[key] === 'object') {		
-		data = getData(data[key], data, path, ++index, key);
-	}
+    if (typeof result === 'object') {		
+        result = getData(data, result, path, ++index);
+    }
 		
-	return data;
+    return result;
 }
 
 let object = {
@@ -230,27 +258,27 @@ let object = {
         password: 123,
         phones: {
             mobile: '+375 321 7654321',
-			fixed: '+375 123 1234567',
-			test: {
+            fixed: '+375 123 1234567',
+            test: {
 				test3: 'asd',
-				test1: {
-					test2: "success",
-					test4: {
-						test5: "yes"
-					}
-				}
+                test1: {
+                test2: "success",
+                    test4: {
+                        test5: "yes"
+                    }
+                }
 			}
         }
     },
     template = {
-		aaaaa: 'aaaaa',
+        aaaaa: 'aaaaa',
         name: 'name',
         age: 'age',
-		mobilePhoneNumber: 'phones.mobile',
-		test: 'phones.test.test3',
-		test1: 'phones.test.test1.test2',
-		test2: 'phones.test.test1.test4.test5',
-		test3: 'phones.test2.test1.test4.test5'
+        mobilePhoneNumber: 'phones.mobile',
+        test: 'phones.test.test3',
+        test1: 'phones.test.test1.test2',
+        test2: 'phones.test.test1.test4.test5',
+        test3: 'phones.test2.test1.test4.test5'
     },
     result;
 

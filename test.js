@@ -254,51 +254,136 @@
 // }
 
 function parsePath(objectPath) {
-	let path;
-	if (typeof objectPath === object) {
-		path
-	} else {
-		path = objectPath.split('.');
+	let path = [];
+	
+    if (typeof objectPath === 'object') {
+        for (const key in objectPath) {
+			path = objectPath[key].split('.');
+        }
+    } else {
+        path = objectPath.split('.');
 	}
+	
     return path;
 }
 
 function compileData(object, template) {
 	let result = {},
-		dataArray = [],
-		tipoResult = result;
+		dataArray = [];
 
     for (const key in template) {
 		dataArray.push({
 			object: object,
 			key: key,
-			template: template[key],
-			tipoResult: tipoResult
+			template: template[key]
 		})
 	}
 
 	for (let i = 0; i < dataArray.length; i++) {
-		result[dataArray[key]] = getData(dataArray[i]);
-	}
-
-    return dataArray;
-}
-
-function getData(arr) {
-    index = index || 0;
-	let result = arr[object[arr[template]]],
-		path = arr[template];
-
-	if (path.length > 1) {
-		
-	} else {
-		if (typeof result === 'object') {
-			result = getData(data, result, path, ++index);
+		if (typeof dataArray[i]['template'] === 'object') {
+			for (const key in dataArray[i]['template']) {
+				result[dataArray[i]['key']] = compileData(object, dataArray[i]['template']);
+			}
+		} else {
+			result[dataArray[i]['key']] = getData(dataArray[i]);
 		}
 	}
 
     return result;
 }
+
+function getData(arr) {
+	let result = {},
+		path = parsePath(arr['template']);		
+
+	if (path.length > 1) {
+		let test = arr['object'];
+		for (let i = 0; i < path.length; i++) {
+			test = test[path[i]];
+		}
+		result = test;
+	} else {		
+		result = arr['object'][arr['template']];
+	}
+
+    return result;
+}
+
+// function parsePath(objectPath) {
+// 	let path = [];
+	
+//     if (typeof objectPath === 'object') {
+//         for (const key in objectPath) {
+// 			path = objectPath[key].split('.');
+//         }
+//     } else {
+//         path = objectPath.split('.');
+// 	}
+	
+//     return path;
+// }
+
+// function compileData(object, template) {
+// 	let result = {},
+// 		dataArray = [],
+// 		destination = {},
+// 		index = 0,
+// 		test = 0;
+
+//     for (const key in template) {
+// 		dataArray.push({
+// 			object: object,
+// 			key: key,
+// 			template: template[key],
+// 			destination: destination
+// 		})
+// 	}
+// 	test = dataArray.length;
+
+// 	for (let i = 0; i < test; i++) {
+// 		if (typeof dataArray[i]['template'] === 'object') {
+// 			for (const key in dataArray[i]['template']) {
+// 				dataArray.push({
+// 					object: object,
+// 					key: key,
+// 					template: dataArray[i]['template'][key],
+// 					destination: destination
+// 				});
+// 				index++;
+// 			}			
+			
+// 			for (let j = dataArray.length - index; j < dataArray.length; j++) {
+// 				dataArray[j]['destination'] = getData(dataArray[j]);
+// 				dataArray[i]['destination'][dataArray[j]['key']] = dataArray[j]['destination'];
+// 			}	
+// 		} else {
+// 			dataArray[i]['destination'] = getData(dataArray[i]);
+// 		}
+// 		result[dataArray[i]['key']] = dataArray[i]['destination'];
+// 	}
+
+	
+	
+
+//     return result;
+// }
+
+// function getData(arr) {
+// 	let result = {},
+// 		path = parsePath(arr['template']);		
+
+// 	if (path.length > 1) {
+// 		let test = arr['object'];
+// 		for (let i = 0; i < path.length; i++) {
+// 			test = test[path[i]];
+// 		}
+// 		result = test;
+// 	} else {		
+// 		result = arr['object'][arr['template']];
+// 	}
+
+//     return result;
+// }
 
 let object = {
         name: 'Maksim',
@@ -306,13 +391,20 @@ let object = {
         password: 123,
         phones: {
             mobile: '+375 321 7654321',
-            fixed: '+375 123 1234567'
+			fixed: '+375 123 1234567',
+			test: {
+				test1: "test"
+			}
         }
     },
     template = {
-        name: 'name',
+		name: 'name',
         age: 'age',
-        mobilePhoneNumber: 'phones.mobile'
+		mobilePhoneNumber: 'phones.mobile',
+		test: {
+			phoneFixed: 'phones.fixed',
+			test: 'phones.test.test1'
+		}
     },
     result = compileData(object, template);
 	

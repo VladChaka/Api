@@ -196,116 +196,33 @@
  *	One more some function
  *	
  */
-
-// function compileData(object, template, data, path, index) {
-// 	index = index || 0;
-// 	path = path || '';
-// 	let result = data || {},
-// 		arrTempKey = [],
-// 		arrTempValue = [];
-
-// 	for (const key in template) {
-// 		arrTempKey.push(key);
-// 		arrTempValue.push(template[key]);
-// 	}
-// 	if (path === '') {
-// 		for (let i = 0; i < arrTempValue.length; i++) {
-// 			path = arrTempValue[i].split('.');
-// 			if (path[1] !== undefined) {
-// 				result = compileData(object[path[0]], template, result, path, ++index);
-// 			} else {
-// 				result[arrTempKey[i]] = object[path[index]];
-// 				delete template[arrTempKey[i]];
-// 				delete template[arrTempValue[i]];
-// 			}
-// 		}
-// 	} else {
-// 		for (let i = 0; i < arrTempValue.length; i++) {
-// 			if (object[path[index]] === undefined) {
-// 				path = arrTempValue[i].split('.');
-// 				result = compileData(object[path[index]], template, result, path, ++index);
-// 			} else {
-// 				result[arrTempKey[i]] = object[path[index]];
-// 				path.splice(1,1);
-// 				delete template[arrTempKey[i]];
-// 				delete template[arrTempValue[i]];
-// 			}
-// 		}
-// 	}
-// 	return result;
-// }
-
 function parsePath(objectPath) {
-	let path = [];
-	for (const key in objectPath) {
-		path.push(objectPath[key]);
-	}
-	console.log(path);
-	
-	let splitPath = [];
-	for (let i = 0; i < path.length; i++) {
-		splitPath.push(path[i].split("."));
-	}
-	let result = [];
-	for (let i = 0; i < splitPath.length; i++) {
-		if (splitPath[i].length === 1) {
-			result[i] = splitPath[i][0];
-		} else {
-			for (let j = 0; j < splitPath[i].length; j++) {
-				console.log(splitPath[i][j]);
-				
-				result[i] = splitPath[i][j];
-			}
-		}
-	}
-	console.log(result);
-	
-	return splitPath;
+	return objectPath.split('.');
 }
 
-function getData(object, template, path, index) {
-	index = index || 0;
-	path = parsePath(template);
-	let result = {};
-	
+function compileData(object, template, data) {
+	let result = data || {},
+		path;
 
-	// if (object[template[key]] === undefined) {
-	// 	getData()
-	// } else {
-	// 	result[template[key]] = object[template[key]];
-	// }
-
-	
-	// if (typeof result === "object") {
-	// 	result = getHandler(result, pathNodes, ++index);
-	// }
+	for (const key in template) {
+		path = parsePath(template[key]);
+		result = getData(object, result, path , 0, key);
+	}
 
     return result;
 }
 
-// function getData(object, template, result, path, index) {
-// 	index = index || 0;
-// 	path = path || [];
-// 	result = result || {};
+function getData(object, data, path, index, key) {
+	index = index || 0;
 	
-// 	console.log('object',object);
-// 	console.log('path',path);
+	data[key] = object[path[index]];
 	
-	
-// 	for (const key in template) {
-// 		console.log(template[key]);
+	if (typeof data[key] === 'object') {		
+		data = getData(data[key], data, path, ++index, key);
+	}
 		
-// 		if (object[template[key]] === undefined) {
-// 			path = template[key].split('.');
-			
-// 			getData(object[path[0]], template, result, path);
-// 		} else {
-// 			result[template[key]] = object[template[key]];
-// 		}
-// 	}
-
-//     return result;
-// }
+	return data;
+}
 
 let object = {
         name: 'Maksim',
@@ -326,15 +243,16 @@ let object = {
         }
     },
     template = {
+		aaaaa: 'aaaaa',
         name: 'name',
         age: 'age',
-		mobilePhoneNumber: 'phones.mobile'//,
-		// test: 'phones.test.test3',
-		// test1: 'phones.test.test1.test2',
-		// test2: 'phones.test.test1.test4.test5'
+		mobilePhoneNumber: 'phones.mobile',
+		test: 'phones.test.test3',
+		test1: 'phones.test.test1.test2',
+		test2: 'phones.test.test1.test4.test5',
+		test3: 'phones.test2.test1.test4.test5'
     },
     result;
 
-// result = compileData(object, template);
-result = getData(object, template);
+result = compileData(object, template);
 console.log(result);

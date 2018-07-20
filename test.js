@@ -197,6 +197,10 @@
  *	
  */
 
+// function parsePath(objectPath) {
+// 	return objectPath.split('.');
+// }
+
 // function compileData(object, template, data) {
 // 	let result = data || {},
 // 		path;
@@ -207,10 +211,6 @@
 // 	}
 
 //     return result;
-// }
-
-// function parsePath(objectPath) {
-// 	return objectPath.split('.');
 // }
 
 // function getData(object, data, path, index, key) {
@@ -225,6 +225,11 @@
 // 	return data;
 // }
 
+
+function parsePath(objectPath) {
+    return objectPath.split('.');
+}
+
 function compileData(object, template, data) {
     let result = data || {},
         path;
@@ -237,18 +242,14 @@ function compileData(object, template, data) {
     return result;
 }
 
-function parsePath(objectPath) {
-    return objectPath.split('.');
-}
-
 function getData(object, data, path, index) {
     index = index || 0;
     let result = object[path[index]];
-	
-    if (typeof result === 'object') {		
+
+    if (typeof result === 'object') {
         result = getData(data, result, path, ++index);
     }
-		
+
     return result;
 }
 
@@ -280,7 +281,6 @@ let object = {
         test2: 'phones.test.test1.test4.test5',
         test3: 'phones.test2.test1.test4.test5'
     },
-    result;
-
-result = compileData(object, template);
+    result = compileData(object, template);
+	
 console.log(result);

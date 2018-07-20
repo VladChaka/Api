@@ -272,14 +272,9 @@ let object = {
         }
     },
     template = {
-        aaaaa: 'aaaaa',
         name: 'name',
         age: 'age',
-        mobilePhoneNumber: 'phones.mobile',
-        test: 'phones.test.test3',
-        test1: 'phones.test.test1.test2',
-        test2: 'phones.test.test1.test4.test5',
-        test3: 'phones.test2.test1.test4.test5'
+        mobilePhoneNumber: 'phones.mobile'
     },
     result = compileData(object, template);
 	

@@ -226,29 +226,76 @@
 // }
 
 
+// function parsePath(objectPath) {
+//     return objectPath.split('.');
+// }
+
+// function compileData(object, template, data) {
+//     let result = data || {},
+//         path;
+
+//     for (const key in template) {
+//         path = parsePath(template[key]);
+//         result[key] = getData(object, result, path , 0);
+//     }
+
+//     return result;
+// }
+
+// function getData(object, data, path, index) {
+//     index = index || 0;
+//     let result = object[path[index]];
+
+//     if (typeof result === 'object') {
+//         result = getData(data, result, path, ++index);
+//     }
+
+//     return result;
+// }
+
 function parsePath(objectPath) {
-    return objectPath.split('.');
+	let path;
+	if (typeof objectPath === object) {
+		path
+	} else {
+		path = objectPath.split('.');
+	}
+    return path;
 }
 
-function compileData(object, template, data) {
-    let result = data || {},
-        path;
+function compileData(object, template) {
+	let result = {},
+		dataArray = [],
+		tipoResult = result;
 
     for (const key in template) {
-        path = parsePath(template[key]);
-        result[key] = getData(object, result, path , 0);
-    }
+		dataArray.push({
+			object: object,
+			key: key,
+			template: template[key],
+			tipoResult: tipoResult
+		})
+	}
 
-    return result;
+	for (let i = 0; i < dataArray.length; i++) {
+		result[dataArray[key]] = getData(dataArray[i]);
+	}
+
+    return dataArray;
 }
 
-function getData(object, data, path, index) {
+function getData(arr) {
     index = index || 0;
-    let result = object[path[index]];
+	let result = arr[object[arr[template]]],
+		path = arr[template];
 
-    if (typeof result === 'object') {
-        result = getData(data, result, path, ++index);
-    }
+	if (path.length > 1) {
+		
+	} else {
+		if (typeof result === 'object') {
+			result = getData(data, result, path, ++index);
+		}
+	}
 
     return result;
 }
@@ -259,16 +306,7 @@ let object = {
         password: 123,
         phones: {
             mobile: '+375 321 7654321',
-            fixed: '+375 123 1234567',
-            test: {
-				test3: 'asd',
-                test1: {
-                test2: "success",
-                    test4: {
-                        test5: "yes"
-                    }
-                }
-			}
+            fixed: '+375 123 1234567'
         }
     },
     template = {

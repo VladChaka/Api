@@ -315,7 +315,7 @@ function compileData(object, template) {
 }
 
 function getData(object, arr) {
-	let result = {},
+    let result = {},
         path = parsePath(arr['template']);
 
     if (path.length > 1) {

@@ -218,7 +218,7 @@ function parsePath1(objectPath) {
 function compileData1(object, template) {
     let result = {},
         dataArray = [];
-
+		
     for (const key in template) {
         dataArray.push({
             key: key,
@@ -229,10 +229,10 @@ function compileData1(object, template) {
     for (let i = 0; i < dataArray.length; i++) {
         if (typeof dataArray[i]['template'] === 'object') {
             for (const key in dataArray[i]['template']) {
-                result[dataArray[i]['key']] = compileData(object, dataArray[i]['template']);
+                result[dataArray[i]['key']] = compileData1(object, dataArray[i]['template']);
             }
         } else {
-            result[dataArray[i]['key']] = getData(object, dataArray[i]);
+            result[dataArray[i]['key']] = getData1(object, dataArray[i]);
         }
     }
 
@@ -241,7 +241,7 @@ function compileData1(object, template) {
 
 function getData1(object, dataArray) {
     let result = {},
-        path = parsePath(dataArray['template']);
+        path = parsePath1(dataArray['template']);
 
     if (path.length > 1) {
         result = object;

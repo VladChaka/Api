@@ -204,7 +204,7 @@
  *	
  */
 
-function parsePath(objectPath) {
+function parsePath1(objectPath) {
     let path = [];
 
     if (typeof objectPath === 'string'){
@@ -215,7 +215,7 @@ function parsePath(objectPath) {
     return path;
 }
 
-function compileData(object, template) {
+function compileData1(object, template) {
     let result = {},
         dataArray = [];
 
@@ -239,7 +239,7 @@ function compileData(object, template) {
     return result;
 }
 
-function getData(object, dataArray) {
+function getData1(object, dataArray) {
     let result = {},
         path = parsePath(dataArray['template']);
 
@@ -356,6 +356,8 @@ let object = {
             test: 'phones.test.test1'
         }
     },
-    result = compileData(object, template);
+    result = compileData(object, template),
+    result1 = compileData1(object, template);
 
 console.log(result);
+console.log(result1);

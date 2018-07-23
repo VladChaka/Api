@@ -198,192 +198,128 @@
  */
 
 // function parsePath(objectPath) {
-// 	return objectPath.split('.');
+//     let path = [];
+
+//     if (typeof objectPath === 'string'){
+//         path = objectPath.split('.');
+//     } else {
+//         path = 'undefined';
+//     }
+//     return path;
 // }
 
-// function compileData(object, template, data) {
-// 	let result = data || {},
-// 		path;
-
-// 	for (const key in template) {
-// 		path = parsePath(template[key]);
-// 		result = getData(object, result, path , 0, key);
-// 	}
-
-//     return result;
-// }
-
-// function getData(object, data, path, index, key) {
-// 	index = index || 0;
-	
-// 	data[key] = object[path[index]];
-	
-// 	if (typeof data[key] === 'object') {		
-// 		data = getData(data[key], data, path, ++index, key);
-// 	}
-		
-// 	return data;
-// }
-
-
-// function parsePath(objectPath) {
-//     return objectPath.split('.');
-// }
-
-// function compileData(object, template, data) {
-//     let result = data || {},
-//         path;
+// function compileData(object, template) {
+// 	let result = {},
+//         dataArray = [];
 
 //     for (const key in template) {
-//         path = parsePath(template[key]);
-//         result[key] = getData(object, result, path , 0);
+//         dataArray.push({
+//             key: key,
+//             template: template[key]
+//         });
+//     }
+
+//     for (let i = 0; i < dataArray.length; i++) {
+//         if (typeof dataArray[i]['template'] === 'object') {
+//             for (const key in dataArray[i]['template']) {
+//                 result[dataArray[i]['key']] = compileData(object, dataArray[i]['template']);
+//             }
+//         } else {
+//             result[dataArray[i]['key']] = getData(object, dataArray[i]);
+//         }
 //     }
 
 //     return result;
 // }
 
-// function getData(object, data, path, index) {
-//     index = index || 0;
-//     let result = object[path[index]];
+// function getData(object, dataArray) {
+// 	let result = {},
+//         path = parsePath(dataArray['template']);
 
-//     if (typeof result === 'object') {
-//         result = getData(data, result, path, ++index);
+//     if (path.length > 1) {
+//         result = object;
+
+//         for (let i = 0; i < path.length; i++) {
+//             if (result[path[i]] === undefined) {
+//                 result = 'undefined';
+//             } else {
+//                 result = result[path[i]];
+//             }
+//         }
+//     } else {
+//         result = object[dataArray['template']];
 //     }
 
 //     return result;
 // }
 
 function parsePath(objectPath) {
-	let path = [];
-	
-    if (typeof objectPath === 'object') {
-        for (const key in objectPath) {
-			path = objectPath[key].split('.');
-        }
-    } else {
+    let path = [];
+
+    if (typeof objectPath === 'string'){
         path = objectPath.split('.');
-	}
-	
+    } else {
+        path = 'undefined';
+    }
     return path;
 }
 
 function compileData(object, template) {
 	let result = {},
-		dataArray = [];
+        destination = result,
+        dataArray = [],
+        index = 0;
 
     for (const key in template) {
-		dataArray.push({
-			object: object,
-			key: key,
-			template: template[key]
-		})
-	}
+        dataArray.push({
+            key: key,
+            template: template[key],
+            destination: destination
+        });
+    }
 
-	for (let i = 0; i < dataArray.length; i++) {
-		if (typeof dataArray[i]['template'] === 'object') {
-			for (const key in dataArray[i]['template']) {
-				result[dataArray[i]['key']] = compileData(object, dataArray[i]['template']);
-			}
-		} else {
-			result[dataArray[i]['key']] = getData(dataArray[i]);
-		}
-	}
+    for (let i = 0; i < dataArray.length - index; i++) {
+        if (typeof dataArray[i]['template'] === 'object') {
+            for (const key in dataArray[i]['template']) {
+                dataArray.push({
+                    key: key,
+                    template: dataArray[i]['template'][key],
+                    destination: destination
+                });
+                index++;
+            }
 
+            dataArray[i]['destination'] = {};
+            for (let j = dataArray.length - index; j < dataArray.length; j++) {
+                dataArray[i]['destination'][dataArray[j]['key']] = getData(object, dataArray[j]);
+            }
+        } else {
+            dataArray[i]['destination'] = getData(object, dataArray[i]);
+        }
+        result[dataArray[i]['key']] = dataArray[i]['destination'];
+    }
     return result;
 }
 
-function getData(arr) {
+function getData(object, arr) {
 	let result = {},
-		path = parsePath(arr['template']);		
+		path = parsePath(arr['template']);
 
 	if (path.length > 1) {
-		let test = arr['object'];
+		result = object;
 		for (let i = 0; i < path.length; i++) {
-			test = test[path[i]];
+			if (result[path[i]] === undefined) {
+				result = 'undefined';
+			} else {
+				result = result[path[i]];
+			}
 		}
-		result = test;
-	} else {		
-		result = arr['object'][arr['template']];
+	} else {
+		result = object[arr['template']];
 	}
 
     return result;
 }
-
-// function parsePath(objectPath) {
-// 	let path = [];
-	
-//     if (typeof objectPath === 'object') {
-//         for (const key in objectPath) {
-// 			path = objectPath[key].split('.');
-//         }
-//     } else {
-//         path = objectPath.split('.');
-// 	}
-	
-//     return path;
-// }
-
-// function compileData(object, template) {
-// 	let result = {},
-// 		dataArray = [],
-// 		destination = {},
-// 		index = 0,
-// 		test = 0;
-
-//     for (const key in template) {
-// 		dataArray.push({
-// 			object: object,
-// 			key: key,
-// 			template: template[key],
-// 			destination: destination
-// 		})
-// 	}
-// 	test = dataArray.length;
-
-// 	for (let i = 0; i < test; i++) {
-// 		if (typeof dataArray[i]['template'] === 'object') {
-// 			for (const key in dataArray[i]['template']) {
-// 				dataArray.push({
-// 					object: object,
-// 					key: key,
-// 					template: dataArray[i]['template'][key],
-// 					destination: destination
-// 				});
-// 				index++;
-// 			}			
-			
-// 			for (let j = dataArray.length - index; j < dataArray.length; j++) {
-// 				dataArray[j]['destination'] = getData(dataArray[j]);
-// 				dataArray[i]['destination'][dataArray[j]['key']] = dataArray[j]['destination'];
-// 			}	
-// 		} else {
-// 			dataArray[i]['destination'] = getData(dataArray[i]);
-// 		}
-// 		result[dataArray[i]['key']] = dataArray[i]['destination'];
-// 	}
-
-	
-	
-
-//     return result;
-// }
-
-// function getData(arr) {
-// 	let result = {},
-// 		path = parsePath(arr['template']);		
-
-// 	if (path.length > 1) {
-// 		let test = arr['object'];
-// 		for (let i = 0; i < path.length; i++) {
-// 			test = test[path[i]];
-// 		}
-// 		result = test;
-// 	} else {		
-// 		result = arr['object'][arr['template']];
-// 	}
-
-//     return result;
-// }
 
 let object = {
         name: 'Maksim',
@@ -391,21 +327,22 @@ let object = {
         password: 123,
         phones: {
             mobile: '+375 321 7654321',
-			fixed: '+375 123 1234567',
-			test: {
-				test1: "test"
-			}
+            fixed: '+375 123 1234567',
+            test: {
+            test1: "test2"
+            }
         }
     },
     template = {
-		name: 'name',
+        asd: 123,
+        name: 'name',
         age: 'age',
-		mobilePhoneNumber: 'phones.mobile',
-		test: {
-			phoneFixed: 'phones.fixed',
-			test: 'phones.test.test1'
-		}
+        mobilePhoneNumber: 'phones.mobile',
+        mobile: {
+            phoneFixed: 'phones.fixed',
+            test: 'phones.test.test1'
+        }
     },
     result = compileData(object, template);
-	
+
 console.log(result);

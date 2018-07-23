@@ -197,61 +197,12 @@
  *	
  */
 
-// function parsePath(objectPath) {
-//     let path = [];
 
-//     if (typeof objectPath === 'string'){
-//         path = objectPath.split('.');
-//     } else {
-//         path = 'undefined';
-//     }
-//     return path;
-// }
-
-// function compileData(object, template) {
-// 	let result = {},
-//         dataArray = [];
-
-//     for (const key in template) {
-//         dataArray.push({
-//             key: key,
-//             template: template[key]
-//         });
-//     }
-
-//     for (let i = 0; i < dataArray.length; i++) {
-//         if (typeof dataArray[i]['template'] === 'object') {
-//             for (const key in dataArray[i]['template']) {
-//                 result[dataArray[i]['key']] = compileData(object, dataArray[i]['template']);
-//             }
-//         } else {
-//             result[dataArray[i]['key']] = getData(object, dataArray[i]);
-//         }
-//     }
-
-//     return result;
-// }
-
-// function getData(object, dataArray) {
-// 	let result = {},
-//         path = parsePath(dataArray['template']);
-
-//     if (path.length > 1) {
-//         result = object;
-
-//         for (let i = 0; i < path.length; i++) {
-//             if (result[path[i]] === undefined) {
-//                 result = 'undefined';
-//             } else {
-//                 result = result[path[i]];
-//             }
-//         }
-//     } else {
-//         result = object[dataArray['template']];
-//     }
-
-//     return result;
-// }
+/*	
+ *	
+ *	My function
+ *	
+ */
 
 function parsePath(objectPath) {
     let path = [];
@@ -265,7 +216,69 @@ function parsePath(objectPath) {
 }
 
 function compileData(object, template) {
-	let result = {},
+    let result = {},
+        dataArray = [];
+
+    for (const key in template) {
+        dataArray.push({
+            key: key,
+            template: template[key]
+        });
+    }
+
+    for (let i = 0; i < dataArray.length; i++) {
+        if (typeof dataArray[i]['template'] === 'object') {
+            for (const key in dataArray[i]['template']) {
+                result[dataArray[i]['key']] = compileData(object, dataArray[i]['template']);
+            }
+        } else {
+            result[dataArray[i]['key']] = getData(object, dataArray[i]);
+        }
+    }
+
+    return result;
+}
+
+function getData(object, dataArray) {
+    let result = {},
+        path = parsePath(dataArray['template']);
+
+    if (path.length > 1) {
+        result = object;
+
+        for (let i = 0; i < path.length; i++) {
+            if (result[path[i]] === undefined) {
+                result = 'undefined';
+            } else {
+                result = result[path[i]];
+            }
+        }
+    } else {
+        result = object[dataArray['template']];
+    }
+
+    return result;
+}
+
+/*	
+ *	
+ *	Not my function
+ *	
+ */
+
+function parsePath(objectPath) {
+    let path = [];
+
+    if (typeof objectPath === 'string'){
+        path = objectPath.split('.');
+    } else {
+        path = 'undefined';
+    }
+    return path;
+}
+
+function compileData(object, template) {
+    let result = {},
         destination = result,
         dataArray = [],
         index = 0;
@@ -303,20 +316,20 @@ function compileData(object, template) {
 
 function getData(object, arr) {
 	let result = {},
-		path = parsePath(arr['template']);
+        path = parsePath(arr['template']);
 
-	if (path.length > 1) {
-		result = object;
-		for (let i = 0; i < path.length; i++) {
-			if (result[path[i]] === undefined) {
-				result = 'undefined';
-			} else {
-				result = result[path[i]];
-			}
-		}
-	} else {
-		result = object[arr['template']];
-	}
+    if (path.length > 1) {
+        result = object;
+        for (let i = 0; i < path.length; i++) {
+            if (result[path[i]] === undefined) {
+                result = 'undefined';
+            } else {
+                result = result[path[i]];
+            }
+        }
+    } else {
+        result = object[arr['template']];
+    }
 
     return result;
 }

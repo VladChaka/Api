@@ -13,10 +13,6 @@ define(['common', 'tokenInterceptor'], function() {
 			self.create = $resource('/users');
 			self.delete = $resource('/users/:userId', { userId: '@id' });
 			self.getById = $resource('/users/:userId', { userId: '@id' });
-			self.update = $resource('/users/:id', { id: '@id' },
-                {update: {
-                    method: 'PUT'
-                }
-            });
+			self.update = $resource('/users/:id', { id: '@id' }, { update: { method: 'PUT' }});
         }
 });

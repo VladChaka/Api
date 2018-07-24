@@ -112,7 +112,7 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
 
         uc.editUser = function() {
             var user = {
-                id: uc.userProfile.id,
+                id: uc.userProfile._id,
                 email: uc.userProfile.email,
                 post: uc.userProfile.post,
                 phone: uc.userProfile.phone,

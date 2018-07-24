@@ -1,9 +1,15 @@
+require("../Servise/DataServise")
 let express = require('express'),
 	router = express.Router(),
     token__module = require('../token/token'),
+	Core = require("../index"),
 	jwt = require('jsonwebtoken'),
-	DataServise = require("../servise/DataServise"),
-	dataServise = new DataServise();
+	dataServise;
+
+let modules = Core.module('app.servise');
+// modules.import('app.servise')
+modules.run();
+dataServise = modules.get('app.Servise.DataServise');
 
 router.post('/login', (req, res) => {	
     const jsonData = {
@@ -26,7 +32,7 @@ router.post('/login', (req, res) => {
 	});
 });
 
-router.get('/users', (req, res) => { //token__module.isValid, 
+router.get('/users', token__module.isValid, (req, res) => {
     dataServise.findAll(function(result){
 		res.status(200).json(result); 
 	},
@@ -36,7 +42,7 @@ router.get('/users', (req, res) => { //token__module.isValid,
 	});
 });
 
-router.get('/users/:id', (req, res) => {
+router.get('/users/:id', token__module.isValid, (req, res) => {
 	const id = req.params.id;	
     dataServise.findOne(id, function(result){		
 		res.status(200).json(result);
@@ -47,7 +53,7 @@ router.get('/users/:id', (req, res) => {
 	});
 });
 
-router.post('/users', (req, res) => {
+router.post('/users', token__module.isValid, (req, res) => {
     const date = new Date,
           jsonData = {
             username: req.body.username || "",
@@ -68,7 +74,7 @@ router.post('/users', (req, res) => {
 	});
 });
 
-router.put('/users/:id', (req, res) => {
+router.put('/users/:id', token__module.isValid, (req, res) => {
     const jsonData = {
         	  email: req.body.email || "",
               phone: req.body.phone || "",
@@ -90,7 +96,7 @@ router.put('/users/:id', (req, res) => {
 	});
 });
 
-router.delete('/users/:id', (req, res) => {
+router.delete('/users/:id', token__module.isValid, (req, res) => {
 	const id = req.params.id;		
 
 	dataServise.delete(id, function(result){

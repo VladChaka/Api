@@ -1,16 +1,23 @@
-let User = require('../repository/user'),
-	bcrypt = require('bcrypt-nodejs');
+require("../repository/User")
+let Core = require("../index"),
+    modules = Core.module('app.user'),
+    User,
+    bcrypt = require('bcrypt-nodejs');
 
-module.exports = function DataServise () {
-	let self = this;
-	User.apply(self);
+Core.module('app.servise').service('app.Servise.DataServise', DataServise);
+// modules.import('app.servise')
+modules.run();
+User = modules.get('app.repository.User');
+
+function DataServise () {
+    let self = this;
 
 	self.login = function(data, cbSuccess, cbError) {			
-		self.Schema.findOne({ username: data.username }, function(err, user) {
+		User.Schema.findOne({ username: data.username }, function(err, user) {
 			if (err || !user) {
 				cbError({ error: 'Authentication failed. Login or password wrong.' });
 			} else {
-				self.UserSchema.methods.verifyPassword(data.password, (err, success) => {
+				User.UserSchema.methods.verifyPassword(data.password, (err, success) => {
 					if (err || !success) {
 						cbError({ error: 'Authentication failed. Login or password wrong.' });
 						return;
@@ -22,7 +29,7 @@ module.exports = function DataServise () {
 	}
 
 	self.findAll = function(cbSuccess, cbError) {
-		self.Schema.find({}, function(err, users) {
+		User.Schema.find({}, function(err, users) {
 			if (err) {
 				cbError({ error: err.message });
 				return;
@@ -37,7 +44,7 @@ module.exports = function DataServise () {
 	}
 
 	self.findOne = function(id, cbSuccess, cbError) {		
-		self.Schema.findOne({ _id: id }, function(err, user) {
+		User.Schema.findOne({ _id: id }, function(err, user) {
 			if (err || !user) {
 				cbError({ error: "Invalid id." }, 400);
 				return;
@@ -61,7 +68,7 @@ module.exports = function DataServise () {
 			if (!checkRegExEmail(data.email)) return cbError({ error: "Incorrect email" }, 400);
 			if (!checkRegExLogin(data.username)) return cbError({ error: "Incorrect login" }, 400);
 			if (!checkRegExPassword(data.password)) return cbError({ error: "Incorrect password" }, 400);
-			const new_user = new self.Schema({
+			const new_user = new User.Schema({
 				username: data.username,
 				email: data.email,
 				post: data.post,
@@ -103,7 +110,7 @@ module.exports = function DataServise () {
 					phone: data.phone,
 					fullname: data.fullname,
 				};
-				self.Schema.findOneAndUpdate({ _id: id }, dataJson,
+				User.Schema.findOneAndUpdate({ _id: id }, dataJson,
 				function(err, user) {
 					if (err) {
 						let error = { error: err.message};
@@ -120,16 +127,16 @@ module.exports = function DataServise () {
 	}
 
 	self.delete = function(id, cbSuccess, cbError) {
-		self.Schema.findOneAndRemove({ _id: id }, function(err, user) {
+		User.Schema.findOneAndRemove({ _id: id }, function(err, user) {
 			if (err || !user) {
 				cbError({ error: "Invalid id." }, 400);
 				return;
 			}
 			cbSuccess({ success: true });
 		});
-	}
+    }
 
-	self.UserSchema.methods.verifyPassword = function(password, cb, _thisPassword) {
+	User.UserSchema.methods.verifyPassword = function(password, cb, _thisPassword) {
 		bcrypt.compare(password, _thisPassword, function(err, isMatch) {			
 			if (err) {
 				cb(err);
@@ -153,7 +160,6 @@ module.exports = function DataServise () {
 			];
 		if (oneUser === true) {
 			for (const key in userData) {
-				console.log(key);
 			}
 			user = buildUserData(userData, standartUserFields, addField, delField);
 		} else {

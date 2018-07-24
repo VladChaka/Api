@@ -4,10 +4,13 @@ let express = require("express"),
     mongoose = require("mongoose"),
     getParam = require("./util/common"),
 	port = getParam("port", 4000),
+	Core = require("./repository/core").Core,
 	dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", 
 	dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
 	db = getParam("local", dbMlab);
-	
+
+module.exports = Core;
+
 mongoose.connect(db, function(err) {
 	if (err) return console.log("Connection error: ", err.message);
 });
@@ -15,6 +18,7 @@ mongoose.connect(db, function(err) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname));
+// app.use(express.static(__dirname + '/vue-demo'));
 app.use(express.static(__dirname + '/public_chameleon47'));
 
 //route
@@ -30,5 +34,3 @@ app.use(function(req, res) {
 app.listen(port, () => {
 	console.log(`Start server on ${port} port`);
 })
-
-module.exports = app;

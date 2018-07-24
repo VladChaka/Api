@@ -2,9 +2,9 @@ let mongoose = require("mongoose"),
     Core = require("../index"),
     Schema = mongoose.Schema;
 
-Core.module('app.user').service('app.repository.User', db);
+Core.module('app.user').service('app.repository.User', SchemaDb);
 	
-function db(){
+function SchemaDb(){
     let self = this;
 
     self.UserSchema = new Schema({

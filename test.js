@@ -354,7 +354,7 @@ let object = {
         mobile: {
             phoneFixed: 'phones.fixed',
             test: 'phones.test.test1'
-        }
+    }
     },
     result = compileData(object, template),
     result1 = compileData1(object, template);

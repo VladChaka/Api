@@ -1,14 +1,8 @@
-require("../Servise/DataServise")
 let express = require('express'),
-    router = express.Router(),
-    token__module = require('../token/token'),
-    Core = require("../index"),
     jwt = require('jsonwebtoken'),
-    dataServise;
-
-let modules = Core.module('app.servise');
-modules.run();
-dataServise = modules.get('app.Servise.DataServise');
+    dataServise = require("../util/dataCore").dataServise,
+    token__module = require('../util/token/token'),
+    router = express.Router();
 
 router.post('/login', (req, res) => {	
     const jsonData = {
@@ -43,7 +37,7 @@ router.get('/users', token__module.isValid, (req, res) => {
 
 router.get('/users/:id', token__module.isValid, (req, res) => {
     const id = req.params.id;	
-    dataServise.findOne(id, function(result){		
+    dataServise.findOne(id, function(result){
         res.status(200).json(result);
     },
     function (err, status) {
@@ -80,7 +74,7 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
             password: req.body.password || "",
             fullname: req.body.fullname || "",
             post: req.body.post || ""
-        };
+        };        
 
     if (jsonData.password === "") {
         delete jsonData.password
@@ -90,7 +84,7 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
         res.status(200).json(result); 
     },
     function (err, status) {
-        err.status = status;		
+        err.status = status;
         res.status(status).json(err);
     });
 });
@@ -109,4 +103,4 @@ router.delete('/users/:id', token__module.isValid, (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports.router = router;

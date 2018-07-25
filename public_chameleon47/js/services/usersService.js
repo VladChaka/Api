@@ -19,8 +19,6 @@ define(['remoteService'], function(){
        };
 
        self.editUser = function(user, callback) {
-           console.log(user);
-           
            remoteService.update.update(user, function(response) {
                callback(response);
            }, function(error) {

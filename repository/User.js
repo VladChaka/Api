@@ -1,9 +1,9 @@
 let mongoose = require("mongoose"),
-    Core = require("../index"),
+    Core = require("../util/dataCore").Core,
     Schema = mongoose.Schema;
+    
+Core.module('app').service('app.repository.User', SchemaDb);
 
-Core.module('app.user').service('app.repository.User', SchemaDb);
-	
 function SchemaDb(){
     let self = this;
 

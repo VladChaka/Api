@@ -1,18 +1,15 @@
-require("../repository/user")
-let User,
-    chai = require('chai'),
+require("../index");
+let chai = require('chai'),
     chaiHttp = require('chai-http'),
     server = require('../index'),
     mongoose = require("mongoose"),
-    Core = require("../index"),
-    modules = Core.module('app.user'),
     bcrypt = require('bcrypt-nodejs'),
     jwt = require('jsonwebtoken'),
+    // Core = require("../controller/index").Core,
+    User = require("../util/dataCore").User;
     should = chai.should();
 
-// Core.module('app.testing').service('app.test.test', TestingServise);
-modules.run();
-User = modules.get('app.repository.User');
+// Core.module('app').service('app.testing.test', TestingServise);
 
 chai.use(chaiHttp);
 
@@ -67,18 +64,18 @@ function TestingServise() {
 describe('Users', () => {
     let self = this;
     delete mongoose.connection.models['User'];
-    User.apply(self);
+    // User.apply(self);
     TestingServise.apply(self);
 
     beforeEach(() => {
-        self.Schema.remove({}, function (err) {
+        User.Schema.remove({}, function (err) {
             if (err) throw new Error(err.message);
         });     
     });
 
     describe('/GET users', () => {
-        it('it should GET all users', (done) => {
-            let user = new self.Schema({
+        it('it should GET all users', () => {
+            let user = new User.Schema({
                 username: "Vasya0",
                 email: "allankar0@mail.ru",
                 post: "Admin",
@@ -96,12 +93,11 @@ describe('Users', () => {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
                     res.body.length.should.be.eql(0);
-                    done();
                 });
         });
 
-        it('it should GET user by the given id', (done) => {
-            let user = new self.Schema({
+        it('it should GET user by the given id', () => {
+            let user = new User.Schema({
                 username: "Vasya1",
                 email: "allankar1@mail.ru",
                 post: "Admin",
@@ -120,14 +116,13 @@ describe('Users', () => {
                         .end((err, res) => {
                             if (err) throw new Error(err.message);
                             self.success(res, 200);
-                            done();
                         });
                 });
             });
         });
 
-        it('it should not GET user by the given invalid id', (done) => {
-            let user = new self.Schema({
+        it('it should not GET user by the given invalid id', () => {
+            let user = new User.Schema({
                 username: "Vasya2",
                 email: "allankar2@mail.ru",
                 post: "Admin",
@@ -146,7 +141,6 @@ describe('Users', () => {
                         .end((err, res) => {
                             if (err) throw new Error(err.message);
                             self.success(res, 400);
-                            done();
                         });
                 });
             });
@@ -154,8 +148,8 @@ describe('Users', () => {
     });
 
     describe('/POST users', () => {
-        it('it should POST auth user', (done) => {
-            let user = new self.Schema({
+        it('it should POST auth user', () => {
+            let user = new User.Schema({
                 username: "Vasya3",
                 email: "allankar3@mail.ru",
                 post: "Admin",
@@ -182,14 +176,13 @@ describe('Users', () => {
                             res.body.should.have.property("status");
                             res.body.should.have.property("id");
                             res.body.should.have.property("token");
-                            done();
                         });
                 })
             });
         });
 
-        it('it should not POST auth user without password field', (done) => {
-            let user = new self.Schema({
+        it('it should not POST auth user without password field', () => {
+            let user = new User.Schema({
                 username: "Vasya4",
                 email: "allankar4@mail.ru",
                 post: "Admin",
@@ -211,13 +204,12 @@ describe('Users', () => {
                         .end((err, res) => {
                             if (err) throw new Error(err.message);
                             self.success(res, 400);
-                            done();
                         });
                 });
             });
         });
 
-        it('it should POST user', (done) => {
+        it('it should POST user', () => {
             let user = {
                 username: "Viktor",
                 email: "Viktoria@mail.ru",
@@ -235,11 +227,10 @@ describe('Users', () => {
                 .end((err, res) => {
                     if (err) throw new Error(err.message);
                     self.success(res, 200);
-                    done();
                 });
         });
 
-        it('it should not POST user without password field', (done) => {
+        it('it should not POST user without password field', () => {
             let user = {
                 username: "Vasya5",
                 email: "allankar5@mail.ru",
@@ -256,14 +247,13 @@ describe('Users', () => {
                 .end((err, res) => {
                     if (err) throw new Error(err.message);
                     self.success(res, 400);
-                    done();
                 });
         });
     });
 
     describe('/PUT users', () => {
-        it('it should PUT user by the given id', (done) => {
-            let user = new self.Schema({
+        it('it should PUT user by the given id', () => {
+            let user = new User.Schema({
                 username: "Vasya6",
                 email: "allankar6@mail.ru",
                 post: "Admin",
@@ -290,14 +280,13 @@ describe('Users', () => {
                         .end((err, res) => {
                             if (err) throw new Error(err.message);
                             self.success(res, 200);
-                            done();
                         });
                 });
             });
         });
 
-        it('it should not PUT user by the given invalid id', (done) => {
-            let user = new self.Schema({
+        it('it should not PUT user by the given invalid id', () => {
+            let user = new User.Schema({
                 username: "Vasya7",
                 email: "allankar7@mail.ru",
                 post: "Admin",
@@ -324,7 +313,6 @@ describe('Users', () => {
                         .end((err, res) => {
                             if (err) throw new Error(err.message);
                             self.success(res, 500);
-                            done();
                         });
                 });
             });
@@ -332,8 +320,8 @@ describe('Users', () => {
     });
 
     describe('/DELETE users', () => {
-        it('it should DELETE user by the given id', (done) => {
-            let user = new self.Schema({
+        it('it should DELETE user by the given id', () => {
+            let user = new User.Schema({
                 username: "Vasya8",
                 email: "allankar8@mail.ru",
                 post: "Admin",
@@ -355,14 +343,13 @@ describe('Users', () => {
                             res.body.should.be.a('object');
                             res.body.should.have.property("status");
                             res.body.should.have.property("success");
-                            done();
                         });
                 });
             });
         });
 
-        it('it should not DELETE user by the given invalid id', (done) => {
-            let user = new self.Schema({
+        it('it should not DELETE user by the given invalid id', () => {
+            let user = new User.Schema({
                 username: "Vasya9",
                 email: "allankar9@mail.ru",
                 post: "Admin",
@@ -381,7 +368,6 @@ describe('Users', () => {
                         .end((err, res) => {
                             if (err) throw new Error(err.message);
                             self.success(res, 400);
-                            done();
                         });
                 });
             });

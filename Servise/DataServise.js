@@ -1,14 +1,10 @@
-require("../repository/User")
-let Core = require("../index"),
-    modules = Core.module('app.user'),
-    User,
+let Core = require("../util/dataCore").Core,
     bcrypt = require('bcrypt-nodejs');
 
-Core.module('app.servise').service('app.Servise.DataServise', DataServise);
-modules.run();
-User = modules.get('app.repository.User');
+DataServise.$inject = ['app.repository.User'];
+Core.module('app').service('app.Servise.DataServise', DataServise);
 
-function DataServise () {
+function DataServise (User) {
     let self = this;
 
     self.login = function(data, cbSuccess, cbError) {			
@@ -44,7 +40,7 @@ function DataServise () {
 
     self.findOne = function(id, cbSuccess, cbError) {		
         User.Schema.findOne({ _id: id }, function(err, user) {
-            if (err || !user) {
+            if (err || !user) {                
                 cbError({ error: "Invalid id." }, 400);
                 return;
             }			

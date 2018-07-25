@@ -5,18 +5,15 @@ let chai = require('chai'),
     mongoose = require("mongoose"),
     bcrypt = require('bcrypt-nodejs'),
     jwt = require('jsonwebtoken'),
-    // Core = require("../controller/index").Core,
-    User = require("../util/dataCore").User;
+    userRepository = require("../util/dataCore").userRepository;
     should = chai.should();
-
-// Core.module('app').service('app.testing.test', TestingServise);
 
 chai.use(chaiHttp);
 
 function TestingServise() {
     let self = this;
 
-    self.success = function (res, status) {
+    self.success = function (res, status) {        
         if (status === 200) {
             res.should.have.status(status);
             res.body.should.be.a('object');
@@ -26,56 +23,32 @@ function TestingServise() {
             res.body.user.should.have.property("phone");
             res.body.user.should.have.property("fullname");
         } else {
+            
             res.should.have.status(status);
             res.body.should.be.a('object');
-            res.body.should.have.property("status");
             res.body.should.have.property("error");
         }	
     }
-	
-    self.hashPassword = function (data, cbSuccess) {
-        const user = data;
-        if (data.password !== undefined && data.password.length !== 0) {
-            if (!checkRegExPassword(data.password)) throw new Error("Incorrect password");
-
-            bcrypt.genSalt(5, function(err, salt) {
-                if (err) throw new Error(err.message)
-
-                bcrypt.hash(user.password, salt, null, function(err, hash) {
-                    if (err) throw new Error(err.message)
-                    user.password = hash;
-                    cbSuccess(user);
-                });
-            });
-        } else {
-        cbSuccess(user);
-        }
-    };
 
     self.token = function (user) {
         return jwt.sign({ username: user.username }, 'yqawv8nqi5', { expiresIn: '1 h' });
-    }
-
-    function checkRegExPassword(pass) {
-    return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7;
     }
 }
 
 describe('Users', () => {
     let self = this;
     delete mongoose.connection.models['User'];
-    // User.apply(self);
     TestingServise.apply(self);
 
     beforeEach(() => {
-        User.Schema.remove({}, function (err) {
+        userRepository.SchemaModel.remove({}, function (err) {
             if (err) throw new Error(err.message);
         });     
     });
 
     describe('/GET users', () => {
         it('it should GET all users', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya0",
                 email: "allankar0@mail.ru",
                 post: "Admin",
@@ -97,7 +70,7 @@ describe('Users', () => {
         });
 
         it('it should GET user by the given id', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya1",
                 email: "allankar1@mail.ru",
                 post: "Admin",
@@ -107,7 +80,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);				
                     chai.request(server)
@@ -122,7 +95,7 @@ describe('Users', () => {
         });
 
         it('it should not GET user by the given invalid id', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya2",
                 email: "allankar2@mail.ru",
                 post: "Admin",
@@ -132,7 +105,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);
                     chai.request(server)
@@ -149,7 +122,7 @@ describe('Users', () => {
 
     describe('/POST users', () => {
         it('it should POST auth user', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya3",
                 email: "allankar3@mail.ru",
                 post: "Admin",
@@ -159,7 +132,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function (user) {
+            userRepository.hashPassword(user, function (user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);
                     chai.request(server)
@@ -182,7 +155,7 @@ describe('Users', () => {
         });
 
         it('it should not POST auth user without password field', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya4",
                 email: "allankar4@mail.ru",
                 post: "Admin",
@@ -192,7 +165,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {				
                     if (err) throw new Error(err.message);
                     chai.request(server)
@@ -225,7 +198,7 @@ describe('Users', () => {
                 .send(user)
                 .query({ token: self.token(user) })
                 .end((err, res) => {
-                    if (err) throw new Error(err.message);
+                    if (err) throw new Error(err.message);                    
                     self.success(res, 200);
                 });
         });
@@ -253,7 +226,7 @@ describe('Users', () => {
 
     describe('/PUT users', () => {
         it('it should PUT user by the given id', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya6",
                 email: "allankar6@mail.ru",
                 post: "Admin",
@@ -263,7 +236,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);
                     chai.request(server)
@@ -286,7 +259,7 @@ describe('Users', () => {
         });
 
         it('it should not PUT user by the given invalid id', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya7",
                 email: "allankar7@mail.ru",
                 post: "Admin",
@@ -296,7 +269,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);
                     chai.request(server)
@@ -321,7 +294,7 @@ describe('Users', () => {
 
     describe('/DELETE users', () => {
         it('it should DELETE user by the given id', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya8",
                 email: "allankar8@mail.ru",
                 post: "Admin",
@@ -331,7 +304,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);
                     chai.request(server)
@@ -349,7 +322,7 @@ describe('Users', () => {
         });
 
         it('it should not DELETE user by the given invalid id', () => {
-            let user = new User.Schema({
+            let user = new userRepository.SchemaModel({
                 username: "Vasya9",
                 email: "allankar9@mail.ru",
                 post: "Admin",
@@ -359,7 +332,7 @@ describe('Users', () => {
                 rating: 0,
                 regDate: "30.10.2018"
             });
-            self.hashPassword(user, function(user) {
+            userRepository.hashPassword(user, function(user) {
                 user.save(function(err, user) {
                     if (err) throw new Error(err.message);
                     chai.request(server)

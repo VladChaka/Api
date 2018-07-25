@@ -1,5 +1,4 @@
 let express = require('express'),
-    jwt = require('jsonwebtoken'),
     dataServise = require("../util/dataCore").dataServise,
     token__module = require('../util/token/token'),
     router = express.Router();
@@ -10,17 +9,10 @@ router.post('/login', (req, res) => {
         password: req.body.password || req.query.password
     };
 
-    dataServise.login(jsonData, function(id){
-        const token = jwt.sign({ username: jsonData.username }, 'yqawv8nqi5', { expiresIn: '1 h' });
-
-        res.status(200).json({
-            id: id,
-            token: token,
-            status: 200
-        });
+    dataServise.login(jsonData, function(result){
+        res.status(200).json(result);
     },
-    function(err){
-        err.status = 400;		
+    function(err){	
         res.status(400).json(err);
     });
 });
@@ -30,7 +22,6 @@ router.get('/users', token__module.isValid, (req, res) => {
         res.status(200).json(result); 
     },
     function (err) {
-        err.status = 500;
         res.status(500).json(err);
     });
 });
@@ -41,7 +32,6 @@ router.get('/users/:id', token__module.isValid, (req, res) => {
         res.status(200).json(result);
     },
     function (err, status) {
-        err.status = status;
         res.status(status).json(err);
     });
 });
@@ -62,7 +52,6 @@ router.post('/users', token__module.isValid, (req, res) => {
         res.status(200).json(result); 
     },
     function (err, status) {
-        err.status = status;
         res.status(status).json(err);
     });
 });
@@ -84,7 +73,6 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
         res.status(200).json(result); 
     },
     function (err, status) {
-        err.status = status;
         res.status(status).json(err);
     });
 });
@@ -92,13 +80,10 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
 router.delete('/users/:id', token__module.isValid, (req, res) => {
     const id = req.params.id;		
 
-    dataServise.delete(id, function(result){
-        result.status = 200;
-        result.message = "Ok";		
-        res.status(200).json(result); 
+    dataServise.delete(id, function(){
+        res.status(200).json({ message: "Ok" }); 
     },
     function (err, status) {
-        err.status = status;
         res.status(status).json(err);
     });
 });

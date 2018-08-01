@@ -1,9 +1,9 @@
 let Core = require("../util/dataCore").Core;
 
 DataServise.$inject = ['app.userRepository'];
-Core.module('app').service('app.dataServise', DataServise);
+Core.module('app').service('app.userDataServise', UserDataServise);
 
-function DataServise (userRepository) {
+function UserDataServise (userRepository) {
     let self = this;
 
     self.login = (data, cbSuccess, cbError) => {			
@@ -41,20 +41,6 @@ function DataServise (userRepository) {
 
             userRepository.add(
                 data,
-                (result) => { cbSuccess(result); },
-                (err, status) => { cbError(err, status); }
-            );
-        }
-    }
-
-    self.books = (addBook, cbSuccess, cbError) => {   
-        let emptyField = checkEmptyField(Zone.current.data.book);
-
-        if (emptyField.length !== 0) {
-            cbError({ error: "Fields empty."}, 400);
-        } else {
-            userRepository.workingWithBooks(
-                addBook,
                 (result) => { cbSuccess(result); },
                 (err, status) => { cbError(err, status); }
             );

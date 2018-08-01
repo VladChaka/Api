@@ -7,6 +7,7 @@ let express = require("express"),
     port = getParam("port", 4000),
     dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", 
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
+    token__module = require('../util/token/token'),
     db = getParam("local", dbMlab);
 
 mongoose.connect(db, (err) => {
@@ -17,9 +18,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/public_chameleon47'));
+app.use(token__module);
+// app.use((req, res, next) => {
+//     token__module(req, res, next);
+// });
 app.use((req, res, next) => {
-    Zone.current.fork({});
-    next();
+    const token = req.body.token || req.query.token || req.headers['x-access-token'],
+          decoded = jwt.verify(token, 'yqawv8nqi5');
+    Zone.current.fork({}).run(() => {
+        Zone.current.data = {
+            userName: decoded,
+            bookName: req.body.bookname
+        }
+        next();
+    });
 });
 
 //route

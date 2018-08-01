@@ -1,3 +1,4 @@
+require('zone.js');
 let express = require('express'),
     dataServise = require("../util/dataCore").dataServise,
     token__module = require('../util/token/token'),
@@ -85,6 +86,46 @@ router.delete('/users/:id', token__module.isValid, (req, res) => {
     },
     function (err, status) {
         res.status(status).json(err);
+    });
+});
+
+router.post('/users/:id/books', (req, res) => {
+    Zone.current.fork({}).run(() => {
+        const date = new Date;
+        Zone.current.data = {
+            user: {
+                id: req.params.id
+            },
+            book: {
+                name: req.body.nameBook || "",
+                date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+            }
+        };        
+        dataServise.books(
+            true,
+            (result) => { res.status(200).json(result); },
+            (err, status) => { res.status(status).json(err); }
+        );
+    });
+});
+
+router.put('/users/:id/books', (req, res) => {
+    Zone.current.fork({}).run(() => {
+        const date = new Date;
+        Zone.current.data = {
+            user: {
+                id: req.params.id
+            },
+            book: {
+                name: req.body.nameBook || "",
+                date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+            }
+        };        
+        dataServise.books(
+            false,
+            (result) => { res.status(200).json(result); },
+            (err, status) => { res.status(status).json(err); }
+        );
     });
 });
 

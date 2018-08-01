@@ -43,6 +43,14 @@ function userRepository(){
         regDate: {
             type: String,
             required: true
+        },
+        book: {
+            name: {
+                type: String
+            },
+            date: {
+                type: String
+            }
         }
     });	
 
@@ -58,7 +66,7 @@ function userRepository(){
                         cbError({ error: 'Authentication failed. Login or password wrong.' });
                         return;
                     }
-                    const token = jwt.sign({ username: data.username }, 'yqawv8nqi5', { expiresIn: '1 h' });
+                    const token = jwt.sign({ username: data.username }, 'yqawv8nqi5', { expiresIn: '1h' });
                     cbSuccess({ id: user._id, token: token });
                 }, user.password);
             }
@@ -81,17 +89,17 @@ function userRepository(){
     }
 
     self.oneUser = function (id, cbSuccess, cbError) {
-        self.SchemaModel.findOne({ _id: id }, function(err, user) {
-            if (err || !user) {                
-                cbError({ error: "Invalid id." }, 400);
-                return;
-            }			
+        self.SchemaModel.findOne({ _id: id })
+        .then((user) => {
             data = rebuildUserData(user, null, [
                 'password',
                 'rating',
                 'regDate'
             ], true);
             cbSuccess(data);
+        })
+        .catch((err) => {
+            cbError({ error: "Invalid id." }, 400);
         });
     }
 
@@ -104,7 +112,11 @@ function userRepository(){
             password: data.password,
             fullname: data.fullname,
             rating: 0,
-            regDate: data.regDate
+            regDate: data.regDate,
+            book: {
+                name: '',
+                date: ''
+            }
         });
         self.hashPassword(new_user, function (new_user) {
             new_user.save(function(err, user) {
@@ -112,13 +124,47 @@ function userRepository(){
                     cbError({ error: err.message }, 500);
                     return;
                 }
-                data = rebuildUserData(user, true);					
+                data = rebuildUserData(user, null, null, true);					
                 cbSuccess(data);
             });
         }, function (err) {
             cbError({ error: err.message }, 500);
         });
     }
+
+
+
+
+    self.workingWithBooks = (addBook, cbSuccess, cbError) => {
+
+        console.log("test1",Zone.current.data);
+        self.SchemaModel.findOne({ _id: Zone.current.data.user.id }, (err, user) => {
+            console.log("test2",Zone.current.data); //undefined
+        });
+
+        self.oneUser(Zone.current.data.user.id,
+            (result) => {                
+                if (checkUserBooks(addBook, result, Zone.current.data, cbError)) return;
+
+                let book = (addBook) ? { book : Zone.current.data.book } : { book : { name: '', date: '' } };
+
+                self.SchemaModel.findOneAndUpdate({ _id: Zone.current.data.user.id }, book)
+                .then((user) => {
+                    Zone.current.data.user = rebuildUserData(user, null, null, true);
+                    cbSuccess(Zone.current.data.user);
+                })
+                .catch((err) => {
+                    cbError({ error: err.message }, 500);
+                });
+
+            },
+            (err, status) => {
+                cbError(err, status);
+            });
+    }
+
+
+
 
     self.updateUser = function (id, data, cbSuccess, cbError) {
         self.hashPassword(data, function (data) {
@@ -132,11 +178,12 @@ function userRepository(){
                 self.SchemaModel.findOneAndUpdate({ _id: id }, dataJson,
                 function(err, user) {
                     if (err) {
-                        let error = { error: err.message};
+                        let error = { error: err.message };
                         cbError(error, 500);
                         return;
                     }
-                    data = rebuildUserData(user, true);			
+
+                    data = rebuildUserData(user, null, null, true);			
                     cbSuccess(data);
                 });
             }, function (err) {
@@ -163,47 +210,6 @@ function userRepository(){
             cb(null, isMatch);
         });
     };
-	
-    function rebuildUserData(userData, addField, delField, oneUser) {
-        let user,
-            standartUserFields = [
-                '_id',
-                'username',
-                'email',
-                'fullname',
-                'phone',
-                'post',
-                'rating',
-                'regDate'
-            ];
-        if (oneUser === true) {
-            user = buildUserData(userData, standartUserFields, addField, delField);
-        } else {
-            user = [];
-            for (let i = 0; i < userData.length; i++) {
-                user.push(buildUserData(userData[i], standartUserFields, addField, delField));
-            }
-        }
-        return user;
-    }
-
-    function buildUserData(userData, standartUserFields, addField, delField) {
-        let user = {};
-        for (const index in userData) {
-            for (let i = 0; i < standartUserFields.length; i++) {
-                if (standartUserFields[i] === index) {
-                    user[index]	= userData[index];
-                }
-                if (addField !== null && addField[i] === index) {
-                    user[index] = userData[index];
-                }
-            }
-        }
-        for (let i = 0; i < delField.length; i++) {
-            delete user[delField[i]];
-        }		
-        return user
-    }
 
     self.hashPassword = function (data, cbSuccess) {
         const user = data;
@@ -226,6 +232,67 @@ function userRepository(){
             cbSuccess(user);
         }
     };
+	
+    function rebuildUserData(userData, addField, delField, oneUser) {
+        let user,
+            standartUserFields = [
+                '_id',
+                'username',
+                'email',
+                'fullname',
+                'phone',
+                'post',
+                'rating',
+                'regDate,',
+                'book'
+            ];
+
+        if (oneUser === true) {
+            user = buildUserData(userData, standartUserFields, addField, delField);
+        } else {
+            user = [];
+            userData.map((element) => {
+                user.push(buildUserData(element, standartUserFields, addField, delField));
+            });
+        }
+        return user;
+    }
+
+    function buildUserData(userData, standartUserFields, addField, delField) {
+        let user = {};        
+        for (const index in userData) {
+            standartUserFields.map((element) => {
+                if (element === index) {
+                    user[index]	= userData[index];
+                }
+                if (addField !== undefined && addField !== null && addField[i] === index) {
+                    user[index] = userData[index];
+                }
+            });
+            
+        }
+
+        if (delField !== undefined && delField !== null && delField.length !== null) {
+            delField.map((element) => {
+                delete user[element];
+            });
+        }
+              
+        return user
+    }
+
+    function checkUserBooks(addBook, data, zone1, cbError) {
+        let error = false;
+        if (addBook && data.book.name !== "") {
+            error = true;
+            cbError({ error: 'User have a book.'}, 400);
+        }
+        if (!addBook && data.book.name !== zone1.book.name) {
+            error = true;
+            cbError({ error: 'User don\'t have this book.'}, 400);
+        }
+        return error;
+    }
 
     function checkRegExPassword(pass) {
         return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7;

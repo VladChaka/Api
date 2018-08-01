@@ -19,7 +19,7 @@ define(['remoteService'], function(){
        };
 
        self.editUser = function(user, callback) {
-           remoteService.update.update(user, function(response) {
+           remoteService.update.update(user, function(response) {               
                callback(response);
            }, function(error) {
                callback(error);

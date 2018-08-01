@@ -37,8 +37,7 @@ function DataServise (userRepository) {
         let emptyField = checkEmptyField(data);	
 
         if (emptyField.length !== 0) {
-            let error = { error: "Fields empty."};
-            cbError(error, 400);
+            cbError({ error: "Fields empty."}, 400);
         } else {
             if (!checkRegExEmail(data.email)) return cbError({ error: "Incorrect email" }, 400);
             if (!checkRegExLogin(data.username)) return cbError({ error: "Incorrect login" }, 400);
@@ -47,18 +46,40 @@ function DataServise (userRepository) {
             userRepository.add(data, function (result) {
                 cbSuccess(result);
             },
-            function (err) {
-                cbError(err);
+            function (err, status) {
+                cbError(err, status);
             });
         }
     }
+
+
+
+
+
+    self.books = function(addBook, cbSuccess, cbError) {   
+        let emptyField = checkEmptyField(Zone.current.data.book);	
+        
+        if (emptyField.length !== 0) {
+            cbError({ error: "Fields empty."}, 400);
+        } else {
+            userRepository.workingWithBooks(
+                addBook,
+                (result) => { cbSuccess(result); },
+                (err, status) => { cbError(err, status); }
+            );
+        }     
+        
+    }
+
+
+
+
 
     self.update = function(id, data, cbSuccess, cbError) {
         let emptyField = checkEmptyField(data);	
 
         if (emptyField.length !== 0) {
-            let error = { error: "Fields empty."};
-            cbError(error, 400);
+            cbError({ error: "Fields empty."}, 400);
         } else {
             if (!checkRegExEmail(data.email)) return cbError({ error: "Incorrect email" }, 400);
             if (!checkRegExLogin(data.username)) return cbError({ error: "Incorrect login" }, 400);

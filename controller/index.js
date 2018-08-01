@@ -1,4 +1,3 @@
-require('zone.js');
 let express = require('express'),
     dataServise = require("../util/dataCore").dataServise,
     token__module = require('../util/token/token'),
@@ -10,31 +9,27 @@ router.post('/login', (req, res) => {
         password: req.body.password || req.query.password
     };
 
-    dataServise.login(jsonData, function(result){
-        res.status(200).json(result);
-    },
-    function(err){	
-        res.status(400).json(err);
-    });
+    dataServise.login(
+        jsonData, 
+        (result) => { res.status(200).json(result); },
+        (err) => { res.status(400).json(err); }
+    );
 });
 
 router.get('/users', token__module.isValid, (req, res) => {
-    dataServise.findAll(function(result){
-        res.status(200).json(result); 
-    },
-    function (err) {
-        res.status(500).json(err);
-    });
+    dataServise.findAll(
+        (result) => { res.status(200).json(result); },
+        (err) => { res.status(500).json(err); }
+    );
 });
 
 router.get('/users/:id', token__module.isValid, (req, res) => {
     const id = req.params.id;	
-    dataServise.findOne(id, function(result){
-        res.status(200).json(result);
-    },
-    function (err, status) {
-        res.status(status).json(err);
-    });
+    dataServise.findOne(
+        id, 
+        (result) => { res.status(200).json(result); },
+        (err, status) => { res.status(status).json(err); }
+    );
 });
 
 router.post('/users', token__module.isValid, (req, res) => {
@@ -49,12 +44,11 @@ router.post('/users', token__module.isValid, (req, res) => {
             regDate: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
           };
 
-    dataServise.add(jsonData, function(result){	
-        res.status(200).json(result); 
-    },
-    function (err, status) {
-        res.status(status).json(err);
-    });
+    dataServise.add(
+        jsonData,
+        (result) => { res.status(200).json(result); },
+        (err, status) => { res.status(status).json(err); }
+    );
 });
 
 router.put('/users/:id', token__module.isValid, (req, res) => {
@@ -66,31 +60,28 @@ router.put('/users/:id', token__module.isValid, (req, res) => {
             post: req.body.post || ""
         };        
 
-    if (jsonData.password === "") {
-        delete jsonData.password
-    }	
+    if (jsonData.password === "") delete jsonData.password;
 
-    dataServise.update(req.params.id, jsonData, function(result){
-        res.status(200).json(result); 
-    },
-    function (err, status) {
-        res.status(status).json(err);
-    });
+    dataServise.update(
+        req.params.id,
+        jsonData,
+        (result) => { res.status(200).json(result); },
+        (err, status) => { res.status(status).json(err); }
+    );
 });
 
 router.delete('/users/:id', token__module.isValid, (req, res) => {
     const id = req.params.id;		
 
-    dataServise.delete(id, function(){
-        res.status(200).json({ message: "Ok" }); 
-    },
-    function (err, status) {
-        res.status(status).json(err);
-    });
+    dataServise.delete(
+        id,
+        () => { res.status(200).json({ message: "Ok" }); },
+        (err, status) => { res.status(status).json(err); }
+    );
 });
 
 router.post('/users/:id/books', (req, res) => {
-    Zone.current.fork({}).run(() => {
+    Zone.current.run(() => {
         const date = new Date;
         Zone.current.data = {
             user: {
@@ -100,7 +91,7 @@ router.post('/users/:id/books', (req, res) => {
                 name: req.body.nameBook || "",
                 date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
             }
-        };        
+        };
         dataServise.books(
             true,
             (result) => { res.status(200).json(result); },
@@ -110,7 +101,7 @@ router.post('/users/:id/books', (req, res) => {
 });
 
 router.put('/users/:id/books', (req, res) => {
-    Zone.current.fork({}).run(() => {
+    Zone.current.run(() => {
         const date = new Date;
         Zone.current.data = {
             user: {

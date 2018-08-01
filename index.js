@@ -1,3 +1,4 @@
+require('zone.js');
 let express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
@@ -8,7 +9,7 @@ let express = require("express"),
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
     db = getParam("local", dbMlab);
 
-mongoose.connect(db, function(err) {
+mongoose.connect(db, (err) => {
     if (err) return console.log("Connection error: ", err.message);
 });
 
@@ -16,11 +17,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/public_chameleon47'));
+app.use((req, res, next) => {
+    Zone.current.fork({});
+    next();
+});
 
 //route
 app.use('/', require(__dirname + '/controller/index').router);
 
-app.use(function(req, res) {
+app.use((req, res) => {
     res.status(404);
     console.log('Not found URL: %s', req.url);
     res.send({ error: 'Not found' });

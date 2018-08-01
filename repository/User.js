@@ -56,24 +56,35 @@ function userRepository(){
 
     self.SchemaModel = mongoose.model("User", self.UserSchema);
 
-    self.login = function (data, cbSuccess, cbError) {
-        self.SchemaModel.findOne({ username: data.username }, function(err, user) {
-            if (err || !user) {
-                cbError({ error: 'Authentication failed. Login or password wrong.' });
-            } else {
-                self.UserSchema.methods.verifyPassword(data.password, (err, success) => {
+    self.login = (data, cbSuccess, cbError) => {
+        self.SchemaModel.findOne({ username: data.username })
+        .then((user) => {
+            let error = { error: 'Authentication failed. Login or password wrong.' };
+            if (!user) {
+                cbError(error);
+                return;
+            }
+
+            self.UserSchema.methods.verifyPassword(
+                data.password,
+                (err, success) => {
                     if (err || !success) {
-                        cbError({ error: 'Authentication failed. Login or password wrong.' });
+                        cbError(error);
                         return;
                     }
+
                     const token = jwt.sign({ username: data.username }, 'yqawv8nqi5', { expiresIn: '1h' });
                     cbSuccess({ id: user._id, token: token });
-                }, user.password);
-            }
+                },
+                user.password
+            );
+        })
+        .catch((err) => {
+            cbError({ error: 'Authentication failed. Login or password wrong.' });
         });
     }
 
-    self.allUsers = function (cbSuccess, cbError) {
+    self.allUsers = (cbSuccess, cbError) => {
         self.SchemaModel.find({}, function(err, users) {
             if (err) {
                 cbError({ error: err.message });
@@ -132,16 +143,7 @@ function userRepository(){
         });
     }
 
-
-
-
     self.workingWithBooks = (addBook, cbSuccess, cbError) => {
-
-        console.log("test1",Zone.current.data);
-        self.SchemaModel.findOne({ _id: Zone.current.data.user.id }, (err, user) => {
-            console.log("test2",Zone.current.data); //undefined
-        });
-
         self.oneUser(Zone.current.data.user.id,
             (result) => {                
                 if (checkUserBooks(addBook, result, Zone.current.data, cbError)) return;
@@ -162,9 +164,6 @@ function userRepository(){
                 cbError(err, status);
             });
     }
-
-
-
 
     self.updateUser = function (id, data, cbSuccess, cbError) {
         self.hashPassword(data, function (data) {

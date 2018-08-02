@@ -4,13 +4,13 @@ let mongoose = require("mongoose"),
     jwt = require('jsonwebtoken'),
     Schema = mongoose.Schema;
     
-Core.module('app').service('app.userRepository', UserRepository);
+Core.module('app').service('app.userRepository', userRepository);
 
-function UserRepository(){
+function userRepository(){
     let self = this;
 
     self.UserSchema = new Schema({
-        userName: {
+        username: {
             type: String,
             unique: true,
             required: true
@@ -32,7 +32,7 @@ function UserRepository(){
             type: String,
             required: true
         },
-        fullName: {
+        fullname: {
             type: String,
             required: true
         },
@@ -44,9 +44,13 @@ function UserRepository(){
             type: String,
             required: true
         },
-        token: {
-            type: String,
-            required: true
+        book: {
+            name: {
+                type: String
+            },
+            date: {
+                type: String
+            }
         }
     });	
 
@@ -80,7 +84,7 @@ function UserRepository(){
         });
     }
 
-    self.getAll = (cbSuccess, cbError) => {
+    self.allUsers = (cbSuccess, cbError) => {
         self.SchemaModel.find({}, function(err, users) {
             if (err) {
                 cbError({ error: err.message });
@@ -95,7 +99,7 @@ function UserRepository(){
         });
     }
 
-    self.getOne = function (id, cbSuccess, cbError) {
+    self.oneUser = function (id, cbSuccess, cbError) {
         self.SchemaModel.findOne({ _id: id })
         .then((user) => {
             data = rebuildUserData(user, null, [
@@ -139,7 +143,29 @@ function UserRepository(){
         });
     }
 
-    self.update = function (id, data, cbSuccess, cbError) {
+    self.workingWithBooks = (addBook, cbSuccess, cbError) => {
+        self.oneUser(Zone.current.data.user.id,
+            (result) => {                
+                if (checkUserBooks(addBook, result, Zone.current.data, cbError)) return;
+
+                let book = (addBook) ? { book : Zone.current.data.book } : { book : { name: '', date: '' } };
+
+                self.SchemaModel.findOneAndUpdate({ _id: Zone.current.data.user.id }, book)
+                .then((user) => {
+                    Zone.current.data.user = rebuildUserData(user, null, null, true);
+                    cbSuccess(Zone.current.data.user);
+                })
+                .catch((err) => {
+                    cbError({ error: err.message }, 500);
+                });
+
+            },
+            (err, status) => {
+                cbError(err, status);
+            });
+    }
+
+    self.updateUser = function (id, data, cbSuccess, cbError) {
         self.hashPassword(data, function (data) {
             let dataJson = {
                     email: data.email,
@@ -164,7 +190,7 @@ function UserRepository(){
             });
     }
 
-    self.delete = function (id, cbSuccess, cbError) {
+    self.deleteUser = function (id, cbSuccess, cbError) {
         self.SchemaModel.findOneAndRemove({ _id: id }, function(err, user) {
             if (err || !user) {
                 cbError({ error: "Invalid id." }, 400);
@@ -184,10 +210,10 @@ function UserRepository(){
         });
     };
 
-    self.createHashPassword = function (data, cbSuccess) {
+    self.hashPassword = function (data, cbSuccess) {
         const user = data;
         if (data.password !== undefined && data.password.length !== 0) {
-            if (!checkRegExpPassword(data.password)) return cbError({ error: "Incorrect password" }, 400);
+            if (!checkRegExPassword(data.password)) return cbError({ error: "Incorrect password" }, 400);
             bcrypt.genSalt(5, function(err, salt) {
                 if (err) {
                     return;
@@ -254,7 +280,20 @@ function UserRepository(){
         return user
     }
 
-    function checkRegExpPassword(pass) {
+    function checkUserBooks(addBook, data, zone1, cbError) {
+        let error = false;
+        if (addBook && data.book.name !== "") {
+            error = true;
+            cbError({ error: 'User have a book.'}, 400);
+        }
+        if (!addBook && data.book.name !== zone1.book.name) {
+            error = true;
+            cbError({ error: 'User don\'t have this book.'}, 400);
+        }
+        return error;
+    }
+
+    function checkRegExPassword(pass) {
         return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7;
     }
 }

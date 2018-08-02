@@ -1,5 +1,6 @@
 let express = require('express'),
     dataServise = require("../util/dataCore").dataServise,
+    token__module = require('../util/token/token'),
     router = express.Router();
 
 router.post('/login', (req, res) => {	
@@ -15,14 +16,14 @@ router.post('/login', (req, res) => {
     );
 });
 
-router.get('/users', (req, res) => {
+router.get('/users', token__module.isValid, (req, res) => {
     dataServise.findAll(
         (result) => { res.status(200).json(result); },
         (err) => { res.status(500).json(err); }
     );
 });
 
-router.get('/users/:id', (req, res) => {
+router.get('/users/:id', token__module.isValid, (req, res) => {
     const id = req.params.id;	
     dataServise.findOne(
         id, 
@@ -31,7 +32,7 @@ router.get('/users/:id', (req, res) => {
     );
 });
 
-router.post('/users', (req, res) => {
+router.post('/users', token__module.isValid, (req, res) => {
     const date = new Date,
           jsonData = {
             username: req.body.username || "",
@@ -50,7 +51,7 @@ router.post('/users', (req, res) => {
     );
 });
 
-router.put('/users/:id', (req, res) => {
+router.put('/users/:id', token__module.isValid, (req, res) => {
     const jsonData = {
             email: req.body.email || "",
             phone: req.body.phone || "",
@@ -69,7 +70,7 @@ router.put('/users/:id', (req, res) => {
     );
 });
 
-router.delete('/users/:id', (req, res) => {
+router.delete('/users/:id', token__module.isValid, (req, res) => {
     const id = req.params.id;		
 
     dataServise.delete(
@@ -80,27 +81,43 @@ router.delete('/users/:id', (req, res) => {
 });
 
 router.post('/users/:id/books', (req, res) => {
-    dataServise.takeBook(
-        (result) => { res.status(200).json(result); },
-        (err, status) => { res.status(status).json(err); }
-    );
-});
-
-router.put('/users/:id/books', (req, res) => {
-    const date = new Date;
-    Zone.current.data = {
-        user: {
-            id: req.params.id
-        },
-        book: {
-            name: req.body.nameBook || "",
-            date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
-        }
-    };        
+    Zone.current.run(() => {
+        const date = new Date;
+        Zone.current.data = {
+            user: {
+                id: req.params.id
+            },
+            book: {
+                name: req.body.nameBook || "",
+                date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+            }
+        };
         dataServise.books(
+            true,
             (result) => { res.status(200).json(result); },
             (err, status) => { res.status(status).json(err); }
         );
+    });
+});
+
+router.put('/users/:id/books', (req, res) => {
+    Zone.current.run(() => {
+        const date = new Date;
+        Zone.current.data = {
+            user: {
+                id: req.params.id
+            },
+            book: {
+                name: req.body.nameBook || "",
+                date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
+            }
+        };        
+        dataServise.books(
+            false,
+            (result) => { res.status(200).json(result); },
+            (err, status) => { res.status(status).json(err); }
+        );
+    });
 });
 
 module.exports.router = router;

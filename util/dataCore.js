@@ -4,10 +4,15 @@ let Core = require("../repository/core").Core;
 module.exports.Core = Core;
 
 require("../repository/User");
-require("../Servise/DataServise");
+require("../repository/Library");
+require("../Servise/UserDataServise");
+require("../Servise/LibraryDataService");
 
 modules.run();
-let user = modules.get('app.userRepository'),
-    dataServise = modules.get('app.dataServise');
 
-module.exports = { dataServise: dataServise, userRepository: user };
+module.exports = { 
+    userDataServise: modules.get('app.userDataServise'),
+    userRepository: modules.get('app.userRepository'),
+    libraryRepository: modules.get('app.libraryRepository'),
+    libraryDataService: modules.get('app.libraryDataService')
+};

@@ -1,123 +1,63 @@
 let express = require('express'),
-    dataServise = require("../util/dataCore").dataServise,
-    token__module = require('../util/token/token'),
+    Core = require("../util/dataCore"),
+    userDataServise = Core.userDataServise,
+    libraryDataService = Core.libraryDataService,
     router = express.Router();
 
-router.post('/login', (req, res) => {	
-    const jsonData = {
-        username: req.body.username || req.query.username,
-        password: req.body.password || req.query.password
-    };
+/**
+ * Users
+ */
 
-    dataServise.login(
-        jsonData, 
-        (result) => { res.status(200).json(result); },
-        (err) => { res.status(400).json(err); }
-    );
+router.post('/login', (req, res) => {
+    userDataServise.login()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(400).json({ error: err.message }));
 });
 
-router.get('/users', token__module.isValid, (req, res) => {
-    dataServise.findAll(
-        (result) => { res.status(200).json(result); },
-        (err) => { res.status(500).json(err); }
-    );
+router.get('/users', (req, res) => {
+    userDataServise.findAll()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(500).json({ error: err.message }));
 });
 
-router.get('/users/:id', token__module.isValid, (req, res) => {
-    const id = req.params.id;	
-    dataServise.findOne(
-        id, 
-        (result) => { res.status(200).json(result); },
-        (err, status) => { res.status(status).json(err); }
-    );
+router.get('/users/:id', (req, res) => {
+    userDataServise.findOne()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(err.status).json({ error: err.message }));
 });
 
-router.post('/users', token__module.isValid, (req, res) => {
-    const date = new Date,
-          jsonData = {
-            username: req.body.username || "",
-            email: req.body.email || "",
-            phone: req.body.phone || "",
-            password: req.body.password || "",
-            fullname: req.body.fullname || "",
-            post: req.body.post || "",
-            regDate: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
-          };
-
-    dataServise.add(
-        jsonData,
-        (result) => { res.status(200).json(result); },
-        (err, status) => { res.status(status).json(err); }
-    );
+router.post('/users', (req, res) => {
+    userDataServise.add()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(err.status).json({ error: err.message }));
 });
 
-router.put('/users/:id', token__module.isValid, (req, res) => {
-    const jsonData = {
-            email: req.body.email || "",
-            phone: req.body.phone || "",
-            password: req.body.password || "",
-            fullname: req.body.fullname || "",
-            post: req.body.post || ""
-        };        
-
-    if (jsonData.password === "") delete jsonData.password;
-
-    dataServise.update(
-        req.params.id,
-        jsonData,
-        (result) => { res.status(200).json(result); },
-        (err, status) => { res.status(status).json(err); }
-    );
+router.put('/users/:id', (req, res) => {
+    userDataServise.update()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(err.status).json({ error: err.message }));
 });
 
-router.delete('/users/:id', token__module.isValid, (req, res) => {
-    const id = req.params.id;		
-
-    dataServise.delete(
-        id,
-        () => { res.status(200).json({ message: "Ok" }); },
-        (err, status) => { res.status(status).json(err); }
-    );
+router.delete('/users/:id', (req, res) => {
+    userDataServise.delete()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(err.status).json({ error: err.message }));
 });
+
+/**
+ * Library
+ */
 
 router.post('/users/:id/books', (req, res) => {
-    Zone.current.run(() => {
-        const date = new Date;
-        Zone.current.data = {
-            user: {
-                id: req.params.id
-            },
-            book: {
-                name: req.body.nameBook || "",
-                date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
-            }
-        };
-        dataServise.books(
-            true,
-            (result) => { res.status(200).json(result); },
-            (err, status) => { res.status(status).json(err); }
-        );
-    });
+    libraryDataService.take()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(err.status).json({ error: err.message }));
 });
 
 router.put('/users/:id/books', (req, res) => {
-    Zone.current.run(() => {
-        const date = new Date;
-        Zone.current.data = {
-            user: {
-                id: req.params.id
-            },
-            book: {
-                name: req.body.nameBook || "",
-                date: date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear()
-            }
-        };        
-        dataServise.books(
-            false,
-            (result) => { res.status(200).json(result); },
-            (err, status) => { res.status(status).json(err); }
-        );
-    });
+    libraryDataService.return()
+    .then((result) => res.status(200).json(result))
+    .catch((err) => res.status(err.status).json({ error: err.message }));
 });
 
 module.exports.router = router;

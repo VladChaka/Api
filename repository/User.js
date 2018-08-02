@@ -4,9 +4,9 @@ let mongoose = require("mongoose"),
     jwt = require('jsonwebtoken'),
     Schema = mongoose.Schema;
     
-Core.module('app').service('app.userRepository', userRepository);
+Core.module('app').service('app.userRepository', UserRepository);
 
-function userRepository(){
+function UserRepository(){
     let self = this;
 
     self.UserSchema = new Schema({
@@ -43,159 +43,112 @@ function userRepository(){
         regDate: {
             type: String,
             required: true
-        },
-        book: {
-            name: {
-                type: String
-            },
-            date: {
-                type: String
-            }
         }
     });	
 
     self.SchemaModel = mongoose.model("User", self.UserSchema);
 
-    self.login = (data, cbSuccess, cbError) => {
-        self.SchemaModel.findOne({ username: data.username })
-        .then((user) => {
-            let error = { error: 'Authentication failed. Login or password wrong.' };
-            if (!user) {
-                cbError(error);
-                return;
-            }
-
-            self.UserSchema.methods.verifyPassword(
-                data.password,
-                (err, success) => {
-                    if (err || !success) {
-                        cbError(error);
-                        return;
-                    }
-
-                    const token = jwt.sign({ username: data.username }, 'yqawv8nqi5', { expiresIn: '1h' });
-                    cbSuccess({ id: user._id, token: token });
-                },
-                user.password
-            );
-        })
-        .catch((err) => {
-            cbError({ error: 'Authentication failed. Login or password wrong.' });
-        });
-    }
-
-    self.allUsers = (cbSuccess, cbError) => {
-        self.SchemaModel.find({}, function(err, users) {
-            if (err) {
-                cbError({ error: err.message });
-                return;
-            }
-            let data = rebuildUserData(users, null, [
-                'password',
-                'phone',
-                'email'
-            ], false);			
-            cbSuccess(data);
-        });
-    }
-
-    self.oneUser = function (id, cbSuccess, cbError) {
-        self.SchemaModel.findOne({ _id: id })
-        .then((user) => {
-            data = rebuildUserData(user, null, [
-                'password',
-                'rating',
-                'regDate'
-            ], true);
-            cbSuccess(data);
-        })
-        .catch((err) => {
-            cbError({ error: "Invalid id." }, 400);
-        });
-    }
-
-    self.add = function (data, cbSuccess, cbError) {
-        const new_user = new self.SchemaModel({
-            username: data.username,
-            email: data.email,
-            post: data.post,
-            phone: data.phone,
-            password: data.password,
-            fullname: data.fullname,
-            rating: 0,
-            regDate: data.regDate,
-            book: {
-                name: '',
-                date: ''
-            }
-        });
-        self.hashPassword(new_user, function (new_user) {
-            new_user.save(function(err, user) {
-                if (err) {
-                    cbError({ error: err.message }, 500);
+    self.login = () => {
+        return new Promise((resolve, reject) => {
+            self.SchemaModel.findOne({ username: Zone.current.data.username })
+            .then((user) => {
+                let error = { message: 'Authentication failed. Login or password wrong.' };
+                if (!user) {
+                    reject(error);
                     return;
                 }
-                data = rebuildUserData(user, null, null, true);					
-                cbSuccess(data);
-            });
-        }, function (err) {
-            cbError({ error: err.message }, 500);
+    
+                self.UserSchema.methods.verifyPassword(
+                    Zone.current.data.password,
+                    (err, success) => {
+                        if (err || !success) {
+                            reject(error);
+                            return;
+                        }
+    
+                        const token = jwt.sign({ username: Zone.current.data.username }, 'yqawv8nqi5', { expiresIn: '1d' });
+                        resolve({ id: user._id, token: token });
+                    },
+                    user.password
+                );
+            })
+            .catch((err) => reject({ message: 'Authentication failed. Login or password wrong.' }));
         });
     }
 
-    self.workingWithBooks = (addBook, cbSuccess, cbError) => {
-        self.oneUser(Zone.current.data.user.id,
-            (result) => {                
-                if (checkUserBooks(addBook, result, Zone.current.data, cbError)) return;
+    self.getAll = () => {
+        return new Promise((resolve, reject) => {
+            self.SchemaModel.find({})
+            .then((users) => {
+                let data = rebuildUserData(users, null, [
+                        'password',
+                        'phone',
+                        'email'
+                    ]);
+                
+                resolve(data);
+            })
+            .catch((err) => reject({ message: err.message }));
+        });
+    }
 
-                let book = (addBook) ? { book : Zone.current.data.book } : { book : { name: '', date: '' } };
+    self.getOne = function () {
+        return new Promise((resolve, reject) => {            
+            self.SchemaModel.findOne({ username: Zone.current.data.username })
+            .then((user) => {
+                let data = rebuildUserData(user, null, [
+                        'password',
+                        'rating',
+                        'regDate'
+                    ]);
+                resolve(data);
+            })
+            .catch((err) => reject({ message: err.message, status: 400 }));
+        });
+    }
 
-                self.SchemaModel.findOneAndUpdate({ _id: Zone.current.data.user.id }, book)
+    self.add = function () {
+        const new_user = new self.SchemaModel(Zone.current.data);
+
+        return new Promise((resolve, reject) => {            
+            self.createHashPassword(new_user)
+            .then((user) => {
+                user.save()
                 .then((user) => {
-                    Zone.current.data.user = rebuildUserData(user, null, null, true);
-                    cbSuccess(Zone.current.data.user);
+                    let data = rebuildUserData(user);					
+                    resolve(data);
                 })
-                .catch((err) => {
-                    cbError({ error: err.message }, 500);
-                });
-
-            },
-            (err, status) => {
-                cbError(err, status);
-            });
+                .catch((err) => reject({ message: err.message, status: 500 }));
+            })
+            .catch((err) => reject({ message: err.message, status: 500 }));
+        });
     }
 
-    self.updateUser = function (id, data, cbSuccess, cbError) {
-        self.hashPassword(data, function (data) {
-            let dataJson = {
-                    email: data.email,
-                    post: data.post,
-                    phone: data.phone,
-                    fullname: data.fullname,
-                };
-
-                self.SchemaModel.findOneAndUpdate({ _id: id }, dataJson,
-                function(err, user) {
-                    if (err) {
-                        let error = { error: err.message };
-                        cbError(error, 500);
-                        return;
-                    }
-
-                    data = rebuildUserData(user, null, null, true);			
-                    cbSuccess(data);
-                });
-            }, function (err) {
-                cbError({ error: err.message }, 500);
-            });
+    self.update = function () {
+        return new Promise((resolve, reject) => {            
+            self.createHashPassword(Zone.current.data)
+            .then((user) => {
+                self.SchemaModel.findOneAndUpdate({ username: user.username }, user)
+                .then((user) => {
+                    let data = rebuildUserData(user);					
+                    resolve(data);
+                })
+                .catch((err) => reject({ message: err.message, status: 500 }));
+            })
+            .catch((err) => reject({ message: err.message, status: 500 }));
+        });
     }
 
-    self.deleteUser = function (id, cbSuccess, cbError) {
+    self.delete = function () {
+        return new Promise((resolve, reject) => {            
+            self.SchemaModel.findOneAndRemove({ username: user.username }, user)
+            .then((user) => {				
+                resolve({ message: 'ok' });
+            })
+            .catch((err) => reject({ message: err.message, status: 500 }));
+
+        });
         self.SchemaModel.findOneAndRemove({ _id: id }, function(err, user) {
-            if (err || !user) {
-                cbError({ error: "Invalid id." }, 400);
-                return;
-            }
             cbSuccess();
         });
     }    
@@ -210,30 +163,37 @@ function userRepository(){
         });
     };
 
-    self.hashPassword = function (data, cbSuccess) {
-        const user = data;
-        if (data.password !== undefined && data.password.length !== 0) {
-            if (!checkRegExPassword(data.password)) return cbError({ error: "Incorrect password" }, 400);
-            bcrypt.genSalt(5, function(err, salt) {
-                if (err) {
+    self.createHashPassword = function (data) {
+        return new Promise((resolve, reject) => {
+            const user = data;
+            if (data.password !== undefined && data.password.length !== 0) {
+                if (!checkRegExpPassword(data.password)) {
+                    reject({ message: "Incorrect password" }, 400);
                     return;
                 }
-
-                bcrypt.hash(user.password, salt, null, function(err, hash) {
+                bcrypt.genSalt(5, function(err, salt) {
                     if (err) {
+                        reject({ message: err.message, status: 500 });
                         return;
                     }
-                    user.password = hash;
-                    cbSuccess(user);
+
+                    bcrypt.hash(user.password, salt, null, function(err, hash) {
+                        if (err) {
+                            reject({ message: err.message, status: 500 });
+                            return;
+                        }
+                        user.password = hash;
+                        resolve(user);
+                    });
                 });
-            });
-        } else {
-            cbSuccess(user);
-        }
+            } else {
+                resolve(user);
+            }
+        });
     };
-	
-    function rebuildUserData(userData, addField, delField, oneUser) {
-        let user,
+
+    function rebuildUserData(userData, addField, delField) {
+        let user = [],
             standartUserFields = [
                 '_id',
                 'username',
@@ -242,14 +202,13 @@ function userRepository(){
                 'phone',
                 'post',
                 'rating',
-                'regDate,',
+                'regDate',
                 'book'
             ];
 
-        if (oneUser === true) {
+        if (userData.length === undefined) {
             user = buildUserData(userData, standartUserFields, addField, delField);
         } else {
-            user = [];
             userData.map((element) => {
                 user.push(buildUserData(element, standartUserFields, addField, delField));
             });
@@ -258,7 +217,7 @@ function userRepository(){
     }
 
     function buildUserData(userData, standartUserFields, addField, delField) {
-        let user = {};        
+        let user = {};
         for (const index in userData) {
             standartUserFields.map((element) => {
                 if (element === index) {
@@ -268,7 +227,6 @@ function userRepository(){
                     user[index] = userData[index];
                 }
             });
-            
         }
 
         if (delField !== undefined && delField !== null && delField.length !== null) {
@@ -276,24 +234,11 @@ function userRepository(){
                 delete user[element];
             });
         }
-              
-        return user
+
+        return user;
     }
 
-    function checkUserBooks(addBook, data, zone1, cbError) {
-        let error = false;
-        if (addBook && data.book.name !== "") {
-            error = true;
-            cbError({ error: 'User have a book.'}, 400);
-        }
-        if (!addBook && data.book.name !== zone1.book.name) {
-            error = true;
-            cbError({ error: 'User don\'t have this book.'}, 400);
-        }
-        return error;
-    }
-
-    function checkRegExPassword(pass) {
+    function checkRegExpPassword(pass) {
         return /^[a-z0-9A-Z](?=.*[\d])(?=.*[a-z]).{8,}$/.test(pass) && pass.length > 7;
     }
 }

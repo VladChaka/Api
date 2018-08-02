@@ -49,6 +49,17 @@ define(['angular', 'mainComponent', 'mainService', 'mainFilter', 'mainDirective'
         function refreshUsers() {
             usersService.getAllUsers().then(function(users) {
                 uc.users = users;
+
+                uc.users.map((element) => {
+                    let date = element.regDate * 1,
+                        newDate = new Date(date),
+                        day = newDate.getDate(),
+                        month = newDate.getMonth() + 1,
+                        year = newDate.getFullYear();
+
+                        element.regDate = day + '.' + month + '.' + year;
+                })
+                               
                 uc.numberOfPages = Math.ceil(uc.users.length / uc.pageSize);
             })
         }

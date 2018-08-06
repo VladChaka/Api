@@ -6,13 +6,13 @@ Core.module('app').service('app.libraryDataService', LibraryDataService);
 function LibraryDataService (libraryRepository) {
     let self = this;
 
-    self.takeBook = () => {
+    self.take = () => {
         return new Promise((resolve, reject) => {
             if (checkEmptyField()) {
                 reject({ message: "Fields empty.", status: 400 });
                 return;
             }
-            libraryRepository.takeBook()
+            libraryRepository.take()
             .then((result) => resolve(result))
             .catch((err) => reject(err));
         });

@@ -60,7 +60,14 @@ function UserDataServise (userRepository) {
 
     self.update = () => {
         return new Promise((resolve, reject) => {
-            if (Zone.current.data.password === '') delete Zone.current.data.password
+            if (Zone.current.data.password === '') {
+                delete Zone.current.data.password;
+            } else {
+                if (!checkRegExPassword(Zone.current.data.password)) {
+                    resolve({ message: "Incorrect password.", status: 400 });
+                    return;
+                }
+            }
             delete Zone.current.data.bookname;
             delete Zone.current.data.regDate;            
 

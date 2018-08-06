@@ -51,7 +51,7 @@ router.delete('/users/:id', (req, res) => {
 router.post('/users/:id/books', (req, res) => {
     libraryDataService.take()
     .then((result) => res.status(200).json(result))
-    .catch((err) => res.status(err.status).json({ error: err.message }));
+    .catch((err) => {console.log(err);res.status(err.status).json({ error: err.message })});
 });
 
 router.put('/users/:id/books', (req, res) => {

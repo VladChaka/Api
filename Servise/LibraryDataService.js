@@ -29,7 +29,7 @@ function LibraryDataService (libraryRepository) {
     function checkEmptyField() {
         let result = false;
 
-        let field = Zone.current.data.namebook;   
+        let field = Zone.current.data.bookname;
         field = field.replace(/\s*/g, '');
         
         if (field === "") result = true

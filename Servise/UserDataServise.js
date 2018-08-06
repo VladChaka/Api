@@ -92,7 +92,7 @@ function UserDataServise (userRepository) {
 
     self.delete = () => {
         return new Promise((resolve, reject) => {
-            userRepository.deleteUser()
+            userRepository.delete()
             .then((result) => resolve(result))
             .catch((err) => reject(err));
         });	

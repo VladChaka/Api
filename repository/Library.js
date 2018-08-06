@@ -1,11 +1,10 @@
 let mongoose = require("mongoose"),
     Core = require("../util/dataCore").Core,
     Schema = mongoose.Schema;
-    
-Library.$inject = ['app.userRepository'];
+
 Core.module('app').service('app.libraryRepository', Library);
 
-function Library(userRepository){
+function Library(){
     let self = this;
 
     self.BookSchema = new Schema({
@@ -26,26 +25,25 @@ function Library(userRepository){
 
     self.SchemaModel = mongoose.model("Book", self.BookSchema);
 
-    self.take = function () {
-        return new Promise((resolve, reject) => {
-            userRepository.getOne(Zone.current.data.username)
-            .then((user) => {
-                if (user.bookname !== "") {
-                    reject({ message: 'User have a book.', status: 400 });
-                    return;
-                }
+    self.take = () => {
+        let new_book = new self.SchemaModel({
+            username: Zone.current.data.username,
+            bookname: Zone.current.data.bookname,
+            dateReceiving: Date.now() + ''
 
-                self.SchemaModel.findOneAndUpdate({ username: Zone.current.data.username }, Zone.current.data.bookname)
-                .then(() => resolve({ message: 'Ok' }))
-                .catch((err) => reject({ message: err.message, status: 500 }));
-            })
-            .catch((err) => reject({ message: err.message, status: 400 }));
+        });
+                
+        return new Promise((resolve, reject) => {
+            new_book.save()
+            .then(() => resolve({ message: 'Ok' }))
+            .catch((err) => reject({ message: err.message, status: 500 }));
+
         });
     }
 
-    self.return = function () {
+    self.return = () => {
         return new Promise((resolve, reject) => {
-            userRepository.getOne(Zone.current.data.username)
+            self.getOne()
             .then((user) => {
                 if (user.booknnme === Zone.current.data.bookname) {
                     reject({ message: 'User don\'t  have this book.', status: 400 });
@@ -55,6 +53,16 @@ function Library(userRepository){
                 self.SchemaModel.findOneAndRemove({ username: Zone.current.data.username })
                 .then(() => resolve({ message: 'Ok' }))
                 .catch((err) => reject({ message: err.message, status: 500 }));
+            })
+            .catch((err) => reject({ message: err.message, status: 400 }));
+        });
+    }
+
+    self.getOne = () => {
+        return new Promise((resolve, reject) => {            
+            self.SchemaModel.findOne({ username: Zone.current.data.username })
+            .then((user) => {
+                resolve(user);
             })
             .catch((err) => reject({ message: err.message, status: 400 }));
         });

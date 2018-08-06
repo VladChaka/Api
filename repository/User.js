@@ -92,7 +92,7 @@ function UserRepository(){
         });
     }
 
-    self.getOne = function () {
+    self.getOne = () => {
         return new Promise((resolve, reject) => {            
             self.SchemaModel.findOne({ username: Zone.current.data.username })
             .then((user) => {
@@ -107,7 +107,7 @@ function UserRepository(){
         });
     }
 
-    self.add = function () {
+    self.add = () => {
         const new_user = new self.SchemaModel(Zone.current.data);
 
         return new Promise((resolve, reject) => {            
@@ -124,7 +124,7 @@ function UserRepository(){
         });
     }
 
-    self.update = function () {
+    self.update = () => {
         return new Promise((resolve, reject) => {            
             self.createHashPassword(Zone.current.data)
             .then((user) => {
@@ -139,22 +139,19 @@ function UserRepository(){
         });
     }
 
-    self.delete = function () {
+    self.delete = () => {
         return new Promise((resolve, reject) => {            
-            self.SchemaModel.findOneAndRemove({ username: user.username }, user)
+            self.SchemaModel.findOneAndRemove({ username: Zone.current.data.username })
             .then((user) => {				
                 resolve({ message: 'ok' });
             })
             .catch((err) => reject({ message: err.message, status: 500 }));
 
         });
-        self.SchemaModel.findOneAndRemove({ _id: id }, function(err, user) {
-            cbSuccess();
-        });
     }    
 
-    self.UserSchema.methods.verifyPassword = function(password, cb, _thisPassword) {
-        bcrypt.compare(password, _thisPassword, function(err, isMatch) {			
+    self.UserSchema.methods.verifyPassword = (password, cb, _thisPassword) => {
+        bcrypt.compare(password, _thisPassword, (err, isMatch) => {			
             if (err) {
                 cb(err);
                 return;
@@ -163,7 +160,7 @@ function UserRepository(){
         });
     };
 
-    self.createHashPassword = function (data) {
+    self.createHashPassword = (data) => {
         return new Promise((resolve, reject) => {
             const user = data;
             if (data.password !== undefined && data.password.length !== 0) {
@@ -171,13 +168,13 @@ function UserRepository(){
                     reject({ message: "Incorrect password" }, 400);
                     return;
                 }
-                bcrypt.genSalt(5, function(err, salt) {
+                bcrypt.genSalt(5, (err, salt) => {
                     if (err) {
                         reject({ message: err.message, status: 500 });
                         return;
                     }
 
-                    bcrypt.hash(user.password, salt, null, function(err, hash) {
+                    bcrypt.hash(user.password, salt, null, (err, hash) => {
                         if (err) {
                             reject({ message: err.message, status: 500 });
                             return;

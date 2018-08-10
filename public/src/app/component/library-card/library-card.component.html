@@ -1,0 +1,35 @@
+<div class="library-card-container">
+        <div class="close-library-card"
+             (click)="uc.closeLibraryCard()">
+            +
+        </div>
+        <form class="library-card"
+              name="libraryCard"
+              id="libraryCard">
+            <input type="hidden"
+                   ng-model="uc.libraryCard.id">
+            <div>
+                <span>Book</span>
+                <input ng-model="uc.libraryCard.title"
+                       name="title"
+                       type="text"></div>
+            <div>
+                <span>Date of receiving</span>
+                <input ng-model="uc.libraryCard.date"
+                       name="date"
+                       type="text"></div>
+            <div class="library-card-btns">
+                <p>All fields are required</p>
+                <button type="submit"
+                        ng-click="uc.takeBook()"
+                ><!-- ng-disabled="!userEdit.$valid" -->
+                    Take a book
+                </button>
+                <button type="submit"
+                        ng-click="uc.passBook()"
+                ><!-- ng-disabled="!userEdit.$valid" -->
+                    Pass a book
+                </button>
+            </div>
+        </form>
+    </div>

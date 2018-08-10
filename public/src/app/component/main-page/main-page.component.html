@@ -1,0 +1,87 @@
+<div id="popupsContainer" *ngIf="showUserProfile || showFormAddUser || userAuthorized === false">
+    <form-add-user *ngIf="showFormAddUser"
+                   email-conflict="uc.emailConflict"
+                   login-conflict="uc.loginConflict"
+                   form-add-user="uc.formAddUser"
+                   close-form-add-user="uc.closeFormAddUser"
+                   add-user="uc.addUser"></form-add-user>
+    <!--<user-profile email-conflict="uc.emailConflict"-->
+                  <!--user-profile="uc.userProfile"-->
+                  <!--close-user-profile="uc.closeUserProfile"-->
+                  <!--ng-if="uc.showUserProfile"-->
+                  <!--edit-user="uc.editUser"></user-profile>-->
+    <authorization-form *ngIf="userAuthorized === false"
+            btn-text="Enter"
+            authentication-login="uc.authenticationLogin"
+            authentication-pass="uc.authenticationPass"
+            login="uc.login()"
+            login-error="uc.loginError"
+            user-authorized="uc.userAuthorized"></authorization-form>
+
+</div>
+
+
+<div class="users-container" *ngIf="userAuthorized !== true"> <!-- *ngIf="userAuthorized === true" -->
+    <div id="test" class="users-block">
+        <div class="users-title">
+            <h2>List of users</h2>
+            <form>
+                <button class="logout" (click)="logout()">Logout</button>
+            </form>
+        </div>
+        <div class="users-filters">
+            <div class="filters-pages">
+                <div>
+                    <button [disabled]="currentPage == 1" (click)="currentPage = currentPage - 1">Previous</button>
+                    {{currentPage}}/{{numberOfPages}}
+                    <button [disabled]="currentPage >= countUsers / pageSize" (click)="currentPage = currentPage + 1">Next</button>
+                </div>
+            </div>
+            <div>
+                <button class="users-add-new" (click)="openAddForm()">Add new +</button>
+            </div>
+        </div>
+        <div class="users-list">
+            <div class="list-user-names">
+                <div>Full Name</div>
+                <div>User Login</div>
+                <div>User Posts</div>
+                <div class="filters-order">
+                    <div class="filters-order-active"
+                         ng-click="uc.showFilterRD=!uc.showFilterRD"
+                         ng-init="filterByDate = true">
+                        <span ng-show="filterByRating">
+                            By Rating
+                        </span>
+                        <span ng-show="filterByDate">
+                            By Date
+                        </span>
+                    </div>
+                    <div class="filters-order-popup"
+                         ng-show="uc.showFilterRD">
+                        <div ng-click="filterByRating = true; filterByDate = false;uc.showFilterRD=false">
+                            By Rating
+                        </div>
+                        <div ng-click="filterByDate = true; filterByRating = false;uc.showFilterRD=false">
+                            By Date
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <div class="list-user-block" *ngFor="let user of users">
+                <div>{{user.fullname}}</div>
+                <div>{{user.username}}</div>
+                <div>{{user.post}}</div>
+                <div>
+                    {{user.regDate}}
+                </div>
+                <div>
+                    {{user.rating}}
+                </div>
+                <profile-control-panel class="list-user-buttons"></profile-control-panel>
+            </div>
+        </div>
+    </div>
+</div>
+<router-outlet></router-outlet>

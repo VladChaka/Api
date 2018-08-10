@@ -93,8 +93,8 @@ function UserRepository(){
     }
 
     self.getOne = () => {
-        return new Promise((resolve, reject) => {            
-            self.SchemaModel.findOne({ username: Zone.current.data.username })
+        return new Promise((resolve, reject) => {         
+            self.SchemaModel.findOne({ _id: Zone.current.data.id })
             .then((user) => {
                 let data = rebuildUserData(user, null, [
                         'password',
@@ -109,8 +109,7 @@ function UserRepository(){
 
     self.add = () => {
         const new_user = new self.SchemaModel(Zone.current.data);
-
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {
             self.createHashPassword(new_user)
             .then((user) => {
                 user.save()

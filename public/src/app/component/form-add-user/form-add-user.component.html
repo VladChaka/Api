@@ -1,0 +1,10 @@
+<form ng-hide="uc.userAuthorized" class="users-login" id="auth">
+    <p>Login</p>
+    <input type="text" ng-model="uc.authenticationLogin" placeholder="Enter your login">
+    <p ng-hide="uc.userAuthorized">Password</p>
+    <input type="password" ng-model="uc.authenticationPass" placeholder="Enter your pass">
+    <span ng-if="uc.loginError">Incorrect login or password</span>
+    <br>
+    <br>
+    <button ng-click="uc.login()">{{uc.btnText}}</button>
+</form>

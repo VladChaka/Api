@@ -5,14 +5,21 @@ let express = require("express"),
     mongoose = require("mongoose"),
     getParam = require("./util/common"),
     port = getParam("port", 4000),
-    dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb", 
+    dbMlab = "mongodb://admin:vlad12345@ds245170.mlab.com:45170/mydb",
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
     jwt = require('jsonwebtoken'),
     token__module = require('./util/token/token'),
     db = getParam("local", dbMlab);
 
-mongoose.connect(db, (err) => {
+mongoose.connect(db, { useNewUrlParser: true }, (err) => {
     if (err) return console.log("Connection error: ", err.message);
+});
+
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
 });
 
 app.use(bodyParser.json());
@@ -21,7 +28,7 @@ app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/public_chameleon47'));
 // app.use((req, res, next) => {
 //     if (req.path !== '/login') {
-//         token__module(req, res, next);        
+//         token__module(req, res, next);
 //     } else {
 //         next();
 //     }
@@ -32,6 +39,7 @@ app.use((req, res, next) => {
 
     Zone.current.fork({}).run(() => {
         Zone.current.data = {
+            id: req.body.id || req.query.id,
             username: req.body.username || decoded.username,
             email: req.body.email || '',
             phone: req.body.phone || '',

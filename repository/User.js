@@ -53,8 +53,9 @@ function UserRepository(){
             self.SchemaModel.findOne({ username: Zone.current.data.username })
             .then((user) => {
                 let error = { message: 'Authentication failed. Login or password wrong.' };
+                
                 if (!user) {
-                    reject(error);
+                    reject(error);                    
                     return;
                 }
     
@@ -138,6 +139,19 @@ function UserRepository(){
         });
     }
 
+    self.updatePhoto = (pathToPhoto) => {
+        return new Promise((resolve, reject) => {
+            self.SchemaModel.findOneAndUpdate(
+                { username: Zone.current.data.username },
+                { photo: pathToPhoto })
+                .then((user) => {
+                    let data = rebuildUserData(user);					
+                    resolve(data);
+                })
+                .catch((err) => reject({ message: err.message, status: 500 }));
+        });
+    }
+
     self.delete = () => {
         return new Promise((resolve, reject) => {            
             self.SchemaModel.findOneAndRemove({ username: Zone.current.data.username })
@@ -199,7 +213,7 @@ function UserRepository(){
                 'post',
                 'rating',
                 'regDate',
-                'book'
+                'photo'
             ];
 
         if (userData.length === undefined) {

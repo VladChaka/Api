@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Users } from '../../model/users';
 
 import { UserService } from '../../service/user.service';
+import { AuthenticationService } from '../../service/authentication.service';
 import { FormService } from '../../service/form.service';
 import { RemoteService } from '../../service/remote.service';
 
@@ -13,18 +14,19 @@ import { RemoteService } from '../../service/remote.service';
 })
 export class MainPageComponent implements OnInit {
 
+    showUserProfile: boolean;
+
     constructor(
         protected userService: UserService,
         protected formService: FormService,
-        protected remoteService: RemoteService
+        protected remoteService: RemoteService,
+        protected authenticationService: AuthenticationService
     ) { }
 
     users: Users[];
     countUsers: number;
 
-    showUserProfile: boolean;
-    showFormAddUser: boolean;
-    userAuthorized: any;
+    filterByDate: boolean = true;
 
     currentPage: number = 1;
     numberOfPages: number = 1;
@@ -32,6 +34,7 @@ export class MainPageComponent implements OnInit {
 
     ngOnInit() {
         this.getUsers();
+        this.showUserProfile = this.formService.showUserProfile;
     }
 
     getUsers(): void {
@@ -60,37 +63,37 @@ export class MainPageComponent implements OnInit {
 
     openAddForm(): void {
         this.formService.openAddForm();
-        // this.showFormAddUser = this.formService.showFormAddUser;
     }
 
     logout(): void {
-        console.log('Login');
+        this.users = undefined;
+        this.authenticationService.logout();
     }
 
     addUser(): void {
-      // usersService.addUser(uc.formAddUser, function(response) {
+      // usersService.addUser( formAddUser, function(response) {
       //   if (response.status === 500) {
       //     let errorType = response.data.error.split("$")[1].split('_')[0];
       //     if (errorType === "username") {
-      //       uc.emailConflict = false;
-      //       uc.loginConflict = true;
+      //        emailConflict = false;
+      //        loginConflict = true;
       //     } else if (errorType === "email") {
-      //       uc.emailConflict = true;
-      //       uc.loginConflict = false;
+      //        emailConflict = true;
+      //        loginConflict = false;
       //     }
       //   } else {
       //     refreshUsers();
-      //     uc.closeFormAddUser();
-      //     uc.showFormAddUser = false;
+      //      closeFormAddUser();
+      //      showFormAddUser = false;
       //   }
       // });
     };
 //
 //   function refreshUsers() {
 //     usersService.getAllUsers().then(function(users) {
-//       uc.users = users;
+//        users = users;
 //
-//       uc.users.map((element) => {
+//        users.map((element) => {
 //         let date = element.regDate * 1,
 //           newDate = new Date(date),
 //           day = newDate.getDate(),
@@ -100,23 +103,23 @@ export class MainPageComponent implements OnInit {
 //         element.regDate = day + '.' + month + '.' + year;
 //       })
 //
-//       uc.numberOfPages = Math.ceil(uc.users.length / uc.pageSize);
+//        numberOfPages = Math.ceil( users.length /  pageSize);
 //     })
 //   }
 //
-//   uc.login = function() {
-//     authentication.authentication(uc.authenticationLogin, uc.authenticationPass, function (response) {
+//    login = function() {
+//     authentication.authentication( authenticationLogin,  authenticationPass, function (response) {
 //       if (response.status === 400) {
-//         uc.loginError = true;
+//          loginError = true;
 //         $timeout(function () {
-//           uc.loginError = false
+//            loginError = false
 //         }, 4000)
 //       } else {
-//         localStorage['login'] = uc.authenticationLogin;
-//         localStorage['pass'] = uc.authenticationPass;
+//         localStorage['login'] =  authenticationLogin;
+//         localStorage['pass'] =  authenticationPass;
 //         refreshUsers();
 //         tokenService.setToken(response.token);
-//         uc.userAuthorized = true;
+//          userAuthorized = true;
 //       }
 //     });
 //   };
@@ -127,59 +130,59 @@ export class MainPageComponent implements OnInit {
 //         if (response.status !== 400) {
 //           refreshUsers();
 //           tokenService.setToken(response.token);
-//           uc.userAuthorized = true;
+//            userAuthorized = true;
 //         } else {
-//           uc.userAuthorized = false
+//            userAuthorized = false
 //         }
 //       });
-//     } else {uc.userAuthorized = false}
+//     } else { userAuthorized = false}
 //   })();
 //
-//   uc.logout = function() {
+//    logout = function() {
 //     delete localStorage['login'];
 //     delete localStorage['pass'];
-//     uc.users = undefined;
+//      users = undefined;
 //     tokenService.setToken(null);
-//     uc.userAuthorized = false;
+//      userAuthorized = false;
 //   };
 //
-//   uc.openUserProfile = function(userId) {
+//    openUserProfile = function(userId) {
 //     usersService.getOneUser(userId, function(userInfo) {
-//       uc.userProfile = userInfo;
-//       uc.showUserProfile = true;
+//        userProfile = userInfo;
+//        showUserProfile = true;
 //     });
 //   };
 //
-//   uc.closeUserProfile = function(){
-//     uc.showUserProfile = false;
-//     uc.emailConflict = false;
+//    closeUserProfile = function(){
+//      showUserProfile = false;
+//      emailConflict = false;
 //   };
 //
-//   uc.deleteUser = function(userId) {
+//    deleteUser = function(userId) {
 //     usersService.deleteUser(userId).then(function () {
 //       refreshUsers();
 //     })
 //   };
 //
-//   uc.editUser = function() {
+//    editUser = function() {
 //     var user = {
-//       id: uc.userProfile._id,
-//       email: uc.userProfile.email,
-//       post: uc.userProfile.post,
-//       phone: uc.userProfile.phone,
-//       fullname: uc.userProfile.fullname
+//       id:  userProfile._id,
+//       email:  userProfile.email,
+//       post:  userProfile.post,
+//       phone:  userProfile.phone,
+//       fullname:  userProfile.fullname
 //     };
 //
-//     if (uc.userProfile.password !== undefined && uc.userProfile.password.length !== 0) {
-//       user.password = uc.userProfile.password;
+//     if ( userProfile.password !== undefined &&  userProfile.password.length !== 0) {
+//       user.password =  userProfile.password;
 //     }
 //
 //     usersService.editUser(user, function(response) {
 //       if (response.status === 500) {
-//         uc.emailConflict = true;
+//          emailConflict = true;
 //       } else {
 //         refreshUsers();
-//         uc.closeUserProfile();
+//          closeUserProfile();
 //       }
 //     });
 //   };

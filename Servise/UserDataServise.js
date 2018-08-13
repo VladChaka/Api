@@ -90,6 +90,14 @@ function UserDataServise (userRepository) {
         });
     }
 
+    self.upadtePhoto = (pathToPhoto) => {
+        return new Promise((resolve, reject) => {
+            userRepository.updatePhoto(pathToPhoto)
+            .then((result) => resolve(result))
+            .catch((err) => reject(err));
+        });	
+    }
+
     self.delete = () => {
         return new Promise((resolve, reject) => {
             userRepository.delete()

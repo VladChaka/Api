@@ -9,6 +9,7 @@ let express = require("express"),
     dbMlabTest = "mongodb://admin:vlad12345@ds121088.mlab.com:21088/unittest",
     jwt = require('jsonwebtoken'),
     token__module = require('./util/token/token'),
+    test = require('express-fileupload'),
     db = getParam("local", dbMlab);
 
 mongoose.connect(db, { useNewUrlParser: true }, (err) => {
@@ -22,10 +23,11 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use(test());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname));
-app.use(express.static(__dirname + '/public_chameleon47'));
+// app.use(express.static(__dirname + '/public_chameleon47'));
 // app.use((req, res, next) => {
 //     if (req.path !== '/login') {
 //         token__module(req, res, next);

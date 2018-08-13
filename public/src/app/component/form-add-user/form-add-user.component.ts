@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { FormService } from '../../service/form.service';
+
 @Component({
     selector: 'form-add-user',
     templateUrl: './form-add-user.component.html',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormAddUserComponent implements OnInit {
 
-  constructor() { }
+    constructor(protected formService: FormService,) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+
+    closeFormAddUser(): void {
+        this.formService.closeFormAddUser();
+    }
 
 }

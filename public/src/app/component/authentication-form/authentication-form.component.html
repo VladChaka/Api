@@ -1,0 +1,10 @@
+<form [hidden]="this.authenticationService.userAuthorized" class="users-login" id="auth">
+    <p>Login {{authenticationLogin}}</p>
+    <input type="text" #input placeholder="Enter your login">
+    
+    <p [hidden]="this.authenticationService.userAuthorized">Password</p>
+    <input type="password" #input1 placeholder="Enter your pass">
+    <span *ngIf="this.authenticationService.loginError">Incorrect login or password</span>
+    <br><br>
+    <button (click)="login(input.value, input1.value)"><!-- {{btnText}} -->Enter</button>
+</form>

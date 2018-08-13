@@ -1,30 +1,31 @@
 <div class="user-profile">
     <div class="close-editform"
-         ng-click="uc.closeUserProfile()">
+         (click)=" closeUserProfile()">
         +
     </div>
     <form class="user-edit"
           name="userEdit"
           id="userEdit"
-          ng-submit="uc.editUser()"
+          ng-submit=" editUser()"
           novalidate>
         <input type="hidden"
-               ng-model="uc.userProfile.id">
+               [(ngModel)]=" userProfile.id">
+        <h3>User modification</h3>
         <div>
             <span>Username</span>
             <input disabled
-                   ng-model="uc.userProfile.username"
+                   [(ngModel)]=" userProfile.username"
                    name="username"
                    type="text"></div>
         <div>
             <span>E-mail</span>
             <input ng-class="{ 'invalid' : userEdit.email.$invalid && userEdit.email.$dirty }"
                    name="email"
-                   ng-model="uc.userProfile.email"
+                   [(ngModel)]=" userProfile.email"
                    type="email"
                    placeholder="Enter email"></div>
         <div class="edit-email-used"
-             ng-show="uc.emailConflict">
+             ng-show=" emailConflict">
             This email already used.
         </div>
         <p ng-show="userEdit.email.$invalid && userEdit.email.$dirty">
@@ -39,7 +40,7 @@
                    ng-required="true"
                    type="text"
                    name="post"
-                   ng-model="uc.userProfile.post"
+                   [(ngModel)]=" userProfile.post"
                    placeholder="User post"></div>
         <p ng-show="userEdit.post.$error.required && userEdit.post.$dirty">
             Enter a user post.
@@ -52,7 +53,7 @@
                    name="phone"
                    type="tel"
                    ng-required="true"
-                   ng-model="uc.userProfile.phone"
+                   [(ngModel)]=" userProfile.phone"
                    placeholder="Enter phone number"
                    tel-validation></div>
         <p ng-show="userEdit.phone.$error.required && userEdit.phone.$dirty">
@@ -65,7 +66,7 @@
             <span>Password</span>
             <input ng-class="{ 'invalid' : userEdit.password.$invalid && userEdit.password.$dirty }"
                    name="password"
-                   ng-model="uc.userProfile.password"
+                   [(ngModel)]=" userProfile.password"
                    ng-minlength="8"
                    type="password"
                    placeholder="Enter password"
@@ -85,7 +86,7 @@
             <input ng-class="{ 'invalid' : userEdit.fullname.$invalid && userEdit.fullname.$dirty}"
                    ng-required="true"
                    name="fullname"
-                   ng-model="uc.userProfile.fullname"
+                   [(ngModel)]=" userProfile.fullname"
                    type="text"
                    placeholder="Full name of user"
                    name-validation></div>
@@ -98,9 +99,8 @@
         <div class="user-edit-btn">
             <p>All fields are required</p>
             <button type="submit"
-                    ><!-- ng-disabled="!userEdit.$valid" -->
+                    ><!-- [disabled]="!userEdit.$valid" -->
                 Edit user
-                <span>✓</span>
             </button>
         </div>
     </form>

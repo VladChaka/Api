@@ -9,8 +9,8 @@ import { TokenService } from './token.service';
 })
 export class AuthenticationService {
 
-    userAuthorized = false;
-    
+    userAuthentication = false;
+
     loginError: boolean = false;
 
     constructor(
@@ -19,17 +19,14 @@ export class AuthenticationService {
     ) { }
 
     authentication(authenticationInfo : object): Observable<any> {
-        return this.remoteService.auth(authenticationInfo);
+        return this.remoteService.authentication(authenticationInfo);
     }
 
     logout(): void {
-        for (const key in localStorage) {
-            delete localStorage[key];
-        }
-        // delete localStorage['login'];
-        // delete localStorage['pass'];
+        delete localStorage['login'];
+        delete localStorage['pass'];
         this.tokenService.setToken(null);
-        this.userAuthorized = false;
+        this.userAuthentication = false;
     }
 
     // authentication(remoteService): object {
@@ -40,5 +37,5 @@ export class AuthenticationService {
     //     return remoteService.auth.save(authenticationInfo);
     // }
 
-    
+
 }

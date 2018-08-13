@@ -30,22 +30,37 @@ export class MainPageComponent implements OnInit {
 
     currentPage: number = 1;
     numberOfPages: number = 1;
-    pageSize: number = 15;
+    pageSize: number = 18;
 
     ngOnInit() {
+        if (localStorage['username'] !== undefined && localStorage['password'] !== undefined) {
+            this.remoteService.authentication({
+                username: localStorage['username'],
+                password: localStorage['password']
+            })
+            .subscribe(() => this.authenticationService.userAuthentication = true);
+        };
         this.getUsers();
-        this.showUserProfile = this.formService.showUserProfile;
     }
 
     getUsers(): void {
         this.userService.getAll("token")
         .subscribe(users => {
-          this.users = users;
-            
-          this.convertData(this.users);
+            this.users = users;
 
-          this.countUsers = users.length;
-          this.numberOfPages = Math.ceil(users.length / this.pageSize);
+            // let num =  [];
+            // for (let i = 0; i < 15; i++) {
+            //     num.push(users[i])
+            // }
+            //
+            // this.users = num;
+
+            this.convertData(this.users);
+
+
+
+              this.countUsers = users.length;
+              this.numberOfPages = Math.ceil(users.length / this.pageSize);
         });
     }
 
@@ -56,7 +71,7 @@ export class MainPageComponent implements OnInit {
                 day = newDate.getDate(),
                 month = newDate.getMonth() + 1,
                 year = newDate.getFullYear();
-            
+
             element.regDate = day + '.' + month + '.' + year;
         });
     }
@@ -110,16 +125,16 @@ export class MainPageComponent implements OnInit {
 //    login = function() {
 //     authentication.authentication( authenticationLogin,  authenticationPass, function (response) {
 //       if (response.status === 400) {
-//          loginError = true;
+//          this.authenticationService.loginError = true;
 //         $timeout(function () {
-//            loginError = false
+//            this.authenticationService.loginError = false
 //         }, 4000)
 //       } else {
 //         localStorage['login'] =  authenticationLogin;
 //         localStorage['pass'] =  authenticationPass;
 //         refreshUsers();
 //         tokenService.setToken(response.token);
-//          userAuthorized = true;
+//          userAuthentication = true;
 //       }
 //     });
 //   };
@@ -130,12 +145,12 @@ export class MainPageComponent implements OnInit {
 //         if (response.status !== 400) {
 //           refreshUsers();
 //           tokenService.setToken(response.token);
-//            userAuthorized = true;
+//            userAuthentication = true;
 //         } else {
-//            userAuthorized = false
+//            userAuthentication = false
 //         }
 //       });
-//     } else { userAuthorized = false}
+//     } else { userAuthentication = false}
 //   })();
 //
 //    logout = function() {
@@ -143,7 +158,7 @@ export class MainPageComponent implements OnInit {
 //     delete localStorage['pass'];
 //      users = undefined;
 //     tokenService.setToken(null);
-//      userAuthorized = false;
+//      userAuthentication = false;
 //   };
 //
 //    openUserProfile = function(userId) {

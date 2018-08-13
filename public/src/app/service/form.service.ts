@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 
 export class FormService {
-    userAuthorized: any = null;
+    userAuthentication: any = null;
     showUserProfile: boolean = false;
     showLibraryCard: boolean = false;
     showFormAddUser: boolean = false;

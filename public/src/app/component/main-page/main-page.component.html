@@ -1,5 +1,5 @@
 <div id="popupsContainer"
-     *ngIf="showUserProfile || this.formService.showLibraryCard || this.formService.showFormAddUser || this.authenticationService.userAuthorized === false"> <!-- this.authenticationService.userAuthorized == false"-->
+     *ngIf="this.formService.showUserProfile || this.formService.showLibraryCard || this.formService.showFormAddUser || this.authenticationService.userAuthentication === false"> <!-- this.authenticationService.userAuthentication == false"-->
     <form-add-user *ngIf="this.formService.showFormAddUser"
                    email-conflict="emailConflict"
                    login-conflict="loginConflict"
@@ -16,17 +16,17 @@
                   *ngIf="this.formService.showLibraryCard"
                   pass-book=" passBook"
                   take-book=" takeBook"></library-card>
-    <authentication-form *ngIf="this.authenticationService.userAuthorized === false" 
+    <authentication-form *ngIf="this.authenticationService.userAuthentication == false"
                         btn-text="Enter"
-                        authentication-login="authenticationLogin"
-                        authentication-pass="authenticationPass"
+                        authentication-login=" authenticationLogin"
+                        authentication-pass=" authenticationPass"
                         login=" login()"
-                        login-error=" loginError"
-                        user-authorized=" userAuthorized">
-    </authentication-form> <!-- *ngIf="this.authenticationService.userAuthorized == false"-->
+                        login-error="this.authenticationService.loginError"
+                        user-authorized="this.authenticationService.userAuthentication">
+    </authentication-form> <!-- *ngIf="this.authenticationService.userAuthentication == false"-->
 
 </div>
-<div class="users-container" *ngIf="userAuthorized !== true"> <!-- *ngIf="userAuthorized === true" -->
+<div class="users-container" *ngIf="this.authenticationService.userAuthentication === true"> <!-- *ngIf="userAuthentication === true" -->
     <div id="test"
          class="users-block">
         <ul class="users-menu">
@@ -55,7 +55,7 @@
                 <button><i class="fas fa-user-tie"></i></button>
             </li>
             <li>
-                <button class="logout" ng-show=" userAuthorized" (click)=" logout()"><i
+                <button class="logout" ng-show=" userAuthentication" (click)=" logout()"><i
                         class="fas fa-sign-out-alt"></i></button>
             </li>
         </ul>
@@ -76,7 +76,7 @@
                         <i class="fas fa-caret-down"></i>
                     </button>
                     <div class="filters-order-popup"
-                         ng-show=" showFilterRD">
+                         [hidden]="!showFilterRD">
                         <div (click)="filterByRating = true; filterByDate = false; showFilterRD=false">
                             By Rating
                         </div>
@@ -90,14 +90,14 @@
                 </div>
             </div>
             <div class="list-user-block"
-                *ngFor="let user of users">
+                *ngFor="let user of users | slice:0:pageSize">
                 <div>{{user.fullname}}</div>
                 <div>{{user.username}}</div>
                 <div>{{user.post}}</div>
-                <div ng-show="filterByDate">
+                <div [hidden]="!filterByDate">
                     {{user.regDate}}
                 </div>
-                <div ng-show="filterByRating">
+                <div [hidden]="!filterByRating">
                     {{user.rating}}
                 </div>
                 <profile-control-panel open-user-profile=" openUserProfile(user._id)"

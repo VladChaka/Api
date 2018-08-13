@@ -10,35 +10,28 @@ import { AuthenticationService } from '../../service/authentication.service';
 
 
 
-export class AuthenticationFormComponent implements OnInit {
-    // userAuthorized = this.authenticationService.userAuthorized; не работает
+export class AuthenticationFormComponent {
     btnText: string = 'Enter';
 
-    constructor(protected authenticationService: AuthenticationService) { 
-
+    constructor(protected authenticationService: AuthenticationService) {
     }
 
     ngOnInit() {
-        console.log(localStorage);
-        console.log(localStorage.length);
-        
-        if (localStorage['username'] !== undefined && localStorage['password'] !== undefined) {
-            this.authenticationService.userAuthorized = true;
-            this.login(localStorage['username'], localStorage['password'])
-        };
     }
 
     login(login, pass): void {
-        let authenticationInfo = {
+        let data = {
             username: login,
             password: pass
         }
-        
-        this.authenticationService.authentication(authenticationInfo)
+
+        console.log(data)
+
+        this.authenticationService.authentication(data)
         .subscribe((data) => {
+            this.authenticationService.userAuthentication = true;
             localStorage['username'] = login;
             localStorage['password'] = pass;
-            this.authenticationService.userAuthorized = true;
             console.log(data);
         },
         (err) => {
@@ -48,22 +41,6 @@ export class AuthenticationFormComponent implements OnInit {
                 this.authenticationService.loginError = false
             }, 4000)
         });
-
-
-        // , function (response) {
-        //     if (response.status === 400) {
-        //         this.authenticationService.loginError = true;
-                // $timeout(function () {
-                //     this.authenticationService.loginError = false
-                // }, 4000)
-        //     } else {
-        //         // localStorage['login'] = this.authenticationLogin;
-        //         // localStorage['pass'] = this.authenticationPass;
-        //         // refreshUsers();
-        //         // tokenService.setToken(response.token);
-        //         this.authenticationService.userAuthorized = true;
-        //     }
-        // }
     };
 
 }

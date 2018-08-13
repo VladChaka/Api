@@ -1,15 +1,8 @@
-//@import "core/reset.less";
 @import "mixins";
 @import "less/fontawesome";
 @import "less/solid";
 @import "less/brands";
 
-@color1: #1a0001;
-@color2: #ffffff;
-@color3: #ff7117;
-@green: #6cc400;
-@red: red;
-@grey: #c2c4c0;
 * {
   margin: 0;
   padding: 0;
@@ -176,7 +169,6 @@ input:focus, textarea:focus, select:focus {
   z-index: 5;
   position: fixed;
   bottom: 0;
-  right: 0;
   background: @color1;
   display: flex;
   justify-content: space-between;
@@ -230,31 +222,52 @@ input:focus, textarea:focus, select:focus {
   }
 }
 
-authentication-form * {
+authorization-form * {
   transition: 0.5s;
+}
+
+.users-login-block{
+  background: url("../assets/library-bg.jpg") center no-repeat;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .users-login {
   position: relative;
   text-align: center;
-  border-top: 5px solid @color3;
-  border-bottom: 5px solid @color1;
+  border: 5px solid;
+  border-top-color: @grey;
+  border-left-color: @grey;
+  border-bottom-color: @color1;
   background: @color2;
   padding: 40px 60px;
-  border-radius: 50%;
+  border-radius: 0 0 10px 0;
 }
 
 .users-login:hover {
-  border-top: 5px solid @color1;
-  border-bottom: 5px solid @color3;
+  border-top-color: @color1;
+  border-left-color: @color1;
+  border-bottom-color: @grey;
+  border-right-color: @grey;
+}
+
+.users-login h2{
+  font-size: 1.8rem;
+  padding-bottom: 20px;
+  color:@color3;
+  text-transform: uppercase;
 }
 
 .users-login > p {
   text-align: left;
-  padding-left: 10px;
-  color: @color3;
-  font-size: 0.8rem;
-  font-weight: bold;
+  color: @color1;
+  font-size: 1rem;
 }
 
 .users-login > span {
@@ -285,28 +298,30 @@ authentication-form * {
 
 .users-login > input {
   .border-radius;
-  border: 2px @color1 solid;
+  border: 2px solid;
+  border-top-color: @grey;
+  border-left-color: @grey;
+  border-bottom-color: @color1;
+  width: 100%;
   padding: 5px 7px;
-  margin: 2px 10px 15px 10px;
+  margin: 4px 0 15px 0;
 }
 
 .users-login > input:focus {
-  border-radius: 0 15px 0 15px;
   border-color: @color3;
 }
 
 .users-login > button {
+  text-align: right;
   text-transform: uppercase;
   font-weight: bold;
-  line-height: 0.9;
-  cursor: pointer;
   font-size: 1.2rem;
   .border-radius;
-  padding: 5px 19px 3px 19px;
-  color: @color3;
+  color: @color1;
+  padding: 5px 10px;
+  cursor: pointer;
   background: @color2;
-  border: 2px solid transparent;
-  transition: 0.3s ease-out;
+  border: 2px solid @color1;
 }
 
 .users-login > button:hover {
@@ -540,64 +555,7 @@ div.user-edit-btn {
 /* USER ADD FORM ENDS */
 
 /* LIBRARY CARD START */
-.library-card-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
 
-.library-card > div {
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.library-card-btns {
-  margin-top: 15px;
-  margin-bottom: 0;
-  display: flex;
-  justify-content: space-between;
-}
-
-.library-card button {
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: @color1;
-  border: 2px solid @color1;
-  padding: 4px 5px 2px 5px;
-  transition: 0.2s ease;
-  background: @color2;
-  flex-basis: 22.5%;
-}
-
-.library-card button:not(:disabled):hover {
-  background: @color2;
-  color: @green;
-}
-
-.library-card button:disabled:hover {
-  cursor: not-allowed;
-}
-
-.library-card > div > span {
-  padding-right: 10px;
-  flex-basis: 35%;
-}
-
-.library-card > div > input {
-  flex-basis: 65%;
-}
-
-.library-card input {
-  font-size: 1rem;
-  background: @color2;
-  color: @color1;
-  outline: 2px solid @color1;
-  border: 2px solid transparent;
-  padding: 2px 5px;
-}
 
 /* LIBRARY CARD ENDS */
 

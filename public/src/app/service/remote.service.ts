@@ -9,7 +9,7 @@ export class RemoteService {
 
   constructor(private http: HttpClient) { }
 
-    auth(authInfo: object): Observable<any>{
+    authentication(authInfo: object): Observable<any>{
         return this.http.post('http://localhost:4000/login', authInfo);
     }
     getAll(token: string): Observable<any>{

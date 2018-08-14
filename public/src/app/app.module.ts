@@ -29,6 +29,6 @@ import { LoginValidationDirective } from './directive/login-validation.directive
     AppRoutingModule,
     HttpClientModule
   ],
-  bootstrap: [MainPageComponent]
+  bootstrap: [AuthenticationFormComponent]// MainPageComponent
 })
 export class AppModule { }

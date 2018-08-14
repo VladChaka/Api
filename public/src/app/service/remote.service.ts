@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, fromEvent } from 'rxjs';
+import { Observable, defer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,18 @@ export class RemoteService {
         return this.http.post('http://localhost:4000/login', authInfo);
     }
     getAll(token: string): Observable<any>{
-        return this.http.get('http://localhost:4000/users', { params: { token: token } });
+        return defer(() => {
+
+            console.log(token);
+            if (token !== undefined) {
+                console.log(token);
+                return this.http.get('http://localhost:4000/users', { params: { token: token } });
+            } else {
+                console.log('error');
+            }
+        });
+
+        // return this.http.get('http://localhost:4000/users', { params: { token: token } });
     }
     create(data: object, token: string): Observable<any>{
         return this.http.post('http://localhost:4000/users', data, { params: { token: token } });

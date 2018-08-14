@@ -18,12 +18,13 @@ export class AuthenticationService {
         protected tokenService: TokenService
     ) { }
 
-    authentication(authenticationInfo): void {
+    authentication(authenticationInfo): any {
         this.remoteService.authentication(authenticationInfo).subscribe((data) => {
             console.log(data);
             this.tokenService.setToken(data.token);
             this.userAuthentication = true;
-            localStorage['token'] = authenticationInfo.token;
+            localStorage['token'] = data.token;
+            return true;
         },
         (err) => {
             this.loginError = true;

@@ -32,20 +32,23 @@ export class MainPageComponent implements OnInit {
         protected tokenService: TokenService
     ) {
         if (localStorage['token'] !== undefined) {
-            this.authenticationService.authentication({ username: localStorage['token'] });
+            // this.authenticationService.authentication({ username: localStorage['token'] });
             this.authenticationService.userAuthentication = true;
         };
+        // this.getUsers();
     }
 
     ngOnInit() {
-        this.getUsers();
+        
     }
+    
 
     getUsers(): void {
-        this.userService.getAll("token")
+        this.userService.getAll(localStorage['token'])
         .subscribe(users => {
             this.users = users;
-
+            console.log("users",users);
+            
             this.convertData(this.users);
 
             this.countUsers = users.length;

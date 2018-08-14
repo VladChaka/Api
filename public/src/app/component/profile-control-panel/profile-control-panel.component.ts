@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 
-import { MainPageComponent } from '../../component/main-page/main-page.component';
+import { MainPageComponent } from '../main-page/main-page.component';
 
 import { UserService } from '../../service/user.service';
 import { FormService } from '../../service/form.service';

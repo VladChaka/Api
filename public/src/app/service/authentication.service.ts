@@ -30,11 +30,14 @@ export class AuthenticationService {
             setTimeout(function () {
                 this.loginError = false
                 console.log('I m done');
-            }, 4000)
+            }, 4000);
         });
     }
 
-    
+    isAuthentication() {
+        console.log('asdfasdfas');
+        if (localStorage['token'] !== undefined) this.userAuthentication = true;
+    }
 
     logout(): void {
         delete localStorage['token'];

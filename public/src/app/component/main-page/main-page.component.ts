@@ -30,12 +30,7 @@ export class MainPageComponent implements OnInit {
         protected remoteService: RemoteService,
         protected authenticationService: AuthenticationService,
         protected tokenService: TokenService
-    ) {
-        if (localStorage['token'] !== undefined) {
-            // this.authenticationService.authentication({ username: localStorage['token'] });
-            this.authenticationService.userAuthentication = true;
-        };
-    }
+    ) { }
 
     ngOnInit() {
         this.getUsers();

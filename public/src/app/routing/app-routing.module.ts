@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MainPageComponent } from '../component/main-page/main-page.component';
-import { AuthorizationFormComponent } from "../component/authorization-form/authorization-form.component";
+import { AuthenticationFormComponent } from "../component/authentication-form/authentication-form.component";
 
 const routes: Routes = [
   {
     path: 'login',
-    component: AuthorizationFormComponent
+    component: AuthenticationFormComponent
   }
     // {
     //     path: '',

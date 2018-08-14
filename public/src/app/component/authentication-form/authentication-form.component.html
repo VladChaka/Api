@@ -1,0 +1,13 @@
+<div class="users-login-block">
+    <form [hidden]="this.authenticationService.userAuthentication" class="users-login" id="auth">
+        <h2><i class="fas fa-book"></i> Library App</h2>
+    <p>Login {{authenticationLogin}}</p>
+    <input type="text" #log placeholder="Enter your login">
+
+    <p [hidden]="this.authenticationService.userAuthentication">Password</p>
+    <input type="password" #pass placeholder="Enter your pass">
+    <span *ngIf="this.authenticationService.loginError">Incorrect login or password</span>
+    <br><br>
+    <button (click)="login(log.value, pass.value)">{{btnText}}</button>
+</form>
+</div>

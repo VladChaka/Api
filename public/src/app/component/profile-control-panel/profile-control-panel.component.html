@@ -1,5 +1,12 @@
-<button ng-click="uc.openUserProfile()"> Go to profile </button>
-<button ng-click="uc.openLibraryCard()"> Library Card </button>
-<button ng-click="uc.deleteUser()" type="submit">
-    Delete user<span>✖</span>
+<button class="list-user-block-profile" (click)="openUserProfile()">
+    <i class="fas fa-user-edit"></i>
+    <i class="fas fa-cog fa-spin"></i>
+</button>
+<button class="list-user-block-library" (click)="openLibraryCard()">
+    <i class="fas fa-book"></i>
+    <i class="fas fa-book-open"></i>
+</button>
+<button class="list-user-block-delete" (click)="deleteUser()" type="submit">
+    <i class="fas fa-user-times"></i>
+    <i class="fas fa-user-slash"></i>
 </button>

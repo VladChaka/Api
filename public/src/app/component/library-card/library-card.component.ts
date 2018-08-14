@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { FormService } from '../../service/form.service';
 
 @Component({
-  selector: 'app-library-card',
+  selector: 'library-card',
   templateUrl: './library-card.component.html',
   styleUrls: ['./library-card.component.css']
 })
 export class LibraryCardComponent implements OnInit {
 
-  constructor() { }
+  constructor(protected formService: FormService) { }
 
+    closeLibraryCard = function(){
+        this.formService.showLibraryCard = false;
+    };
   ngOnInit() {
   }
 

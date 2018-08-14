@@ -23,20 +23,20 @@ export class AuthenticationService {
             console.log(data);
             this.tokenService.setToken(data.token);
             this.userAuthentication = true;
-            localStorage['username'] = authenticationInfo.username;
-            localStorage['password'] = authenticationInfo.password;
+            localStorage['token'] = authenticationInfo.token;
         },
         (err) => {
             this.loginError = true;
             setTimeout(function () {
                 this.loginError = false
             }, 4000)
-        });;
+        });
     }
 
+    
+
     logout(): void {
-        delete localStorage['username'];
-        delete localStorage['password'];
+        delete localStorage['token'];
         this.tokenService.setToken(null);
         this.userAuthentication = false;
     }

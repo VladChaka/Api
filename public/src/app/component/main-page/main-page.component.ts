@@ -11,11 +11,11 @@ import { TokenService } from '../../service/token.service';
 @Component({
   selector: 'main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css']
+  styleUrls: ['./main-page.component.less']
 })
 export class MainPageComponent implements OnInit {
 
-    users: Users[];
+    users: Users[]; 
     countUsers: number;
 
     filterByDate: boolean = true;
@@ -31,11 +31,8 @@ export class MainPageComponent implements OnInit {
         protected authenticationService: AuthenticationService,
         protected tokenService: TokenService
     ) {
-        if (localStorage['username'] !== undefined && localStorage['password'] !== undefined) {
-            this.authenticationService.authentication({
-                username: localStorage['username'],
-                password: localStorage['password']
-            });
+        if (localStorage['token'] !== undefined) {
+            this.authenticationService.authentication({ username: localStorage['token'] });
             this.authenticationService.userAuthentication = true;
         };
     }
@@ -76,6 +73,12 @@ export class MainPageComponent implements OnInit {
         this.users = undefined;
         this.authenticationService.logout();
     }
+
+    deleteUser(test): void {
+        console.log(test);
+    }
+
+    
 
 //
 //   function refreshUsers() {

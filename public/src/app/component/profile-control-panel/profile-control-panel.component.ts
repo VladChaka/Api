@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+
+import { MainPageComponent } from '../../component/main-page/main-page.component';
+
+import { UserService } from '../../service/user.service';
 import { FormService } from '../../service/form.service';
+import { TokenService } from '../../service/token.service';
 
 @Component({
   selector: 'profile-control-panel',
@@ -9,8 +14,14 @@ import { FormService } from '../../service/form.service';
 })
 export class ProfileControlPanelComponent {
 
+    data: any;
+
+    delUser: any;
+
     constructor(
-        protected formService: FormService
+        protected userService: UserService,
+        protected formService: FormService,
+        protected tokenService: TokenService
     ) {}
     
     openUserProfile(): void {
@@ -19,5 +30,12 @@ export class ProfileControlPanelComponent {
     
     openLibraryCard(): void {
         this.formService.openLibraryCard();
+    }
+
+    deleteUser(id: any): void {
+        console.log(id);
+        console.log(this.delUser);
+        
+        // this.userService.delete("123", this.tokenService.getToken());
     }
  }

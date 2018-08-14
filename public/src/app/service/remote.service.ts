@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, fromEvent } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemoteService {
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
     authentication(authInfo: object): Observable<any>{
         return this.http.post('http://localhost:4000/login', authInfo);

@@ -4,9 +4,9 @@ import { FormService } from '../../service/form.service';
 @Component({
   selector: 'library-card',
   templateUrl: './library-card.component.html',
-  styleUrls: ['./library-card.component.css']
+  styleUrls: ['./library-card.component.less']
 })
-export class LibraryCardComponent implements OnInit {
+export class LibraryCardComponent implements OnInit { 
 
   constructor(protected formService: FormService) { }
 

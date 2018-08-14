@@ -6,24 +6,16 @@ import { UserService } from '../../service/user.service';
 import { AuthenticationService } from '../../service/authentication.service';
 import { FormService } from '../../service/form.service';
 import { RemoteService } from '../../service/remote.service';
+import { TokenService } from '../../service/token.service';
 
 @Component({
   selector: 'main-page',
   templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css']
+  styleUrls: ['./main-page.component.less']
 })
 export class MainPageComponent implements OnInit {
 
-    showUserProfile: boolean;
-
-    constructor(
-        protected userService: UserService,
-        protected formService: FormService,
-        protected remoteService: RemoteService,
-        protected authenticationService: AuthenticationService
-    ) { }
-
-    users: Users[];
+    users: Users[]; 
     countUsers: number;
 
     filterByDate: boolean = true;
@@ -32,14 +24,20 @@ export class MainPageComponent implements OnInit {
     numberOfPages: number = 1;
     pageSize: number = 18;
 
-    ngOnInit() {
-        if (localStorage['username'] !== undefined && localStorage['password'] !== undefined) {
-            this.remoteService.authentication({
-                username: localStorage['username'],
-                password: localStorage['password']
-            })
-            .subscribe(() => this.authenticationService.userAuthentication = true);
+    constructor(
+        protected userService: UserService,
+        protected formService: FormService,
+        protected remoteService: RemoteService,
+        protected authenticationService: AuthenticationService,
+        protected tokenService: TokenService
+    ) {
+        if (localStorage['token'] !== undefined) {
+            this.authenticationService.authentication({ username: localStorage['token'] });
+            this.authenticationService.userAuthentication = true;
         };
+    }
+
+    ngOnInit() {
         this.getUsers();
     }
 
@@ -48,19 +46,10 @@ export class MainPageComponent implements OnInit {
         .subscribe(users => {
             this.users = users;
 
-            // let num =  [];
-            // for (let i = 0; i < 15; i++) {
-            //     num.push(users[i])
-            // }
-            //
-            // this.users = num;
-
             this.convertData(this.users);
 
-
-
-              this.countUsers = users.length;
-              this.numberOfPages = Math.ceil(users.length / this.pageSize);
+            this.countUsers = users.length;
+            this.numberOfPages = Math.ceil(users.length / this.pageSize);
         });
     }
 
@@ -85,24 +74,12 @@ export class MainPageComponent implements OnInit {
         this.authenticationService.logout();
     }
 
-    addUser(): void {
-      // usersService.addUser( formAddUser, function(response) {
-      //   if (response.status === 500) {
-      //     let errorType = response.data.error.split("$")[1].split('_')[0];
-      //     if (errorType === "username") {
-      //        emailConflict = false;
-      //        loginConflict = true;
-      //     } else if (errorType === "email") {
-      //        emailConflict = true;
-      //        loginConflict = false;
-      //     }
-      //   } else {
-      //     refreshUsers();
-      //      closeFormAddUser();
-      //      showFormAddUser = false;
-      //   }
-      // });
-    };
+    deleteUser(test): void {
+        console.log(test);
+    }
+
+    
+
 //
 //   function refreshUsers() {
 //     usersService.getAllUsers().then(function(users) {

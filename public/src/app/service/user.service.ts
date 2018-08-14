@@ -14,8 +14,11 @@ export class UserService {
         private remoteService: RemoteService
     ) { }
     
-    delete(id: string, token: string): Observable<any> {
-        return this.remoteService.delete(id, token);
+    delete(id: string, token: string): void{
+        this.remoteService.delete(id, token).
+        subscribe(result => {
+            
+        });
     };
 
     add(user: object, token: string): Observable<any> {

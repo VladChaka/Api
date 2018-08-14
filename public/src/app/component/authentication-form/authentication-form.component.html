@@ -8,6 +8,6 @@
     <input type="password" #pass placeholder="Enter your pass">
     <span *ngIf="this.authenticationService.loginError">Incorrect login or password</span>
     <br><br>
-    <button (click)="login(log.value, pass.value)"><!-- {{btnText}} -->Enter</button>
+    <button (click)="login(log.value, pass.value)">{{btnText}}</button>
 </form>
 </div>

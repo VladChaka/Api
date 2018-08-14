@@ -18,24 +18,26 @@ export class AuthenticationService {
         protected tokenService: TokenService
     ) { }
 
-    authentication(authenticationInfo : object): Observable<any> {
-        return this.remoteService.authentication(authenticationInfo);
+    authentication(authenticationInfo): void {
+        this.remoteService.authentication(authenticationInfo).subscribe((data) => {
+            console.log(data);
+            this.tokenService.setToken(data.token);
+            this.userAuthentication = true;
+            localStorage['token'] = authenticationInfo.token;
+        },
+        (err) => {
+            this.loginError = true;
+            setTimeout(function () {
+                this.loginError = false
+            }, 4000)
+        });
     }
 
+    
+
     logout(): void {
-        delete localStorage['login'];
-        delete localStorage['pass'];
+        delete localStorage['token'];
         this.tokenService.setToken(null);
         this.userAuthentication = false;
     }
-
-    // authentication(remoteService): object {
-    //     let authenticationInfo = {
-    //         username: this.authenticationLogin,
-    //         password: this.authenticationPass
-    //     };
-    //     return remoteService.auth.save(authenticationInfo);
-    // }
-
-
 }

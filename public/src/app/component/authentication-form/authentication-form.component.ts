@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AuthenticationService } from '../../service/authentication.service';
+import { RemoteService } from '../../service/remote.service';
+import { TokenService } from '../../service/token.service';
 
 @Component({
   selector: 'authentication-form',
@@ -13,33 +15,16 @@ import { AuthenticationService } from '../../service/authentication.service';
 export class AuthenticationFormComponent {
     btnText: string = 'Enter';
 
-    constructor(protected authenticationService: AuthenticationService) {
-    }
-
-    ngOnInit() {
-    }
+    constructor(
+        protected remoteService: RemoteService,
+        protected authenticationService: AuthenticationService,
+        protected tokenService: TokenService
+    ) { }
 
     login(login, pass): void {
-        let data = {
+        this.authenticationService.authentication({
             username: login,
             password: pass
-        }
-
-        console.log(data)
-
-        this.authenticationService.authentication(data)
-        .subscribe((data) => {
-            this.authenticationService.userAuthentication = true;
-            localStorage['username'] = login;
-            localStorage['password'] = pass;
-            console.log(data);
-        },
-        (err) => {
-            console.log(err);
-            this.authenticationService.loginError = true;
-            setTimeout(function () {
-                this.authenticationService.loginError = false
-            }, 4000)
         });
     };
 

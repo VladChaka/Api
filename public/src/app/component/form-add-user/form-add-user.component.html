@@ -1,9 +1,5 @@
-<div class="user-form"
-     id="AddForm">
-    <div class="close-addform"
-         (click)="closeFormAddUser()">
-        +
-    </div>
+<div class="user-form" id="AddForm">
+    <div class="close-addform" (click)="closeFormAddUser()">+</div>
     <form class="user-add"
           name="userAdd"
           id="add"
@@ -24,24 +20,11 @@
                    ng-required="true"
                    login-validation>
         </div>
-        <p ng-show="userAdd.username.$invalid && userAdd.username.$dirty || userAdd.username.$error.correctLogin">
-            Enter a valid username.
-        </p>
-        <p ng-show="userAdd.username.$dirty && userAdd.username.$error.required">
-            Username is required
-        </p>
-        <p ng-show="userAdd.username.$error.minlength">
-            Username is too short.
-        </p>
-        <p ng-show="userAdd.username.$error.maxlength">
-            Username is too long.
-        </p>
-        <div class="add-login-used"
-             ng-show=" loginConflict">
-            This login already used.
-        </div>
-
-
+        <p ng-show="userAdd.username.$invalid && userAdd.username.$dirty || userAdd.username.$error.correctLogin">Enter a valid username.</p>
+        <p ng-show="userAdd.username.$dirty && userAdd.username.$error.required">Username is required</p>
+        <p ng-show="userAdd.username.$error.minlength">Username is too short.</p>
+        <p ng-show="userAdd.username.$error.maxlength">Username is too long.</p>
+        <div class="add-login-used" ng-show=" loginConflict">This login already used.</div>
         <div>
             <span>E-mail</span>
             <input ng-class="{ 'invalid' : userAdd.email.$invalid && userAdd.email.$dirty }"
@@ -49,18 +32,9 @@
                    [(ngModel)]=" formAddUser.email"
                    type="email" placeholder="Enter email"
                    ng-required="true"></div>
-
-
-        <div class="add-email-used"
-             ng-show=" emailConflict">
-            This email already used.
-        </div>
-        <p ng-show="userAdd.email.$invalid && userAdd.email.$dirty">
-            Enter a valid email.
-        </p>
-        <p ng-show="userAdd.email.$dirty && userAdd.email.$error.required">
-            Email is required
-        </p>
+        <div class="add-email-used" ng-show=" emailConflict">This email already used.</div>
+        <p ng-show="userAdd.email.$invalid && userAdd.email.$dirty">Enter a valid email.</p>
+        <p ng-show="userAdd.email.$dirty && userAdd.email.$error.required">Email is required</p>
         <div>
             <span>Post</span>
             <input ng-class="{ 'invalid' : userAdd.post.$error.required && userAdd.post.$dirty }"
@@ -69,9 +43,7 @@
                    name="post"
                    [(ngModel)]=" formAddUser.post"
                    placeholder="User post"></div>
-        <p ng-show="userAdd.post.$error.required && userAdd.post.$dirty">
-            Enter a user post.
-        </p>
+        <p ng-show="userAdd.post.$error.required && userAdd.post.$dirty">Enter a user post.</p>
         <div>
             <span>Phone</span>
             <input ng-class="{ 'invalid' : userAdd.phone.$invalid && userAdd.phone.$dirty }"
@@ -83,12 +55,8 @@
                    [(ngModel)]=" formAddUser.phone"
                    placeholder="Enter phone number"
                    tel-validation></div>
-        <p ng-show="userAdd.phone.$error.required && userAdd.phone.$dirty">
-            Phone number is required.
-        </p>
-        <p ng-show="userAdd.phone.$error.minlength || userAdd.phone.$error.maxlength || userAdd.phone.$error.correctNumber">
-            Enter a correct phone.
-        </p>
+        <p ng-show="userAdd.phone.$error.required && userAdd.phone.$dirty">Phone number is required.</p>
+        <p ng-show="userAdd.phone.$error.minlength || userAdd.phone.$error.maxlength || userAdd.phone.$error.correctNumber">Enter a correct phone.</p>
         <div>
             <span>Password</span>
             <input ng-class="{ 'invalid' : userAdd.password.$invalid && userAdd.password.$dirty }"
@@ -99,16 +67,9 @@
                    placeholder="Enter password"
                    ng-required="true"
                    pass-validation> </div>
-        <p class="text-error"
-           ng-show="userAdd.password.$error.strongPass">
-            Your password should contain digit and non-digit symbol
-        </p>
-        <p ng-show="userAdd.password.$error.required && userAdd.password.$dirty">
-            Password is required.
-        </p>
-        <p ng-show="userAdd.password.$error.minlength">
-            Password is too short.
-        </p>
+        <p class="text-error" ng-show="userAdd.password.$error.strongPass">Your password should contain digit and non-digit symbol</p>
+        <p ng-show="userAdd.password.$error.required && userAdd.password.$dirty">Password is required.</p>
+        <p ng-show="userAdd.password.$error.minlength">Password is too short.</p>
         <div>
             <span>Full name</span>
             <input ng-class="{ 'invalid' : userAdd.fullname.$invalid && userAdd.fullname.$dirty}"
@@ -118,18 +79,11 @@
                    type="text"
                    placeholder="Full name of user"
                    name-validation></div>
-        <p ng-show="userAdd.fullname.$error.required && userAdd.fullname.$dirty">
-            Enter full name.
-        </p>
-        <p ng-show="userAdd.fullname.$error.realName && userAdd.fullname.$dirty">
-            Enter real name.
-        </p>
+        <p ng-show="userAdd.fullname.$error.required && userAdd.fullname.$dirty">Enter full name.</p>
+        <p ng-show="userAdd.fullname.$error.realName && userAdd.fullname.$dirty">Enter real name.</p>
         <div class="user-add-btn">
             <p>All fields are required</p>
-            <button type="submit"
-                    [disabled]="!userAdd.$valid">
-                Add user
-            </button>
+            <button type="submit" [disabled]="!userAdd.$valid">Add user</button>
         </div>
     </form>
 </div>

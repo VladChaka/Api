@@ -27,30 +27,16 @@ a, input, button {
   outline: none;
 }
 
-//.is-main-bg {
-//    background: url(../img/block3-bg.png) center no-repeat;
-//    background-size: cover;
-//    position: fixed;
-//    height: 100%;
-//    width: 100%;
-//    z-index: -1;
-//}
-
-//@font-face {
-//    font-family: "Calibri";
-//    src: url("../fonts/Calibri.ttf");
-//    font-style: normal;
-//    font-weight: normal;
-//}
 body {
   font: 100% 'Open Sans', sans-serif;
   font-size: 1rem;
 }
 
 .user-add > div.add-login-used, .user-add > div.add-email-used, .user-edit > div.edit-email-used {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   background: @color2;
-  color: @color3;
+  font-weight: bold;
+  color: @red;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   margin: 5px 0;
@@ -69,7 +55,8 @@ body {
   align-items: center;
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 10px 0;
   top: 0;
   left: 0;
   position: fixed;
@@ -400,7 +387,7 @@ authorization-form * {
   background: @color3;
   border-bottom: 1px solid @color1;
   > div {
-    flex-basis: 22%;
+    flex-basis: 20%;
   }
 }
 
@@ -413,7 +400,7 @@ authorization-form * {
   border-bottom: 2px solid @color1;
   padding-left: 20px;
   > div {
-    flex-basis: 22%;
+    flex-basis: 20%;
   }
 }
 
@@ -422,7 +409,7 @@ authorization-form * {
   padding: 10px 20px;
   display: flex;
   justify-content: space-around;
-  flex-basis: 22%;
+  flex-basis: 20%;
 }
 
 .list-user-block button {
@@ -461,7 +448,7 @@ authorization-form * {
   }
 }
 
-.list-user-block-library:hover {
+.list-user-block-library:focus,.list-user-block-library:hover {
   background: @color2;
   :first-child {
     display: none;
@@ -478,7 +465,7 @@ authorization-form * {
   }
 }
 
-.list-user-block-profile:hover {
+.list-user-block-profile:hover,.list-user-block-profile:focus {
   background: @color2;
   :first-child {
     display: none;
@@ -560,6 +547,8 @@ div.user-edit-btn {
 /* LIBRARY CARD ENDS */
 
 .user-add, .user-edit, .library-card {
+  overflow-y: auto;
+  height: 100%;
   font-size: 1rem;
   color: @grey;
   background: @color1;
@@ -602,24 +591,25 @@ div.user-edit-btn {
 
 .close-editform, .close-addform, .close-library-card {
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  right: -5px;
-  top: -5px;
+  right: -7px;
+  top: -7px;
   width: 20px;
-  text-align: center;
-  line-height: 85%;
   height: 20px;
   border-radius: 50%;
   background: @color2;
   color: @color1;
   font-weight: bold;
-  transform: rotate(45deg);
   transition: 0.5s;
 }
 
 .close-addform:hover, .close-editform:hover, .close-library-card:hover {
-  cursor: pointer;
-  font-size: 1.6rem;
-  transform: rotate(405deg);
+  font-size: 1.4rem;
+  transform: rotate(360deg);
 }
+
+@import "adaptive";

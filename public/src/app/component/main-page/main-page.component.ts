@@ -32,7 +32,7 @@ export class MainPageComponent implements OnInit {
         protected tokenService: TokenService
     ) {
         if (localStorage['token'] !== undefined) {
-            this.authenticationService.authentication({ username: localStorage['token'] });
+            // this.authenticationService.authentication({ username: localStorage['token'] });
             this.authenticationService.userAuthentication = true;
         };
     }

@@ -1,5 +1,5 @@
 <div id="popupsContainer"
-     *ngIf="this.formService.showUserProfile || this.formService.showLibraryCard || this.formService.showFormAddUser || this.authenticationService.userAuthentication === false">
+     *ngIf="this.formService.showUserProfile || this.formService.showLibraryCard || this.formService.showFormAddUser">
     <form-add-user *ngIf="this.formService.showFormAddUser"
                    email-conflict="emailConflict"
                    login-conflict="loginConflict"
@@ -16,15 +16,6 @@
                   *ngIf="this.formService.showLibraryCard"
                   pass-book=" passBook"
                   take-book=" takeBook"></library-card>
-    <authentication-form *ngIf="this.authenticationService.userAuthentication === false"
-                        btn-text="Enter"
-                        authentication-login=" authenticationLogin"
-                        authentication-pass=" authenticationPass"
-                        login=" login()"
-                        login-error="this.authenticationService.loginError"
-                        user-authorized="this.authenticationService.userAuthentication">
-    </authentication-form>
-
 </div>
 <div class="users-container" *ngIf="this.authenticationService.userAuthentication === true">
     <div id="test"
@@ -56,7 +47,7 @@
                 </button>
             </li>
             <li>
-                <button class="logout" ng-show=" userAuthentication" (click)=" logout()">
+                <button class="logout" ng-show=" userAuthentication" routerLink="/login" (click)=" logout()">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </li>
@@ -84,3 +75,4 @@
                 <user-panel [users]="users" [filterByDate]="filterByDate" [filterByRating]="filterByRating"></user-panel>
         </div>
     </div>
+    <router-outlet></router-outlet>

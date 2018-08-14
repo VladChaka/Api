@@ -29,6 +29,7 @@ export class AuthenticationService {
             this.loginError = true;
             setTimeout(function () {
                 this.loginError = false
+                console.log('I m done');
             }, 4000)
         });
     }

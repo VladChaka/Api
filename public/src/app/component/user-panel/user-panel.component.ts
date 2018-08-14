@@ -7,6 +7,8 @@ import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 })
 export class UserPanelComponent {
 
+    pageSize: number = 18;
+
     @Input() users: string;
     @Input() filterByDate: string;
     @Input() filterByRating: string;

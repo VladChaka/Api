@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../service/authentication.service';
 import { RemoteService } from '../../service/remote.service';
 import { TokenService } from '../../service/token.service';
-import { AuthGuardService } from '../../service/auth-guard.service';
 
 @Component({
   selector: 'authentication-form',
@@ -18,20 +17,30 @@ export class AuthenticationFormComponent implements OnInit {
 
     constructor(
         protected remoteService: RemoteService,
-        protected authenticationService: AuthenticationService,
-        protected tokenService: TokenService,
-        protected authGuardService: AuthGuardService
+        protected authenticationService: AuthenticationService
     ) { }
 
     ngOnInit() {
-        this.authGuardService.isAuthentication();
+        this.authenticationService.isAuthentication();
     }
 
     login(login, pass): void {
         this.authenticationService.authentication({
             username: login,
             password: pass
-        });
+        })
+        .subscribe(
+            data => {
+                this.authenticationService.userAuthentication = true;
+                localStorage.setItem('token', data.token);
+            },
+            err => {
+                this.authenticationService.loginError = true;
+                setTimeout(function () {
+                    this.authenticationService.loginError = false;
+                }, 4000);
+            }
+        );
     };
 
 }

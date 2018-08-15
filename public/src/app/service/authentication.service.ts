@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Route } from '@angular/router'
 import { Observable } from 'rxjs';
 
 import { RemoteService } from './remote.service';
@@ -15,27 +16,17 @@ export class AuthenticationService {
 
     constructor(
         protected remoteService: RemoteService,
-        protected tokenService: TokenService
+        protected tokenService: TokenService,
+        protected route: Route
     ) { }
 
-    authentication(authenticationInfo): void {
-        this.remoteService.authentication(authenticationInfo).subscribe((data) => {
-            console.log(data);
-            this.tokenService.setToken(data.token);
-            this.userAuthentication = true;
-            localStorage['token'] = authenticationInfo.token;
-        },
-        (err) => {
-            this.loginError = true;
-            setTimeout(function () {
-                this.loginError = false
-                console.log('I m done');
-            }, 4000);
-        });
+    authentication(authenticationInfo): Observable<any> {
+        return this.remoteService.authentication(authenticationInfo);
     }
 
-    isAuthentication() {
-        console.log('asdfasdfas');
+    isAuthentication(): any {
+        // console.log(this.route);
+        
         if (localStorage['token'] !== undefined) this.userAuthentication = true;
     }
 

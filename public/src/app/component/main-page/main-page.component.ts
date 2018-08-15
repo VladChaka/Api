@@ -17,6 +17,7 @@ export class MainPageComponent implements OnInit {
 
     users: Users[]; 
     countUsers: number;
+    token: string;
 
     filterByDate: boolean = true;
 
@@ -37,18 +38,22 @@ export class MainPageComponent implements OnInit {
     }
 
     getUsers(): void {
-        this.userService.getAll("token")
-        .subscribe(users => {
-            this.users = users;
+        this.token = localStorage.getItem('token');
+        
+        this.userService.getAll(this.token)
+        .subscribe(
+            users => {
+                this.users = users;
+                this.convertDate(this.users);
 
-            this.convertData(this.users);
-
-            this.countUsers = users.length;
-            this.numberOfPages = Math.ceil(users.length / this.pageSize);
-        });
+                this.countUsers = users.length;
+                this.numberOfPages = Math.ceil(users.length / this.pageSize);
+            },
+            err => console.log("err",err)
+        );
     }
 
-    convertData(users: Users[]): void {
+    convertDate(users: Users[]): void {
         users.map((element: any) => {
             let date: number = element.regDate * 1,
                 newDate = new Date(date),

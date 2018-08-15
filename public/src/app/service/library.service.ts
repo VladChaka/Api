@@ -8,14 +8,14 @@ import { RemoteService } from './remote.service';
 })
 export class LibraryService {
 
-  constructor(protected remoteService: RemoteService) { }
+    constructor(protected remoteService: RemoteService) { }
 
     takeBook(data: object, id:string, token: string): Observable<any> {
         return this.remoteService.takeBook(data, id, token);
     }
 
-    passBook(data: object, id:string, token: string): Observable<any> {
-        return this.remoteService.passBook(data, id, token);
+    passBook(id:string, token: string): Observable<any> {
+        return this.remoteService.passBook(id, token);
     };
 
     // getOneBook(data: object, id:string, token: string) {

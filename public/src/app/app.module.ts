@@ -31,6 +31,7 @@ import { UserPanelComponent } from './component/user-panel/user-panel.component'
     AppRoutingModule,
     HttpClientModule
   ],
+  exports: [  ],
   bootstrap: [AuthenticationFormComponent]
 })
 export class AppModule { }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from '../../service/authentication.service';
 import { RemoteService } from '../../service/remote.service';
-import { TokenService } from '../../service/token.service';
 
 @Component({
   selector: 'authentication-form',
